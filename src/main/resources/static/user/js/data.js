@@ -102,67 +102,8 @@ const foodlist = [
     }
 ];
 
-// Cart management
-let cartItems = {};
+// Category filter
 let currentCategory = "All";
-
-// Load cart from localStorage
-function loadCart() {
-    const savedCart = localStorage.getItem('cartItems');
-    if (savedCart) {
-        cartItems = JSON.parse(savedCart);
-    }
-}
-
-// Save cart to localStorage
-function saveCart() {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    updateCartUI();
-}
-
-// Add item to cart
-function addToCart(itemId) {
-    if (!cartItems[itemId]) {
-        cartItems[itemId] = 1;
-    } else {
-        cartItems[itemId]++;
-    }
-    saveCart();
-}
-
-// Remove item from cart
-function removeFromCart(itemId) {
-    if (cartItems[itemId]) {
-        cartItems[itemId]--;
-        if (cartItems[itemId] === 0) {
-            delete cartItems[itemId];
-        }
-    }
-    saveCart();
-}
-
-// Get total cart amount
-function getTotalCartAmount() {
-    let totalAmount = 0;
-    for (const item in cartItems) {
-        if (cartItems[item] > 0) {
-            let itemInfo = foodlist.find((product) => product._id === item);
-            if (itemInfo) {
-                totalAmount += itemInfo.price * cartItems[item];
-            }
-        }
-    }
-    return totalAmount;
-}
-
-// Update cart UI (dot indicator)
-function updateCartUI() {
-    const cartDot = document.getElementById('cart-dot');
-    if (cartDot) {
-        const total = getTotalCartAmount();
-        cartDot.style.display = total > 0 ? 'block' : 'none';
-    }
-}
 
 // Check if user is logged in
 function isLoggedIn() {
@@ -174,10 +115,9 @@ function getToken() {
     return localStorage.getItem('token');
 }
 
-// Login function
+// Login function - to be implemented with Java backend
 function login(email, password) {
     // This is a template - integrate with your Java backend
-    // For now, we'll simulate login
     const token = 'simulated_token_' + Date.now();
     localStorage.setItem('token', token);
     return true;
@@ -188,7 +128,3 @@ function logout() {
     localStorage.removeItem('token');
     window.location.href = 'index.html';
 }
-
-// Initialize
-loadCart();
-updateCartUI();
