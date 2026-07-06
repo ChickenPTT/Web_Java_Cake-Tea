@@ -1,0 +1,148 @@
+.navbar {
+    width: 100%;
+    padding: 15px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar .logo {
+  width: 100px;
+  min-width: 100px;
+  height: auto;
+}
+
+.site-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.site-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #c70e1c;
+}
+
+.site-slogan {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  font-size: 18px;
+  color: #333;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar-right img {
+  width: 22px;
+  height: 22px;
+}
+
+.navbar-search-icon {
+    position: relative;
+}
+
+.navbar-search-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.navbar-search-icon .dot {
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: #c70e1c;
+    border-radius: 5px;
+    top: -10px;
+    right: -10px;
+}
+
+.navbar button {
+  background-color: transparent;
+  font-size: 16px;
+  color: #c70e1c;
+  border: 1px solid #c70e1c;
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #c70e1c;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.navbar .active {
+  color: #c70e1c;
+  padding-bottom: 2px;
+  border-bottom: 2px solid #c70e1c;
+}
+
+.navbar li {
+  cursor: pointer;
+}
+
+.navbar-profile {
+  position: relative;
+}
+
+.nav-profile-dropdown {
+  position: absolute;
+  display: none;
+  right: 0;
+  z-index: 1;
+}
+
+.navbar-profile:hover .nav-profile-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  border: 1px solid black;
+  outline: 1px solid #c70e1c;
+  list-style: none;
+}
+
+.nav-profile-dropdown li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  justify-content: flex-start;
+}
+
+.nav-profile-dropdown img {
+  width: 20px;
+  height: 20px;
+}
+
+.navbar-profile > img {
+  width: 28px;
+  height: 28px;
+}
+
+.nav-profile-dropdown li:hover {
+  color: #c70e1c;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Admin Panel</title>
+    <link rel="stylesheet" href="/admin/css/style.css" th:href="@{/admin/css/style.css}">
+    <link rel="stylesheet" href="/admin/css/navbar.css" th:href="@{/admin/css/navbar.css}">
+    <link rel="stylesheet" href="/admin/css/sidebar.css" th:href="@{/admin/css/sidebar.css}">
+    <link rel="stylesheet" href="/admin/css/orders.css" th:href="@{/admin/css/orders.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <img class="logo" src="/admin/assets/logo.png" th:src="@{/admin/assets/logo.png}" alt="">
+            <div class="site-info">
+                <h1 class="site-name">Sugar Petals</h1>
+                <p class="site-slogan">Admin Panel</p>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <img class="profile" src="/admin/assets/profile_image.png" th:src="@{/admin/assets/profile_image.png}" alt="">
+            <button onclick="adminLogout()" class="logout-btn">Logout</button>
+        </div>
+    </div>
+    <hr>
+    <div class="app-content">
+        <div class="sidebar">
+            <div class="sidebar-options">
+                <a href="add.html" class="sidebar-option" id="nav-add">
+                    <img src="/admin/assets/add_icon.png" th:src="@{/admin/assets/add_icon.png}" alt="">
+                    <p>Add Items</p>
+                </a>
+                <a href="list.html" class="sidebar-option" id="nav-list">
+                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
+                    <p>List Items</p>
+                </a>
+                <a href="orders.html" class="sidebar-option active" id="nav-orders">
+                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
+                    <p>Orders</p>
+                </a>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="orders add">
+                <h3>Order Management</h3>
+                <div class="order-list" id="order-list-container">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/admin/js/main.js" th:src="@{/admin/js/main.js}"></script>
+    <script src="/admin/js/orders.js" th:src="@{/admin/js/orders.js}"></script>
+</body>
+</html>

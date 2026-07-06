@@ -1,0 +1,97 @@
+.orders {
+    padding: 20px 40px;
+}
+
+.orders h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 24px;
+}
+
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.order-item {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+    align-items: start;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 14px;
+    color: #505050;
+    transition: all 0.2s ease;
+}
+
+.order-item:hover {
+    border-color: #c70e1c;
+    box-shadow: 0 2px 12px rgba(199, 14, 28, 0.08);
+}
+
+.order-item img {
+    width: 55px;
+}
+
+.order-item-food {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.order-item-name {
+    font-weight: 600;
+    color: #c70e1c;
+    margin-bottom: 4px;
+}
+
+.order-item-address {
+    margin-bottom: 4px;
+    line-height: 1.6;
+}
+
+.order-item-phone {
+    font-weight: 500;
+}
+
+.order-item p {
+    margin: 0;
+}
+
+.order-item select {
+    padding: 10px 14px;
+    border: 1px solid #c5c5c5;
+    border-radius: 8px;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    background: #fafafa;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.order-item select:focus {
+    border-color: #c70e1c;
+}
+
+.order-item select:hover {
+    border-color: #c70e1c;
+}
+
+@media (max-width: 900px) {
+    .order-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .orders {
+        padding: 20px;
+    }
+}

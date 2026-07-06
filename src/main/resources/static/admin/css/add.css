@@ -1,0 +1,72 @@
+.add {
+    width: 70%;
+    margin-left: max(5vw, 25px);
+    margin-top: 50px;
+    color: #6d6d6d;
+    font-size: 16px;
+}
+
+.add form {
+    gap: 20px;
+}
+
+.add-img-upload img {
+    width: 150px;
+    border: 1px solid #cfcccd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.add-img-upload img:hover {
+    transform: scale(1.05);
+    border-color: #ff4d4d;
+}
+
+.add-product-name, .add-product-description {
+    width: max(50%, 300px);
+}
+
+.add-product-name input, .add-product-description textarea {
+    padding: 10px;
+    border: 1px solid #cfcccd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.add-product-name input:focus, .add-product-description textarea:focus {
+    border-color: #c70e1c;
+}
+
+.add-category-price {
+    display: flex;
+    gap: 30px;
+}
+
+.add-category-price select, .add-category-price input {
+    max-width: 120px;
+    padding: 10px;
+    border: 1px solid #cfcccd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.add-category-price select:focus, .add-category-price input:focus {
+    border-color: #c70e1c;
+}
+
+.add-btn {
+    max-width: 120px;
+    border: none;
+    padding: 10px;
+    background-color: #c70e1c;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+    background-color: #b00c18;
+}
