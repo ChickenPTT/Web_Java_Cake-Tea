@@ -1,56 +1,74 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm sản phẩm - Admin</title>
-    <link rel="stylesheet" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/add.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thêm sản phẩm - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
-    <hr>
-    <div class="app-content">
-        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='add')}"></div>
-        <div class="main-content">
-            <div class="add">
-                <form class="flex-col" id="add-form">
-                    <div class="add-img-upload flex-col">
-                        <p>Upload ảnh</p>
-                        <label for="image">
-                            <img id="image-preview" th:src="@{/admin/assets/upload_area.png}" alt="">
-                        </label>
-                        <input type="file" id="image" accept="image/*">
-                    </div>
-                    <div class="add-product-name flex-col">
-                        <p>Tên sản phẩm</p>
-                        <input type="text" name="name" placeholder="Nhập tên" required>
-                    </div>
-                    <div class="add-product-description flex-col">
-                        <p>Mô tả</p>
-                        <textarea name="description" rows="6" placeholder="Mô tả sản phẩm" required></textarea>
-                    </div>
-                    <div class="add-category-price">
-                        <div class="add-category flex-col">
-                            <p>Danh mục</p>
-                            <select name="category" id="category-select" required>
-                                <option value="">-- Chọn danh mục --</option>
-                            </select>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('add')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper form-page">
+                <div class="page-header">
+                    <h3 class="page-title">Thêm sản phẩm</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/products}">Sản phẩm</a></li>
+                            <li class="breadcrumb-item active">Thêm mới</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="content">
+                    <div class="card rounded shadow">
+                        <div class="card-body">
+                            <form id="add-form">
+                                <div class="row">
+                                    <div class="col-md-4 text-center mb-3">
+                                        <label class="d-block font-weight-bold mb-2">Ảnh sản phẩm</label>
+                                        <label for="image" style="cursor:pointer;">
+                                            <img id="image-preview" th:src="@{/admin/assets/upload_area.png}" alt="" class="img-fluid rounded" style="max-height:200px;">
+                                        </label>
+                                        <input type="file" id="image" accept="image/*" class="form-control-file mt-2">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tên sản phẩm *</label>
+                                            <input type="text" name="name" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả *</label>
+                                            <textarea name="description" class="form-control" rows="4" required></textarea>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Danh mục *</label>
+                                                <select name="category" id="category-select" class="form-control" required>
+                                                    <option value="">-- Chọn danh mục --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Giá (VNĐ) *</label>
+                                                <input type="number" name="price" class="form-control" min="0" required>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success"><i class="mdi mdi-content-save mr-1"></i> Lưu sản phẩm</button>
+                                        <a th:href="@{/admin/products}" class="btn btn-light">Hủy</a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="add-price flex-col">
-                            <p>Giá (VNĐ)</p>
-                            <input type="number" name="price" placeholder="50000" min="0" required>
-                        </div>
                     </div>
-                    <button type="submit" class="add-btn">THÊM SẢN PHẨM</button>
-                </form>
+                </section>
             </div>
         </div>
     </div>
-    <script th:src="@{/admin/js/main.js}"></script>
-    <script th:src="@{/admin/js/add.js}"></script>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/add.js}"></script>
 </body>
 </html>

@@ -25,11 +25,11 @@ async function loadStatistics(from, to) {
         return;
     }
     dailyContainer.innerHTML = daily.map(d => `
-        <div class="list-table-format">
-            <p>${d.date}</p>
-            <p>${formatPrice(d.revenue)}</p>
-            <p>${d.orders}</p>
-        </div>
+        <tr>
+            <td>${d.date}</td>
+            <td class="font-weight-bold">${formatPrice(d.revenue)}</td>
+            <td>${d.orders}</td>
+        </tr>
     `).join('');
 }
 

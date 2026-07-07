@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="header" class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo" th:href="@{/admin}">
+            <img th:src="@{/admin/extensions/images/brand-logo.png}" alt="Sugar Petals" style="max-height:48px;">
+        </a>
+        <a class="navbar-brand brand-logo-mini" th:href="@{/admin}">
+            <img th:src="@{/admin/extensions/images/brand-logo.png}" alt="Sugar Petals" style="max-height:32px;">
+        </a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-stretch">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-menu"></span>
+        </button>
+        <div class="search-field d-none d-xl-block">
+            <form class="d-flex align-items-center h-100" onsubmit="return false;">
+                <div class="input-group">
+                    <div class="input-group-prepend bg-transparent">
+                        <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                    </div>
+                    <input type="text" class="form-control bg-transparent border-0" placeholder="Tìm kiếm...">
+                </div>
+            </form>
+        </div>
+        <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item">
+                <a th:href="@{/}" target="_blank" class="nav-link">
+                    <i class="mdi mdi-keyboard-return mr-1"></i>
+                    <span class="d-none d-lg-inline">Xem website</span>
+                </a>
+            </li>
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown">
+                    <div class="nav-profile-img">
+                        <img th:src="@{/admin/extensions/images/user-account.png}" alt="Admin">
+                    </div>
+                    <div class="nav-profile-text">
+                        <p class="mb-1 text-black">Administrator</p>
+                    </div>
+                </a>
+                <div class="dropdown-menu navbar-dropdown dropdown-menu-right p-0 border-0 font-size-sm">
+                    <div class="p-3 text-center bg-primary">
+                        <img class="img-avatar img-avatar48 img-avatar-thumb" th:src="@{/admin/extensions/images/user-account.png}" alt="">
+                    </div>
+                    <div class="p-2">
+                        <h5 class="dropdown-header text-uppercase pl-2 text-dark">Tài khoản</h5>
+                        <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="#" onclick="adminLogout(); return false;">
+                            <span>Đăng xuất</span>
+                            <i class="mdi mdi-logout ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+        </button>
+    </div>
+</nav>
+</body>
+</html>

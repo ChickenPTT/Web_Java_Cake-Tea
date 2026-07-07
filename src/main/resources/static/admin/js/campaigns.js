@@ -8,6 +8,10 @@ function toIsoDateTime(localStr) {
     return localStr ? new Date(localStr).toISOString().slice(0, 19) : null;
 }
 
+function formatPrice(price) {
+    return new Intl.NumberFormat('vi-VN').format(price) + ' đ';
+}
+
 async function loadCampaigns() {
     const res = await fetch('/api/admin/campaigns');
     const campaigns = await res.json();
@@ -17,20 +21,18 @@ async function loadCampaigns() {
         return;
     }
     container.innerHTML = campaigns.map(c => {
-        const discount = c.discountPercent ? `${c.discountPercent}%` : (c.discountAmount ? `${c.discountAmount}đ` : '-');
+        const discount = c.discountPercent ? `${c.discountPercent}%` : (c.discountAmount ? formatPrice(c.discountAmount) : '-');
         const period = `${c.startDate ? new Date(c.startDate).toLocaleDateString('vi-VN') : ''} - ${c.endDate ? new Date(c.endDate).toLocaleDateString('vi-VN') : ''}`;
-        return `
-            <div class="list-table-format">
-                <p>${c.name}</p>
-                <p>${discount}</p>
-                <p>${period}</p>
-                <p>${c.active ? 'Hoạt động' : 'Tắt'}</p>
-                <p>
-                    <span onclick="editCampaign(${c.id})" style="cursor:pointer;color:blue;margin-right:10px;">Sửa</span>
-                    <span onclick="deleteCampaign(${c.id})" style="cursor:pointer;color:red;">Xóa</span>
-                </p>
-            </div>
-        `;
+        return `<tr>
+            <td class="font-weight-medium">${c.name}</td>
+            <td>${discount}</td>
+            <td><small>${period}</small></td>
+            <td><span class="badge badge-${c.active ? 'success' : 'secondary'}">${c.active ? 'Hoạt động' : 'Tắt'}</span></td>
+            <td>
+                <button class="btn btn-sm btn-info mr-1" onclick="editCampaign(${c.id})"><i class="fas fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteCampaign(${c.id})"><i class="far fa-trash-can"></i></button>
+            </td>
+        </tr>`;
     }).join('');
 }
 

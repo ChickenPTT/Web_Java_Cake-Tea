@@ -1,6 +1,10 @@
 let allProducts = [];
 let comboItemIndex = 0;
 
+function formatPrice(price) {
+    return new Intl.NumberFormat('vi-VN').format(price) + ' đ';
+}
+
 async function loadProducts() {
     const res = await fetch('/api/admin/products');
     allProducts = await res.json();
@@ -15,9 +19,9 @@ function addComboItemRow(foodId = '', quantity = 1) {
     row.id = `combo-item-${idx}`;
     row.style.cssText = 'display:flex;gap:10px;margin-bottom:8px;align-items:center;';
     row.innerHTML = `
-        <select class="combo-food-select" required>${options}</select>
-        <input type="number" class="combo-qty" value="${quantity}" min="1" style="width:80px;" required>
-        <button type="button" onclick="this.parentElement.remove()" style="color:red;cursor:pointer;border:none;background:none;">Xóa</button>
+        <select class="form-control form-control-sm combo-food-select d-inline-block" style="width:55%;" required>${options}</select>
+        <input type="number" class="form-control form-control-sm combo-qty d-inline-block" style="width:20%;" value="${quantity}" min="1" required>
+        <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.parentElement.remove()"><i class="far fa-trash-can"></i></button>
     `;
     list.appendChild(row);
 }
@@ -39,16 +43,16 @@ async function loadCombos() {
         return;
     }
     container.innerHTML = combos.map(c => `
-        <div class="list-table-format">
-            <p>${c.name}</p>
-            <p>${new Intl.NumberFormat('vi-VN').format(c.comboPrice)} đ</p>
-            <p>${c.items ? c.items.length : 0}</p>
-            <p>${c.active ? 'Hoạt động' : 'Tắt'}</p>
-            <p>
-                <span onclick="editCombo(${c.id})" style="cursor:pointer;color:blue;margin-right:10px;">Sửa</span>
-                <span onclick="deleteCombo(${c.id})" style="cursor:pointer;color:red;">Xóa</span>
-            </p>
-        </div>
+        <tr>
+            <td class="font-weight-medium">${c.name}</td>
+            <td>${formatPrice(c.comboPrice)}</td>
+            <td>${c.items ? c.items.length : 0}</td>
+            <td><span class="badge badge-${c.active ? 'success' : 'secondary'}">${c.active ? 'Hoạt động' : 'Tắt'}</span></td>
+            <td>
+                <button class="btn btn-sm btn-info mr-1" onclick="editCombo(${c.id})"><i class="fas fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteCombo(${c.id})"><i class="far fa-trash-can"></i></button>
+            </td>
+        </tr>
     `).join('');
 }
 

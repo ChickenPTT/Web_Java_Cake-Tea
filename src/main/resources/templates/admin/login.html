@@ -1,68 +1,128 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập Admin - Sugar Petals</title>
-    <link rel="stylesheet" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/admin/extensions/images/brand-logo.png}" rel="shortcut icon" type="image/png"/>
+    <title>Đăng nhập - Sugar Petals Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link th:href="@{/admin/themes/mdi/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/themes/css/vendor.bundle.base.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link th:href="@{/admin/extensions/css/login.css}" rel="stylesheet">
+    <link th:href="@{/admin/extensions/css/admin-custom.css}" rel="stylesheet">
     <style>
-        .login-container { max-width: 400px; margin: 100px auto; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .login-container h2 { text-align: center; color: #c70e1c; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
-        .login-btn { width: 100%; padding: 12px; background: #c70e1c; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
-        .back-link { text-align: center; margin-top: 20px; }
-        .back-link a { color: #c70e1c; text-decoration: none; }
+        body { font-family: 'Montserrat', sans-serif; }
+        .bg-linear-gradient { background: linear-gradient(0, #a50b18 0%, #c70e1c 50%, #e85d6f 100%); }
+        .auth-form-light { background-image: url('/admin/extensions/images/footer_auth.png') !important; background-position: bottom !important; background-repeat: no-repeat !important; }
+        span.span__wellcome_text { color: #FFF; text-shadow: 0 4px 4px rgba(0,0,0,.25); font-size: 42px; font-weight: 800; text-transform: uppercase; margin-top: -40px; display: block; }
+        span.span__wellcome { -webkit-text-stroke: 1px rgba(255,255,255,.5); font-size: 80px; font-weight: 900; color: transparent; display: block; text-transform: uppercase; }
+        .auth_login_info_item p { color: #FFF; font-size: 22px; font-weight: 700; }
+        .auth_login_info_item small { color: #FFF; font-size: 15px; font-weight: 500; line-height: 1.8; }
     </style>
 </head>
 <body>
-    <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
-    <hr>
-    <div class="login-container">
-        <h2>Đăng nhập Admin</h2>
-        <form id="admin-login-form">
-            <div class="form-group">
-                <label for="username">Tên đăng nhập</label>
-                <input type="text" id="username" placeholder="admin" required>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper auth">
+            <div class="row">
+                <div class="col-lg-2 hidden-md d-none d-lg-block"></div>
+                <div class="col-lg-10 bg-linear-gradient col-md-12">
+                    <div class="auth-form-light text-left">
+                        <div class="brand-logo">
+                            <a th:href="@{/}">
+                                <img th:src="@{/admin/extensions/images/brand-logo.png}" alt="Sugar Petals" style="max-height:60px;">
+                            </a>
+                        </div>
+                        <form id="admin-login-form">
+                            <div class="form-floating form-floating-outline mb-4">
+                                <input type="text" class="form-control" id="username" placeholder="Tài khoản" required autocomplete="off">
+                                <label for="username">Tên đăng nhập</label>
+                            </div>
+                            <div class="mb-4">
+                                <div class="form-password-toggle">
+                                    <div class="input-group input-group-merge">
+                                        <div class="form-floating form-floating-outline flex-grow-1">
+                                            <input type="password" class="form-control" id="password" placeholder="Mật khẩu" required>
+                                            <label for="password">Mật khẩu</label>
+                                        </div>
+                                        <span class="input-group-text cursor-pointer show-password" onclick="togglePassword()">
+                                            <span class="fas fa-eye" id="toggle-eye"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-success btn-lg font-weight-medium auth-form-btn w-100 mb-3">
+                                <span>Đăng nhập</span>
+                            </button>
+                            <div id="login-alert" class="alert alert-danger d-none mb-0" role="alert"></div>
+                            <a class="mt-3 text-center d-flex justify-content-center align-items-center gap-2" th:href="@{/}" target="_blank">
+                                <i class="fas fa-arrow-left mr-2"></i> Xem website
+                            </a>
+                        </form>
+                        <div class="text-center mt-4 text-copyright">
+                            <span class="text-copyright-text mt-3 d-block">Copyright © Sugar Petals - 2026</span>
+                        </div>
+                    </div>
+                    <div class="auth_login_info d-none d-md-block">
+                        <div class="auth_login_info_item">
+                            <span class="span__wellcome">Welcome to</span>
+                            <span class="span__wellcome_text mb-4">Sugar Petals<br>Trà &amp; Bánh</span>
+                            <small>
+                                Cửa hàng online giới thiệu và bán sản phẩm Trà &amp; Bánh.<br>
+                                Quản lý sản phẩm, đơn hàng, chiến dịch và khách hàng.<br>
+                                Admin Panel - Spring Boot
+                            </small>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Mật khẩu</label>
-                <input type="password" id="password" placeholder="admin123" required>
-            </div>
-            <button type="submit" class="login-btn">Đăng nhập</button>
-        </form>
-        <div class="back-link">
-            <a th:href="@{/}">← Về trang chủ</a>
         </div>
     </div>
-    <script>
-        document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            try {
-                const res = await fetch('/api/admin/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    localStorage.setItem('adminLoggedIn', 'true');
-                    window.location.href = '/admin';
-                } else {
-                    alert(data.message || 'Đăng nhập thất bại');
-                }
-            } catch (err) {
-                alert('Lỗi kết nối server');
-            }
-        });
-        if (localStorage.getItem('adminLoggedIn') === 'true') {
-            window.location.href = '/admin';
+</div>
+<script th:src="@{/admin/extensions/js/jquery.min.js}"></script>
+<script th:src="@{/admin/themes/js/vendor.bundle.base.js}"></script>
+<script>
+    function togglePassword() {
+        const input = document.getElementById('password');
+        const eye = document.getElementById('toggle-eye');
+        if (input.type === 'password') {
+            input.type = 'text';
+            eye.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            eye.classList.replace('fa-eye-slash', 'fa-eye');
         }
-    </script>
+    }
+    if (localStorage.getItem('adminLoggedIn') === 'true') {
+        window.location.href = '/admin';
+    }
+    document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const alert = document.getElementById('login-alert');
+        alert.classList.add('d-none');
+        try {
+            const res = await fetch('/api/admin/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = '/admin';
+            } else {
+                alert.textContent = data.message || 'Đăng nhập thất bại';
+                alert.classList.remove('d-none');
+            }
+        } catch (err) {
+            alert.textContent = 'Lỗi kết nối server';
+            alert.classList.remove('d-none');
+        }
+    });
+</script>
 </body>
 </html>

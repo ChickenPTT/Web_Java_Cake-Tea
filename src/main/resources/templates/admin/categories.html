@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý danh mục - Admin</title>
-    <link rel="stylesheet" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/list.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Danh mục - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
-    <hr>
-    <div class="app-content">
-        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='categories')}"></div>
-        <div class="main-content">
-            <div class="list add flex-col">
-                <p>Quản lý danh mục sản phẩm</p>
-                <form id="category-form" class="flex-col" style="margin-bottom: 20px; gap: 10px;">
-                    <input type="hidden" id="category-id">
-                    <input type="text" id="category-name" placeholder="Tên danh mục" required>
-                    <input type="text" id="category-image" placeholder="URL ảnh (vd: /user/assets/menu_1.jpg)">
-                    <button type="submit" class="add-btn" style="width: 200px;">Lưu danh mục</button>
-                </form>
-                <div class="list-table">
-                    <div class="list-table-format title">
-                        <b>ID</b>
-                        <b>Tên danh mục</b>
-                        <b>Ảnh</b>
-                        <b>Thao tác</b>
-                    </div>
-                    <div id="category-list-container"></div>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('categories')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper form-page">
+                <div class="page-header">
+                    <h3 class="page-title">Quản lý danh mục</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Danh mục</li>
+                        </ol>
+                    </nav>
                 </div>
+                <section class="content">
+                    <div class="card rounded shadow mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Thêm / Sửa danh mục</h5>
+                            <form id="category-form">
+                                <input type="hidden" id="category-id">
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+                                        <label>Tên danh mục</label>
+                                        <input type="text" id="category-name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-5 form-group">
+                                        <label>URL ảnh</label>
+                                        <input type="text" id="category-image" class="form-control" placeholder="/user/assets/menu_1.jpg">
+                                    </div>
+                                    <div class="col-md-3 form-group d-flex align-items-end">
+                                        <button type="submit" class="btn btn-success"><i class="mdi mdi-content-save"></i> Lưu</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card rounded shadow">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-admin">
+                                    <thead>
+                                    <tr><th>ID</th><th>Tên</th><th>Ảnh</th><th>Thao tác</th></tr>
+                                    </thead>
+                                    <tbody id="category-list-container"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-    <script th:src="@{/admin/js/main.js}"></script>
-    <script th:src="@{/admin/js/categories.js}"></script>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/categories.js}"></script>
 </body>
 </html>

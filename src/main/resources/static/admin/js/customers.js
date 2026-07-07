@@ -4,16 +4,15 @@ async function loadBirthdayToday() {
         const res = await fetch('/api/admin/customers/birthdays-today');
         const users = await res.json();
         if (users.length === 0) {
-            container.innerHTML = '<p style="color:#666;">Hôm nay không có khách hàng nào sinh nhật.</p>';
+            container.innerHTML = '<div class="alert alert-info mb-0"><i class="mdi mdi-information-outline mr-2"></i>Hôm nay không có khách hàng nào sinh nhật.</div>';
             return;
         }
-        container.innerHTML = '<div style="background:#fff3f3;padding:15px;border-radius:8px;">' +
-            users.map(u => `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                    <span>🎂 ${u.name || u.email} - ${u.email}</span>
-                    <button onclick="sendBirthdayEmail(${u.id})" class="add-btn" style="width:auto;padding:8px 16px;">Gửi email</button>
-                </div>
-            `).join('') + '</div>';
+        container.innerHTML = users.map(u => `
+            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                <span><i class="mdi mdi-cake-variant text-danger mr-2"></i><strong>${u.name || u.email}</strong> — ${u.email}</span>
+                <button onclick="sendBirthdayEmail(${u.id})" class="btn btn-sm btn-success">Gửi email</button>
+            </div>
+        `).join('');
     } catch (e) {
         container.innerHTML = '<p style="color:red;">Lỗi tải dữ liệu</p>';
     }
@@ -28,13 +27,13 @@ async function loadAllCustomers() {
         return;
     }
     container.innerHTML = customers.map(u => `
-        <div class="list-table-format">
-            <p>${u.id}</p>
-            <p>${u.name || '-'}</p>
-            <p>${u.email}</p>
-            <p>${u.birthday || '-'}</p>
-            <p><button onclick="sendBirthdayEmail(${u.id})" class="add-btn" style="width:auto;padding:6px 12px;font-size:12px;">Gửi email SN</button></p>
-        </div>
+        <tr>
+            <td>${u.id}</td>
+            <td>${u.name || '-'}</td>
+            <td>${u.email}</td>
+            <td>${u.birthday || '-'}</td>
+            <td><button onclick="sendBirthdayEmail(${u.id})" class="btn btn-sm btn-outline-success"><i class="mdi mdi-email-outline"></i> Gửi SN</button></td>
+        </tr>
     `).join('');
 }
 

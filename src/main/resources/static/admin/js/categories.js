@@ -1,21 +1,21 @@
 async function loadCategories() {
+    const container = document.getElementById('category-list-container');
     const res = await fetch('/api/admin/categories');
     const categories = await res.json();
-    const container = document.getElementById('category-list-container');
     if (categories.length === 0) {
-        container.innerHTML = '<p style="text-align:center;padding:20px;">Chưa có danh mục.</p>';
+        container.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Chưa có danh mục.</td></tr>';
         return;
     }
     container.innerHTML = categories.map(cat => `
-        <div class="list-table-format">
-            <p>${cat.id}</p>
-            <p>${cat.menuName}</p>
-            <img src="${cat.menuImage || '/admin/assets/upload_area.png'}" alt="" style="width:50px;height:50px;object-fit:cover;">
-            <p>
-                <span onclick="editCategory(${cat.id}, '${cat.menuName}', '${cat.menuImage || ''}')" style="cursor:pointer;color:blue;margin-right:10px;">Sửa</span>
-                <span onclick="deleteCategory(${cat.id})" style="cursor:pointer;color:red;">Xóa</span>
-            </p>
-        </div>
+        <tr>
+            <td>${cat.id}</td>
+            <td class="font-weight-medium">${cat.menuName}</td>
+            <td><img src="${cat.menuImage || '/admin/assets/upload_area.png'}" class="thumb" alt=""></td>
+            <td>
+                <button class="btn btn-sm btn-info mr-1" onclick='editCategory(${cat.id}, ${JSON.stringify(cat.menuName)}, ${JSON.stringify(cat.menuImage || "")})'><i class="fas fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteCategory(${cat.id})"><i class="far fa-trash-can"></i></button>
+            </td>
+        </tr>
     `).join('');
 }
 
@@ -23,17 +23,14 @@ function editCategory(id, name, image) {
     document.getElementById('category-id').value = id;
     document.getElementById('category-name').value = name;
     document.getElementById('category-image').value = image;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function deleteCategory(id) {
     if (!confirm('Xóa danh mục này?')) return;
     const res = await fetch(`/api/admin/categories/${id}`, { method: 'DELETE' });
-    if (res.ok) {
-        showNotification('Đã xóa danh mục');
-        loadCategories();
-    } else {
-        showNotification('Xóa thất bại', 'error');
-    }
+    if (res.ok) { showNotification('Đã xóa danh mục'); loadCategories(); }
+    else showNotification('Xóa thất bại', 'error');
 }
 
 document.getElementById('category-form').addEventListener('submit', async function(e) {
@@ -43,10 +40,8 @@ document.getElementById('category-form').addEventListener('submit', async functi
         menuName: document.getElementById('category-name').value,
         menuImage: document.getElementById('category-image').value
     };
-    const url = id ? `/api/admin/categories/${id}` : '/api/admin/categories';
-    const method = id ? 'PUT' : 'POST';
-    const res = await fetch(url, {
-        method,
+    const res = await fetch(id ? `/api/admin/categories/${id}` : '/api/admin/categories', {
+        method: id ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     });
@@ -55,10 +50,7 @@ document.getElementById('category-form').addEventListener('submit', async functi
         this.reset();
         document.getElementById('category-id').value = '';
         loadCategories();
-    } else {
-        const err = await res.json().catch(() => ({}));
-        showNotification(err.message || 'Lỗi lưu danh mục', 'error');
-    }
+    } else showNotification('Lưu thất bại', 'error');
 });
 
 document.addEventListener('DOMContentLoaded', loadCategories);

@@ -1,52 +1,38 @@
-async function fetchAllOrders() {
-    const res = await fetch('/api/admin/orders');
-    return res.json();
-}
-
 function formatPrice(price) {
     return new Intl.NumberFormat('vi-VN').format(price) + ' đ';
 }
 
 function parseItems(itemsStr) {
-    try {
-        return JSON.parse(itemsStr);
-    } catch {
-        return [{ name: itemsStr || 'N/A', quantity: 1 }];
-    }
+    try { return JSON.parse(itemsStr); } catch { return [{ name: itemsStr || 'N/A', quantity: 1 }]; }
 }
 
 async function renderOrders() {
     const container = document.getElementById('order-list-container');
     try {
-        const orders = await fetchAllOrders();
+        const res = await fetch('/api/admin/orders');
+        const orders = await res.json();
         if (orders.length === 0) {
-            container.innerHTML = '<p style="text-align:center;padding:40px;color:#666;">Chưa có đơn hàng.</p>';
+            container.innerHTML = '<p class="text-center text-muted py-5 mb-0">Chưa có đơn hàng.</p>';
             return;
         }
-        container.innerHTML = orders.map(order => {
-            const items = parseItems(order.items);
-            const itemsText = items.map(i => `${i.name || i.title || 'SP'} x ${i.quantity || 1}`).join(', ');
-            const statuses = ['Pending', 'Processing', 'Preparing', 'Out for Delivery', 'Delivered', 'Cancelled'];
-            const options = statuses.map(s =>
-                `<option value="${s}" ${order.status === s ? 'selected' : ''}>${s}</option>`
-            ).join('');
-
-            return `
-                <div class="order-item">
-                    <img src="/admin/assets/parcel_icon.png" alt="">
-                    <div>
-                        <p class="order-item-food">${itemsText}</p>
-                        <p class="order-item-name">${order.userName || 'Khách'}</p>
-                        <p class="order-item-phone">${order.userEmail || ''}</p>
-                        <p style="font-size:12px;color:#888;">${order.createdAt ? new Date(order.createdAt).toLocaleString('vi-VN') : ''}</p>
-                    </div>
-                    <p>${formatPrice(order.amount)}</p>
-                    <select onchange="updateStatus(${order.id}, this.value)">${options}</select>
-                </div>
-            `;
-        }).join('');
+        container.innerHTML = `<div class="table-responsive"><table class="table table-hover">
+            <thead><tr><th>Mã</th><th>Khách hàng</th><th>Sản phẩm</th><th>Tổng tiền</th><th>Ngày</th><th>Trạng thái</th></tr></thead>
+            <tbody>${orders.map(order => {
+                const items = parseItems(order.items);
+                const itemsText = items.map(i => `${i.name || i.title || 'SP'} x${i.quantity || 1}`).join(', ');
+                const statuses = ['Pending', 'Processing', 'Preparing', 'Out for Delivery', 'Delivered', 'Cancelled'];
+                const options = statuses.map(s => `<option value="${s}" ${order.status === s ? 'selected' : ''}>${s}</option>`).join('');
+                return `<tr>
+                    <td>#${order.id}</td>
+                    <td><strong>${order.userName || 'Khách'}</strong><br><small class="text-muted">${order.userEmail || ''}</small></td>
+                    <td style="max-width:220px;">${itemsText}</td>
+                    <td class="font-weight-bold">${formatPrice(order.amount)}</td>
+                    <td><small>${order.createdAt ? new Date(order.createdAt).toLocaleString('vi-VN') : ''}</small></td>
+                    <td><select class="form-control form-control-sm" onchange="updateStatus(${order.id}, this.value)">${options}</select></td>
+                </tr>`;
+            }).join('')}</tbody></table></div>`;
     } catch (e) {
-        container.innerHTML = '<p style="color:red;">Lỗi tải đơn hàng</p>';
+        container.innerHTML = '<p class="text-danger text-center py-4">Lỗi tải đơn hàng</p>';
     }
 }
 
@@ -56,11 +42,8 @@ async function updateStatus(orderId, newStatus) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
     });
-    if (res.ok) {
-        showNotification('Cập nhật trạng thái thành công!');
-    } else {
-        showNotification('Cập nhật thất bại', 'error');
-    }
+    if (res.ok) showNotification('Cập nhật trạng thái thành công!');
+    else showNotification('Cập nhật thất bại', 'error');
 }
 
 document.addEventListener('DOMContentLoaded', renderOrders);

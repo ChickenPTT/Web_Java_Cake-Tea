@@ -1,5 +1,3 @@
-const API_URL = '';
-
 function adminLogout() {
     localStorage.removeItem('adminLoggedIn');
     window.location.href = '/admin/login';
@@ -7,30 +5,23 @@ function adminLogout() {
 window.adminLogout = adminLogout;
 
 function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; padding: 15px 20px;
-        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
-        color: white; border-radius: 5px; z-index: 10000;
-    `;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 3000);
+    const el = document.createElement('div');
+    el.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+    el.style.cssText = 'top:20px;right:20px;z-index:99999;min-width:280px;box-shadow:0 4px 12px rgba(0,0,0,.15);';
+    el.innerHTML = `<i class="mdi mdi-${type === 'success' ? 'check-circle' : 'alert-circle'} mr-2"></i>${message}`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
 }
 
 async function updateDashboardStats() {
     try {
         const res = await fetch('/api/admin/dashboard/stats');
         const data = await res.json();
-        const totalItems = document.getElementById('total-items');
-        const totalOrders = document.getElementById('total-orders');
-        const pendingOrders = document.getElementById('pending-orders');
-        if (totalItems) totalItems.textContent = data.totalItems ?? 0;
-        if (totalOrders) totalOrders.textContent = data.totalOrders ?? 0;
-        if (pendingOrders) pendingOrders.textContent = data.pendingOrders ?? 0;
-    } catch (e) {
-        console.error('Lỗi tải dashboard:', e);
-    }
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? 0; };
+        set('total-items', data.totalItems);
+        set('total-orders', data.totalOrders);
+        set('pending-orders', data.pendingOrders);
+    } catch (e) { console.error(e); }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -39,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/admin/login';
         return;
     }
-    if (path === '/admin' || path === '/admin/' || path.endsWith('/admin/index')) {
+    if (path === '/admin' || path === '/admin/') {
         updateDashboardStats();
     }
 });

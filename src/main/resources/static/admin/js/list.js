@@ -1,43 +1,37 @@
-async function fetchFoodList() {
-    const res = await fetch('/api/admin/products');
-    return res.json();
+async function renderFoodList() {
+    const container = document.getElementById('food-list-container');
+    try {
+        const res = await fetch('/api/admin/products');
+        const foodList = await res.json();
+        if (foodList.length === 0) {
+            container.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Chưa có sản phẩm.</td></tr>';
+            return;
+        }
+        container.innerHTML = foodList.map(item => `
+            <tr>
+                <td><img src="${item.image}" class="thumb" alt="" onerror="this.src='/admin/assets/upload_area.png'"></td>
+                <td class="font-weight-medium">${item.name}</td>
+                <td><span class="badge badge-info">${item.category}</span></td>
+                <td>${formatPrice(item.price)}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="removeFood(${item.id})"><i class="far fa-trash-can"></i></button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (e) {
+        container.innerHTML = '<tr><td colspan="5" class="text-danger text-center">Lỗi tải dữ liệu</td></tr>';
+    }
 }
 
 function formatPrice(price) {
     return new Intl.NumberFormat('vi-VN').format(price) + ' đ';
 }
 
-async function renderFoodList() {
-    const container = document.getElementById('food-list-container');
-    try {
-        const foodList = await fetchFoodList();
-        if (foodList.length === 0) {
-            container.innerHTML = '<p style="text-align:center;padding:20px;color:#666;">Chưa có sản phẩm.</p>';
-            return;
-        }
-        container.innerHTML = foodList.map(item => `
-            <div class="list-table-format">
-                <img src="${item.image}" alt="${item.name}" onerror="this.src='/admin/assets/upload_area.png'">
-                <p>${item.name}</p>
-                <p>${item.category}</p>
-                <p>${formatPrice(item.price)}</p>
-                <p onclick="removeFood(${item.id})" class="cursor" style="cursor:pointer;color:red;">Xóa</p>
-            </div>
-        `).join('');
-    } catch (e) {
-        container.innerHTML = '<p style="color:red;">Lỗi tải danh sách sản phẩm</p>';
-    }
-}
-
 async function removeFood(id) {
-    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+    if (!confirm('Xóa sản phẩm này?')) return;
     const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
-    if (res.ok) {
-        showNotification('Đã xóa sản phẩm');
-        renderFoodList();
-    } else {
-        showNotification('Xóa thất bại', 'error');
-    }
+    if (res.ok) { showNotification('Đã xóa sản phẩm'); renderFoodList(); }
+    else showNotification('Xóa thất bại', 'error');
 }
 
 document.addEventListener('DOMContentLoaded', renderFoodList);

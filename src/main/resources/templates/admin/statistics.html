@@ -1,52 +1,85 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thống kê doanh số - Admin</title>
-    <link rel="stylesheet" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/dashboard.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thống kê - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
-    <hr>
-    <div class="app-content">
-        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='statistics')}"></div>
-        <div class="main-content">
-            <div class="welcome-section">
-                <h2>Thống kê doanh số</h2>
-                <form id="stats-form" style="display: flex; gap: 15px; align-items: end; margin-bottom: 30px; flex-wrap: wrap;">
-                    <div>
-                        <label>Từ ngày</label><br>
-                        <input type="date" id="stats-from" required>
-                    </div>
-                    <div>
-                        <label>Đến ngày</label><br>
-                        <input type="date" id="stats-to" required>
-                    </div>
-                    <button type="submit" class="add-btn" style="width: 150px; height: 40px;">Xem thống kê</button>
-                </form>
-                <div class="dashboard-cards" id="stats-summary">
-                    <div class="card"><h3>Tổng doanh thu</h3><p id="stat-revenue">0</p></div>
-                    <div class="card"><h3>Tổng đơn</h3><p id="stat-orders">0</p></div>
-                    <div class="card"><h3>Đã giao</h3><p id="stat-delivered">0</p></div>
-                    <div class="card"><h3>Đã hủy</h3><p id="stat-cancelled">0</p></div>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('statistics')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title">Thống kê doanh số</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Thống kê</li>
+                        </ol>
+                    </nav>
                 </div>
-                <div class="list-table" style="margin-top: 30px;">
-                    <div class="list-table-format title">
-                        <b>Ngày</b>
-                        <b>Doanh thu</b>
-                        <b>Số đơn</b>
+                <section class="content">
+                    <div class="card rounded shadow mb-3">
+                        <div class="card-body">
+                            <form id="stats-form" class="row align-items-end">
+                                <div class="col-md-3 form-group mb-0"><label>Từ ngày</label><input type="date" id="stats-from" class="form-control" required></div>
+                                <div class="col-md-3 form-group mb-0"><label>Đến ngày</label><input type="date" id="stats-to" class="form-control" required></div>
+                                <div class="col-md-3 form-group mb-0"><button type="submit" class="btn btn-success">Xem thống kê</button></div>
+                            </form>
+                        </div>
                     </div>
-                    <div id="daily-stats-container"></div>
-                </div>
+                    <div class="row mb-3">
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="d-flex bg-white p-3 align-items-center rounded shadow h-100">
+                                <div class="dashboard-progress item-parent position-relative mr-3" style="width:56px;height:56px;">
+                                    <i class="mdi mdi-cash-multiple icon-md absolute-center text-gradient-right"></i>
+                                </div>
+                                <div><h6 class="mb-1 text-muted">Tổng doanh thu</h6><h4 class="mb-0 font-weight-bold" id="stat-revenue">0</h4></div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="d-flex bg-white p-3 align-items-center rounded shadow h-100">
+                                <div class="dashboard-progress item-parent position-relative mr-3" style="width:56px;height:56px;">
+                                    <i class="mdi mdi-cart icon-md absolute-center text-gradient-right"></i>
+                                </div>
+                                <div><h6 class="mb-1 text-muted">Tổng đơn</h6><h4 class="mb-0 font-weight-bold" id="stat-orders">0</h4></div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="d-flex bg-white p-3 align-items-center rounded shadow h-100">
+                                <div class="dashboard-progress item-parent position-relative mr-3" style="width:56px;height:56px;">
+                                    <i class="mdi mdi-check-circle icon-md absolute-center text-gradient-right"></i>
+                                </div>
+                                <div><h6 class="mb-1 text-muted">Đã giao</h6><h4 class="mb-0 font-weight-bold" id="stat-delivered">0</h4></div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="d-flex bg-white p-3 align-items-center rounded shadow h-100">
+                                <div class="dashboard-progress item-parent position-relative mr-3" style="width:56px;height:56px;">
+                                    <i class="mdi mdi-close-circle icon-md absolute-center text-gradient-right"></i>
+                                </div>
+                                <div><h6 class="mb-1 text-muted">Đã hủy</h6><h4 class="mb-0 font-weight-bold" id="stat-cancelled">0</h4></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded shadow">
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover">
+                                <thead><tr><th>Ngày</th><th>Doanh thu</th><th>Số đơn</th></tr></thead>
+                                <tbody id="daily-stats-container"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-    <script th:src="@{/admin/js/main.js}"></script>
-    <script th:src="@{/admin/js/statistics.js}"></script>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/statistics.js}"></script>
 </body>
 </html>

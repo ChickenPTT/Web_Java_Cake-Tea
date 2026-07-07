@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý đơn hàng - Admin</title>
-    <link rel="stylesheet" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/orders.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đơn hàng - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
-    <hr>
-    <div class="app-content">
-        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='orders')}"></div>
-        <div class="main-content">
-            <div class="orders add">
-                <h3>Quản lý đơn hàng</h3>
-                <div class="order-list" id="order-list-container"></div>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('orders')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title">Quản lý đơn hàng</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Đơn hàng</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="content">
+                    <div class="card rounded shadow">
+                        <div class="card-body" id="order-list-container"></div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-    <script th:src="@{/admin/js/main.js}"></script>
-    <script th:src="@{/admin/js/orders.js}"></script>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/orders.js}"></script>
 </body>
 </html>
