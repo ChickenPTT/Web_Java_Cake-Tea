@@ -218,8 +218,10 @@ function loadAllMenus() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    loadAllMenus(); // Load menus from backend on page load
-    loadAllFood(); // Load food from backend on page load
+    // loadAllMenus(); // Load menus from backend on page load
+    // loadAllFood(); // Load food from backend on page load
+    renderMenuCategories(); // Use local data from data.js
+    renderFoodItems(); // Use local data from data.js
     updateAuthUI();
 });
 
@@ -233,13 +235,5 @@ window.refreshFoodItems = refreshFoodItems;
 window.handleSearch = handleSearch;
 window.performSearch = performSearch;
 
-// Cart functions to be implemented with Java backend
-window.addToCart = function(itemId) {
-    console.log('addToCart called for item:', itemId);
-    // TODO: Implement with Java backend API
-};
-
-window.removeFromCart = function(itemId) {
-    console.log('removeFromCart called for item:', itemId);
-    // TODO: Implement with Java backend API
-};
+// Cart functions - loaded from cart.js
+// These functions are implemented in cart.js

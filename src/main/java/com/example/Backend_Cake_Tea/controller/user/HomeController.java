@@ -30,11 +30,6 @@ public class HomeController {
         return "User/index";
     }
 
-    @GetMapping("/cart.html")
-    public String cart() {
-        return "User/cart";
-    }
-
     @GetMapping("/order.html")
     public String order() {
         return "User/order";

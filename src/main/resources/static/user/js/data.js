@@ -17,19 +17,19 @@ const menulist = [
         menu_image: "/user/assets/menu_4.jpg"
     },
     {
-        menu_name: "Donut",
+        menu_name: "Rooibos",
         menu_image: "/user/assets/menu_5.jpg"
     },
     {
-        menu_name: "Cookies",
+        menu_name: "Infusions",
         menu_image: "/user/assets/menu_6.jpg"
     },
     {
-        menu_name: "Mousse",
+        menu_name: "Teas",
         menu_image: "/user/assets/menu_7.jpg"
     },
     {
-        menu_name: "Sweet Buns",
+        menu_name: "Matcha Tea",
         menu_image: "/user/assets/menu_8.jpg"
     }
 ];
