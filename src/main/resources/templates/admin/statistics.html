@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê doanh số - Admin</title>
+    <link rel="stylesheet" th:href="@{/admin/css/style.css}">
+    <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/admin/css/dashboard.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
+    <hr>
+    <div class="app-content">
+        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='statistics')}"></div>
+        <div class="main-content">
+            <div class="welcome-section">
+                <h2>Thống kê doanh số</h2>
+                <form id="stats-form" style="display: flex; gap: 15px; align-items: end; margin-bottom: 30px; flex-wrap: wrap;">
+                    <div>
+                        <label>Từ ngày</label><br>
+                        <input type="date" id="stats-from" required>
+                    </div>
+                    <div>
+                        <label>Đến ngày</label><br>
+                        <input type="date" id="stats-to" required>
+                    </div>
+                    <button type="submit" class="add-btn" style="width: 150px; height: 40px;">Xem thống kê</button>
+                </form>
+                <div class="dashboard-cards" id="stats-summary">
+                    <div class="card"><h3>Tổng doanh thu</h3><p id="stat-revenue">0</p></div>
+                    <div class="card"><h3>Tổng đơn</h3><p id="stat-orders">0</p></div>
+                    <div class="card"><h3>Đã giao</h3><p id="stat-delivered">0</p></div>
+                    <div class="card"><h3>Đã hủy</h3><p id="stat-cancelled">0</p></div>
+                </div>
+                <div class="list-table" style="margin-top: 30px;">
+                    <div class="list-table-format title">
+                        <b>Ngày</b>
+                        <b>Doanh thu</b>
+                        <b>Số đơn</b>
+                    </div>
+                    <div id="daily-stats-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/admin/js/main.js}"></script>
+    <script th:src="@{/admin/js/statistics.js}"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sản phẩm - Admin</title>
+    <title>Chăm sóc khách hàng - Admin</title>
     <link rel="stylesheet" th:href="@{/admin/css/style.css}">
     <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
@@ -14,24 +14,26 @@
     <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
     <hr>
     <div class="app-content">
-        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='products')}"></div>
+        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='customers')}"></div>
         <div class="main-content">
             <div class="list add flex-col">
-                <p>Danh sách sản phẩm</p>
+                <p>Chăm sóc khách hàng - Sinh nhật hôm nay</p>
+                <div id="birthday-today-container" style="margin-bottom: 30px;"></div>
+                <p>Tất cả khách hàng</p>
                 <div class="list-table">
                     <div class="list-table-format title">
-                        <b>Ảnh</b>
+                        <b>ID</b>
                         <b>Tên</b>
-                        <b>Danh mục</b>
-                        <b>Giá</b>
+                        <b>Email</b>
+                        <b>Sinh nhật</b>
                         <b>Thao tác</b>
                     </div>
-                    <div id="food-list-container"></div>
+                    <div id="customer-list-container"></div>
                 </div>
             </div>
         </div>
     </div>
     <script th:src="@{/admin/js/main.js}"></script>
-    <script th:src="@{/admin/js/list.js}"></script>
+    <script th:src="@{/admin/js/customers.js}"></script>
 </body>
 </html>

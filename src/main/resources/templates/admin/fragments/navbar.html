@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navbar" class="navbar">
+    <div class="navbar-left">
+        <img class="logo" th:src="@{/admin/assets/logo.png}" alt="">
+        <div class="site-info">
+            <h1 class="site-name">Sugar Petals</h1>
+            <p class="site-slogan">Admin Panel</p>
+        </div>
+    </div>
+    <div class="navbar-right">
+        <img class="profile" th:src="@{/admin/assets/profile_image.png}" alt="">
+        <button onclick="adminLogout()" class="logout-btn">Đăng xuất</button>
+    </div>
+</div>
+</body>
+</html>

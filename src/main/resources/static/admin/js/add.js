@@ -1,61 +1,70 @@
-// Image upload preview
 const imageInput = document.getElementById('image');
 const imagePreview = document.getElementById('image-preview');
+let uploadedImageUrl = '';
 
 imageInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            imagePreview.src = e.target.result;
-        }
+        reader.onload = function(ev) { imagePreview.src = ev.target.result; };
         reader.readAsDataURL(file);
     }
 });
 
-// Form submission
+async function loadCategories() {
+    const select = document.getElementById('category-select');
+    try {
+        const res = await fetch('/api/admin/categories');
+        const categories = await res.json();
+        select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
+        categories.forEach(cat => {
+            select.innerHTML += `<option value="${cat.menuName}">${cat.menuName}</option>`;
+        });
+    } catch (e) {
+        console.error('Lỗi tải danh mục:', e);
+    }
+}
+
 document.getElementById('add-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-
     const formData = new FormData(this);
-    
-    // In real implementation, send to Java backend
-    // const response = await fetch(`${API_URL}/api/food/add`, {
-    //     method: 'POST',
-    //     body: formData
-    // });
+    const imageFile = imageInput.files[0];
 
-    // For demo purposes, simulate successful addition
-    const name = formData.get('name');
-    const description = formData.get('description');
-    const price = formData.get('price');
-    const category = formData.get('category');
-    const imageFile = formData.get('image');
+    if (imageFile) {
+        const uploadData = new FormData();
+        uploadData.append('image', imageFile);
+        const uploadRes = await fetch('/api/admin/products/upload', { method: 'POST', body: uploadData });
+        if (uploadRes.ok) {
+            const uploadResult = await uploadRes.json();
+            uploadedImageUrl = uploadResult.imageUrl;
+        }
+    }
 
-    // Create food item object
-    const foodItem = {
-        _id: Date.now().toString(),
-        name: name,
-        description: description,
-        price: parseFloat(price),
-        category: category,
-        image: imageFile.name || 'default.jpg'
+    const product = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        price: parseFloat(formData.get('price')),
+        category: formData.get('category'),
+        image: uploadedImageUrl || '/admin/assets/upload_area.png'
     };
 
-    // Save to localStorage for demo
-    const foodList = JSON.parse(localStorage.getItem('foodList') || '[]');
-    foodList.push(foodItem);
-    localStorage.setItem('foodList', JSON.stringify(foodList));
-
-    // Update stats
-    localStorage.setItem('totalItems', foodList.length.toString());
-
-    // Reset form
-    this.reset();
-    imagePreview.src = '/admin/assets/upload_area.png';
-
-    // Show success message
-    showNotification('Food item added successfully!');
-
-    console.log('Food item added:', foodItem);
+    try {
+        const res = await fetch('/api/admin/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product)
+        });
+        if (res.ok) {
+            showNotification('Thêm sản phẩm thành công!');
+            this.reset();
+            imagePreview.src = '/admin/assets/upload_area.png';
+            uploadedImageUrl = '';
+        } else {
+            showNotification('Thêm sản phẩm thất bại', 'error');
+        }
+    } catch (err) {
+        showNotification('Lỗi kết nối server', 'error');
+    }
 });
+
+document.addEventListener('DOMContentLoaded', loadCategories);

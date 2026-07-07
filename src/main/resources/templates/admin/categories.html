@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sản phẩm - Admin</title>
+    <title>Quản lý danh mục - Admin</title>
     <link rel="stylesheet" th:href="@{/admin/css/style.css}">
     <link rel="stylesheet" th:href="@{/admin/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/admin/css/sidebar.css}">
@@ -14,24 +14,29 @@
     <div th:replace="~{admin/fragments/navbar :: navbar}"></div>
     <hr>
     <div class="app-content">
-        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='products')}"></div>
+        <div th:replace="~{admin/fragments/sidebar :: sidebar(active='categories')}"></div>
         <div class="main-content">
             <div class="list add flex-col">
-                <p>Danh sách sản phẩm</p>
+                <p>Quản lý danh mục sản phẩm</p>
+                <form id="category-form" class="flex-col" style="margin-bottom: 20px; gap: 10px;">
+                    <input type="hidden" id="category-id">
+                    <input type="text" id="category-name" placeholder="Tên danh mục" required>
+                    <input type="text" id="category-image" placeholder="URL ảnh (vd: /user/assets/menu_1.jpg)">
+                    <button type="submit" class="add-btn" style="width: 200px;">Lưu danh mục</button>
+                </form>
                 <div class="list-table">
                     <div class="list-table-format title">
+                        <b>ID</b>
+                        <b>Tên danh mục</b>
                         <b>Ảnh</b>
-                        <b>Tên</b>
-                        <b>Danh mục</b>
-                        <b>Giá</b>
                         <b>Thao tác</b>
                     </div>
-                    <div id="food-list-container"></div>
+                    <div id="category-list-container"></div>
                 </div>
             </div>
         </div>
     </div>
     <script th:src="@{/admin/js/main.js}"></script>
-    <script th:src="@{/admin/js/list.js}"></script>
+    <script th:src="@{/admin/js/categories.js}"></script>
 </body>
 </html>

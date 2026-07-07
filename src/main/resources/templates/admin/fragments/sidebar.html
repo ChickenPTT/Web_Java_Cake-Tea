@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="sidebar(active)" class="sidebar">
+    <div class="sidebar-options">
+        <a th:href="@{/admin}" class="sidebar-option" th:classappend="${active == 'dashboard'} ? 'active'">
+            <img th:src="@{/admin/assets/add_icon.png}" alt="">
+            <p>Dashboard</p>
+        </a>
+        <a th:href="@{/admin/categories}" class="sidebar-option" th:classappend="${active == 'categories'} ? 'active'">
+            <img th:src="@{/admin/assets/order_icon.png}" alt="">
+            <p>Danh mục</p>
+        </a>
+        <a th:href="@{/admin/products/add}" class="sidebar-option" th:classappend="${active == 'add'} ? 'active'">
+            <img th:src="@{/admin/assets/add_icon.png}" alt="">
+            <p>Thêm SP</p>
+        </a>
+        <a th:href="@{/admin/products}" class="sidebar-option" th:classappend="${active == 'products'} ? 'active'">
+            <img th:src="@{/admin/assets/order_icon.png}" alt="">
+            <p>Sản phẩm</p>
+        </a>
+        <a th:href="@{/admin/orders}" class="sidebar-option" th:classappend="${active == 'orders'} ? 'active'">
+            <img th:src="@{/admin/assets/order_icon.png}" alt="">
+            <p>Đơn hàng</p>
+        </a>
+        <a th:href="@{/admin/campaigns}" class="sidebar-option" th:classappend="${active == 'campaigns'} ? 'active'">
+            <img th:src="@{/admin/assets/order_icon.png}" alt="">
+            <p>Chiến dịch</p>
+        </a>
+        <a th:href="@{/admin/combos}" class="sidebar-option" th:classappend="${active == 'combos'} ? 'active'">
+            <img th:src="@{/admin/assets/order_icon.png}" alt="">
+            <p>Combo</p>
+        </a>
+        <a th:href="@{/admin/customers}" class="sidebar-option" th:classappend="${active == 'customers'} ? 'active'">
+            <img th:src="@{/admin/assets/profile_image.png}" alt="">
+            <p>Khách hàng</p>
+        </a>
+        <a th:href="@{/admin/statistics}" class="sidebar-option" th:classappend="${active == 'statistics'} ? 'active'">
+            <img th:src="@{/admin/assets/order_icon.png}" alt="">
+            <p>Thống kê</p>
+        </a>
+    </div>
+</div>
+</body>
+</html>
