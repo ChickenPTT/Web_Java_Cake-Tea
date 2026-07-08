@@ -2,11 +2,14 @@ package com.example.Backend_Cake_Tea.controller.user;
 
 import com.example.Backend_Cake_Tea.model.Food;
 import com.example.Backend_Cake_Tea.model.Menu;
+import com.example.Backend_Cake_Tea.model.User;
 import com.example.Backend_Cake_Tea.service.FoodService;
 import com.example.Backend_Cake_Tea.service.MenuService;
+import com.example.Backend_Cake_Tea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,9 @@ public class HomeController {
     
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String home(){
@@ -38,6 +44,51 @@ public class HomeController {
     @GetMapping("/myorders.html")
     public String myOrders() {
         return "User/myorders";
+    }
+
+
+
+    // Handle login
+    @PostMapping("/login")
+    public String login(@RequestParam("email") String email, 
+                       @RequestParam("password") String password,
+                       Model model) {
+        User user = userService.loginUser(email, password);
+        if (user != null) {
+            // Redirect to home page after successful login
+            return "redirect:/";
+        } else {
+            model.addAttribute("error", "Invalid email or password");
+            return "User/login";
+        }
+    }
+
+    // Logout
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/";
+    }
+
+
+    // Handle registration
+    @PostMapping("/register")
+    public String register(@RequestParam("email") String email,
+                         @RequestParam("password") String password,
+                         @RequestParam("name") String name,
+                         Model model) {
+        try {
+            User user = User.builder()
+                    .email(email)
+                    .password(password)
+                    .name(name)
+                    .build();
+            userService.registerUser(user);
+            // After successful registration, redirect to login
+            return "redirect:/login";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "User/register";
+        }
     }
 
     // API endpoints for food
@@ -70,4 +121,30 @@ public class HomeController {
         return ResponseEntity.ok(menus);
     }
 
+    // Kiểm tra đã login ở các page khác
+    @GetMapping("/api/current-user")
+    @ResponseBody
+    public ResponseEntity<?> getCurrentUser() {
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !(auth.getPrincipal() instanceof String && auth.getPrincipal().equals("anonymousUser"))) {
+            Object principal = auth.getPrincipal();
+            if (principal instanceof org.springframework.security.core.userdetails.UserDetails) {
+                String email = ((org.springframework.security.core.userdetails.UserDetails) principal).getUsername();
+                var user = userService.findByEmail(email);
+                if (user.isPresent()) {
+                    java.util.Map<String, Object> response = new java.util.HashMap<>();
+                    response.put("authenticated", true);
+                    response.put("id", user.get().getId());
+                    response.put("email", user.get().getEmail());
+                    response.put("name", user.get().getName());
+                    return ResponseEntity.ok(response);
+                }
+            }
+        }
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        response.put("authenticated", false);
+        return ResponseEntity.ok(response);
+    }
+
 }
+

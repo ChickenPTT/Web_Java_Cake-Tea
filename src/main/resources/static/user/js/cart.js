@@ -27,7 +27,7 @@ function renderCartItems() {
     if (!container) return;
 
     if (cartData.cartItems.length === 0) {
-        container.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Your cart is empty</p>';
+        container.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Giỏ hàng của bạn đang trống</p>';
         return;
     }
 
@@ -42,7 +42,7 @@ function renderCartItems() {
                 <button onclick="updateQuantity(${item.productId}, ${item.quantity + 1})" style="width: 20px; height: 20px; border: 1px solid #e2e2e2; background: white; cursor: pointer;">+</button>
             </div>
             <p>$${item.total}</p>
-            <img class="cross" onclick="removeFromCart(${item.productId})" src="/user/assets/cross_icon.png" alt="Remove" style="width: 15px; cursor: pointer;">
+            <p class="cross" onclick="removeFromCart(${item.productId})" alt="Remove"  style="width: 15px; cursor: pointer;">x</p>
         </div>
     `).join('');
 }
@@ -80,7 +80,7 @@ function addToCart(id) {
         cartData = data;
         updateCartDot();
         // Show success message
-        alert('Item added to cart!');
+        alert('Đã thêm sản phẩm vào giỏ hàng!');
     })
     .catch(error => {
         console.error('Error adding to cart:', error);

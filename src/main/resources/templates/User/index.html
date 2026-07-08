@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sugar Petals - Delicate bites, blooming delights</title>
+    <title>Sugar Petals - Vị ngọt tinh tế, niềm vui nở rộ</title>
     <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
     <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
     <link rel="stylesheet" href="/user/css/header.css" th:href="@{/user/css/header.css}">
@@ -18,22 +18,22 @@
 <body>
     <!-- Login Popup -->
     <div id="login-popup" class="login-popup" style="display: none;">
-        <form class="login-popup-container" id="login-form">
+        <form class="login-popup-container" id="login-form" method="post">
             <div class="login-popup-title">
-                <h2 id="login-title">Login</h2>
+                <h2 id="login-title">Đăng nhập</h2>
                 <img src="/user/assets/cross_icon.png" th:src="@{/user/assets/cross_icon.png}" alt="" onclick="closeLoginPopup()">
             </div>
             <div class="login-popup-inputs">
-                <input type="text" id="name-input" placeholder="Enter your name" style="display: none;">
-                <input type="email" id="email-input" placeholder="Enter your email" required>
-                <input type="password" id="password-input" placeholder="Enter password" required>
+                <input type="text" id="name-input" name="name" placeholder="Nhập tên của bạn" style="display: none;">
+                <input type="email" id="email-input" name="email" placeholder="Nhập email của bạn" required>
+                <input type="password" id="password-input" name="password" placeholder="Nhập mật khẩu" required>
             </div>
-            <button type="submit" id="login-button">Login</button>
+            <button type="submit" id="login-button">Đăng nhập</button>
             <div class="login-popup-condition">
-                <input type="checkbox" required>
-                <p>By continuing, you agree to our Terms of Service and Privacy Policy.</p>
+                <input type="checkbox" id="agree-checkbox" required>
+                <p>Bằng cách tiếp tục, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi.</p>
             </div>
-            <p id="login-toggle">Create a new account? <span onclick="toggleLoginMode()">Click here!</span></p>
+            <p id="login-toggle">Tạo tài khoản mới? <span onclick="toggleLoginMode()">Bấm vào đây!</span></p>
         </form>
     </div>
 
@@ -48,29 +48,29 @@
         </div>
         
         <ul class="navbar-menu">
-            <a href="index.html" class="active">Home</a>
-            <a href="#explore-menu">Menu</a>
-            <a href="#app-download">Mobile-app</a>
-            <a href="#footer">Contact us</a>
+            <a href="index.html" class="active">Trang chủ</a>
+            <a href="#explore-menu">Thực đơn</a>
+            <a href="#app-download">Ứng dụng</a>
+            <a href="#footer">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
             <div class="navbar-search">
-                <input type="text" id="search-input" placeholder="Search food..." onkeyup="handleSearch(event)">
-                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Search" onclick="performSearch()">
+                <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="handleSearch(event)">
+                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Tìm kiếm" onclick="performSearch()">
             </div>
             
             <div class="navbar-search-icon">
                 <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
             </div>
-            <button id="signin-btn" onclick="showLoginPopup()">Sign in</button>
+            <button id="signin-btn" onclick="showLoginPopup()">Đăng nhập</button>
             <div class="navbar-profile" id="navbar-profile" style="display: none;">
                 <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
                 <ul class="nav-profile-dropdown">
-                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Orders</p></li>
+                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Đơn hàng</p></li>
                     <hr>
-                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Logout</p></li>
+                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Đăng xuất</p></li>
                 </ul>
             </div>
         </div>
@@ -80,32 +80,37 @@
         <!-- Header -->
         <div class="header">
             <div class="header-contents">
-                <h2>A Bloom of Sweet Elegance</h2>
+                <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
                 <p>
-                    At Sugar Petals, we transform simple ingredients into delicate works of edible art. 
-                    Each creation blends flavor and beauty in perfect harmony, crafted to delight your senses. 
-                    Let every bite bring a touch of sweetness and a blooming moment of joy to your day.
+                    Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
+                    Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
+                    Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
                 </p>
-                <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">View Menu</button>
+                <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
             </div>
         </div>
 
         <!-- Explore Menu -->
         <div class="explore-menu" id="explore-menu">
-            <h1>Explore our menu</h1>
+            <h1>Khám phá thực đơn của chúng tôi</h1>
             <p class="explore-menu-text">
-                Explore our diverse menu of delicious baked goods and sweet treats. 
-                From classic pastries to delightful desserts, pick your favorite and enjoy the perfect flavor today!
+                Khám phá thực đơn đa dạng của chúng tôi với các loại bánh ngọt và đồ ăn vặt ngon miệng.
+                Từ bánh pastry cổ điển đến dessert hấp dẫn, hãy chọn món yêu thích của bạn và thưởng thức hương vị hoàn hảo ngay hôm nay!
             </p>
             <div class="explore-menu-list" id="menu-categories">
                 <!-- Categories will be populated by JavaScript -->
+            </div>
+            <!-- Feature 6: Hot/New Products Filter -->
+            <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                <button onclick="loadHotProducts()" style="padding: 10px 20px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Sản Phẩm Mới (Hot)</button>
+                <button onclick="loadBestSellersProducts()" style="padding: 10px 20px; background: #ffd700; color: #333; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Bán Chạy Nhất</button>
             </div>
             <hr>
         </div>
 
         <!-- Food Display -->
         <div class="food-display" id="food-display">
-            <h1>Top cakes near you</h1>
+            <h1>Các loại bánh nổi bật gần bạn</h1>
             <div class="food-display-list" id="food-list">
                 <!-- Food items will be populated by JavaScript -->
             </div>
@@ -113,7 +118,7 @@
 
         <!-- App Download -->
         <div class="app-download" id="app-download">
-            <p>For Better Experience Download <br>Sugar Petals App</p>
+            <p>Để Trải Nghiệm Tốt Hơn, Hãy Tải <br>Ứng Dụng Sugar Petals</p>
             <div class="app-download-platforms">
                 <img src="/user/assets/play_store.jpg" th:src="@{/user/assets/play_store.jpg}" alt="">
                 <img src="/user/assets/app_store.jpg" th:src="@{/user/assets/app_store.jpg}" alt="">
@@ -144,31 +149,31 @@
             </div>
 
             <div class="footer-content-center">
-                <h2>COMPANY</h2>
+                <h2>CÔNG TY</h2>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Delivery</a></li>
-                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="#">Giao hàng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
                     <li><a href="admin/login.html">Admin</a></li>
                 </ul>
             </div>
 
             <div class="footer-content-right">
-                <h2>GET IN TOUCH</h2>
+                <h2>LIÊN HỆ</h2>
                 <ul>
-                    <li>(+84) 396 982 385</li>
-                    <li>nguyenlenhatlinh512@gmail.com</li>
-                    <li>69/68 Dang Thuy Tram Street,</li>
-                    <li>An Nhon Ward, Ho Chi Minh City</li>
+                    <li>(+84) 932 828 756</li>
+                    <li>phantienthinh0907@gmail.com</li>
+                    <li>120/16 Bui Dinh Tuy Street</li>
                 </ul>
             </div>
         </div>
         <hr>
-        <p class="footer-copyright">© 2023 Sugar Petals Bakery. All rights reserved.</p>
+        <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
     <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
+    <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/main.js" th:src="@{/user/js/main.js}"></script>
     <script src="/user/js/cart.js" th:src="@{/user/js/cart.js}"></script>
 </body>

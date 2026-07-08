@@ -52,13 +52,25 @@ function renderFoodItems(itemsToRender = null) {
         items = items.filter(item => item.category === currentCategory);
     }
 
+    // Prevent single item from stretching to full width
+    // Reset any previous layout adjustments
+    foodContainer.style.display = '';
+    foodContainer.style.justifyContent = '';
+
+    const isSingleItem = Array.isArray(items) && items.length === 1;
+    if (isSingleItem) {
+        // Center single item and avoid full-width stretch
+        foodContainer.style.display = 'flex';
+        foodContainer.style.justifyContent = 'center';
+    }
+
     foodContainer.innerHTML = items.map((item) => {
         const itemId = item.id || item._id;
         // Cart functionality will be implemented with Java backend
         const cartControl = `<img class="add" onclick="addToCart('${itemId}')" src="/user/assets/add_icon_green.png" alt="">`;
 
         return `
-            <div class="food-item">
+            <div class="food-item${isSingleItem ? ' single' : ''}">
                 <div class="food-item-img-container">
                     <img class="food-item-img" src="${item.image}" alt="${item.name}">
                     ${cartControl}
@@ -69,81 +81,35 @@ function renderFoodItems(itemsToRender = null) {
                         <img src="/user/assets/rating_starts.jpg" alt="">
                     </div>
                     <p class="food-item-desc">${item.description}</p>
-                    <p class="food-item-price">$${item.price}</p>
+                    <p class="food-item-price">${item.price} VND</p>
                 </div>
             </div>
         `;
     }).join('');
-}
 
-// Login popup functionality
-let isLoginMode = true;
-
-function showLoginPopup() {
-    document.getElementById('login-popup').style.display = 'grid';
-}
-
-function closeLoginPopup() {
-    document.getElementById('login-popup').style.display = 'none';
-}
-
-function toggleLoginMode() {
-    isLoginMode = !isLoginMode;
-    const title = document.getElementById('login-title');
-    const nameInput = document.getElementById('name-input');
-    const button = document.getElementById('login-button');
-    const toggle = document.getElementById('login-toggle');
-
-    if (isLoginMode) {
-        title.textContent = 'Login';
-        nameInput.style.display = 'none';
-        button.textContent = 'Login';
-        toggle.innerHTML = 'Create a new account? <span onclick="toggleLoginMode()">Click here!</span>';
-    } else {
-        title.textContent = 'Sign Up';
-        nameInput.style.display = 'block';
-        button.textContent = 'Create Account';
-        toggle.innerHTML = 'Already have an account? <span onclick="toggleLoginMode()">Login here!</span>';
-    }
-}
-
-// Handle login form submission
-document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email-input').value;
-    const password = document.getElementById('password-input').value;
-    const name = document.getElementById('name-input').value;
-
-    if (isLoginMode) {
-        // Login logic - integrate with Java backend
-        if (login(email, password)) {
-            closeLoginPopup();
-            updateAuthUI();
-        }
-    } else {
-        // Sign up logic - integrate with Java backend
-        if (name && email && password) {
-            if (login(email, password)) {
-                closeLoginPopup();
-                updateAuthUI();
-            }
+    // If single item, constrain its width via inline style to avoid 100% width (fallback if CSS not present)
+    if (isSingleItem) {
+        const singleEl = foodContainer.querySelector('.food-item.single');
+        if (singleEl) {
+            singleEl.style.maxWidth = '420px';
+            singleEl.style.width = '100%';
+            singleEl.style.boxSizing = 'border-box';
+            // Make sure it doesn't visually stretch by constraining its inner layout
+            singleEl.style.display = 'block';
         }
     }
-});
+}
+
+// Login popup functionality - removed, now in navbar.js
+// showLoginPopup, closeLoginPopup, toggleLoginMode are in navbar.js
 
 // Update authentication UI
 function updateAuthUI() {
     const signinBtn = document.getElementById('signin-btn');
     const navbarProfile = document.getElementById('navbar-profile');
 
-    if (isLoggedIn()) {
-        signinBtn.style.display = 'none';
-        navbarProfile.style.display = 'block';
-    } else {
-        signinBtn.style.display = 'block';
-        navbarProfile.style.display = 'none';
-    }
+    // This will be called after login/register
+    // The navbar.js checkUserSession() function handles the UI update
 }
 
 // Refresh food items when data changes
@@ -151,7 +117,43 @@ function refreshFoodItems() {
     renderFoodItems();
 }
 
-// Search functionality
+// Load hot/new products (Feature 6)
+function loadHotProducts() {
+    fetch('/api/food/hot')
+        .then(response => response.json())
+        .then(data => {
+            allFoodItems = data;
+            renderFoodItems(data);
+            currentCategory = 'All';
+            renderMenuCategories();
+            scrollToExplore();
+        })
+        .catch(error => {
+            console.error('Error loading hot products:', error);
+            // Fallback to showing all products sorted by relevance
+            loadAllFood();
+        });
+}
+
+// Load best-selling products
+function loadBestSellersProducts() {
+    fetch('/api/food/bestsellers')
+        .then(response => response.json())
+        .then(data => {
+            allFoodItems = data;
+            renderFoodItems(data);
+            currentCategory = 'All';
+            renderMenuCategories();
+            scrollToExplore();
+        })
+        .catch(error => {
+            console.error('Error loading best sellers:', error);
+            // Fallback to showing all products
+            loadAllFood();
+        });
+}
+
+// Search functionality (Feature 7)
 function handleSearch(event) {
     if (event.key === 'Enter') {
         performSearch();
@@ -171,6 +173,7 @@ function performSearch() {
                 renderFoodItems(data);
                 currentCategory = 'All'; // Reset category filter
                 renderMenuCategories();
+                scrollToExplore();
             })
             .catch(error => {
                 console.error('Error searching food:', error);
@@ -179,13 +182,47 @@ function performSearch() {
                     item.name.toLowerCase().includes(searchTerm.toLowerCase())
                 );
                 renderFoodItems(localResults);
+                scrollToExplore();
             });
     } else {
         // If search is empty, load all food from backend
         loadAllFood();
+        scrollToExplore();
     }
 }
 
+// Search by category (Feature 7 - advanced search)
+function searchByCategory(categoryName) {
+    setCategory(categoryName);
+}
+
+// Combined search - search by name and category
+function advancedSearch(searchTerm, categoryFilter = null) {
+    const allItems = allFoodItems.length > 0 ? allFoodItems : foodlist;
+    
+    let results = allItems.filter(item => 
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    if (categoryFilter && categoryFilter !== 'All') {
+        results = results.filter(item => item.category === categoryFilter);
+    }
+    
+    renderFoodItems(results);
+    if (results.length > 0) {
+        scrollToExplore();
+    } else {
+        alert('Không tìm thấy sản phẩm phù hợp');
+    }
+}
+// Scroll xuong menu food
+function scrollToExplore() {
+    const exploreSection = document.getElementById("explore-menu");
+    if (exploreSection) {
+        exploreSection.scrollIntoView({behavior: "smooth"});
+    }
+}
 function loadAllFood() {
     fetch('/api/food')
         .then(response => response.json())
@@ -222,7 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // loadAllFood(); // Load food from backend on page load
     renderMenuCategories(); // Use local data from data.js
     renderFoodItems(); // Use local data from data.js
-    updateAuthUI();
 });
 
 // Make functions globally available
@@ -234,6 +270,10 @@ window.logout = logout;
 window.refreshFoodItems = refreshFoodItems;
 window.handleSearch = handleSearch;
 window.performSearch = performSearch;
+window.loadHotProducts = loadHotProducts;
+window.loadBestSellersProducts = loadBestSellersProducts;
+window.searchByCategory = searchByCategory;
+window.advancedSearch = advancedSearch;
 
 // Cart functions - loaded from cart.js
 // These functions are implemented in cart.js
