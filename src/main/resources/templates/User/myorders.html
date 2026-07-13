@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders - Sugar Petals</title>
+    <title>Đơn Hàng Của Tôi - Sugar Petals</title>
     <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
     <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
     <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
@@ -22,10 +22,10 @@
         </div>
         
         <ul class="navbar-menu">
-            <a href="index.html">Home</a>
-            <a href="index.html#explore-menu">Menu</a>
-            <a href="index.html#app-download">Mobile-app</a>
-            <a href="index.html#footer">Contact us</a>
+            <a href="index.html">Trang chủ</a>
+            <a href="index.html#explore-menu">Thực đơn</a>
+            <a href="index.html#app-download">Ứng dụng</a>
+            <a href="index.html#footer">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
@@ -35,13 +35,13 @@
                 <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
             </div>
-            <button id="signin-btn" onclick="window.location.href='index.html'">Sign in</button>
+            <button id="signin-btn" onclick="window.location.href='index.html'">Đăng nhập</button>
             <div class="navbar-profile" id="navbar-profile" style="display: none;">
                 <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
                 <ul class="nav-profile-dropdown">
-                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Orders</p></li>
+                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Đơn hàng</p></li>
                     <hr>
-                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Logout</p></li>
+                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Đăng xuất</p></li>
                 </ul>
             </div>
         </div>
@@ -49,7 +49,7 @@
 
     <div class="app">
         <div class="my-orders">
-            <h2>My Orders</h2>
+            <h2>Đơn Hàng Của Tôi</h2>
             <div class="container" id="orders-container">
                 <!-- Orders will be populated by JavaScript -->
             </div>
@@ -79,30 +79,30 @@
             </div>
 
             <div class="footer-content-center">
-                <h2>COMPANY</h2>
+                <h2>CÔNG TY</h2>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Delivery</a></li>
-                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="#">Giao hàng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
                 </ul>
             </div>
 
             <div class="footer-content-right">
-                <h2>GET IN TOUCH</h2>
+                <h2>LIÊN HỆ</h2>
                 <ul>
-                    <li>(+84) 396 982 385</li>
-                    <li>nguyenlenhatlinh512@gmail.com</li>
-                    <li>69/68 Dang Thuy Tram Street,</li>
-                    <li>An Nhon Ward, Ho Chi Minh City</li>
+                    <li>(+84) 932 828 756</li>
+                    <li>phantienthinh0907@gmail.com</li>
+                    <li>120/16 Bui Dinh Tuy Street</li>
                 </ul>
             </div>
         </div>
         <hr>
-        <p class="footer-copyright">© 2023 Sugar Petals Bakery. All rights reserved.</p>
+        <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
     <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
+    <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/myorders.js" th:src="@{/user/js/myorders.js}"></script>
 </body>
 </html>

@@ -9,6 +9,17 @@ function getStatusClass(status) {
     }
 }
 
+// Get status display text in Vietnamese
+function getStatusText(status) {
+    switch (status) {
+        case "Processing": return "Đang xử lý";
+        case "Preparing": return "Đang chuẩn bị";
+        case "Out for Delivery": return "Đang giao hàng";
+        case "Delivered": return "Đã giao hàng";
+        default: return status;
+    }
+}
+
 // Render orders
 function renderOrders() {
     const ordersContainer = document.getElementById('orders-container');
@@ -18,7 +29,7 @@ function renderOrders() {
     const orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
     if (orders.length === 0) {
-        ordersContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No orders yet. Start shopping to see your orders here!</p>';
+        ordersContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">Chưa có đơn hàng nào. Hãy bắt đầu mua sắm để xem đơn hàng của bạn tại đây!</p>';
         return;
     }
 
@@ -49,12 +60,12 @@ function renderOrders() {
                     <p class="order-date">${date}</p>
                 </div>
                 <p class="order-amount">$${order.amount}.00</p>
-                <p class="order-count">Items: ${order.items.length}</p>
+                <p class="order-count">Số lượng: ${order.items.length}</p>
                 <p class="order-status ${getStatusClass(order.status)}">
                     <span class="status-dot"></span>
-                    ${order.status}
+                    ${getStatusText(order.status)}
                 </p>
-                <button onclick="refreshOrders()" class="track-btn">Refresh</button>
+                <button onclick="refreshOrders()" class="track-btn">Cập nhật</button>
             </div>
         `;
     }).join('');

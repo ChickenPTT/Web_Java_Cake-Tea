@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Place Order - Sugar Petals</title>
+    <title>Đặt Hàng - Sugar Petals</title>
     <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
     <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
     <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
@@ -23,10 +23,10 @@
         </div>
         
         <ul class="navbar-menu">
-            <a href="index.html">Home</a>
-            <a href="index.html#explore-menu">Menu</a>
-            <a href="index.html#app-download">Mobile-app</a>
-            <a href="index.html#footer">Contact us</a>
+            <a href="index.html">Trang chủ</a>
+            <a href="index.html#explore-menu">Thực đơn</a>
+            <a href="index.html#app-download">Ứng dụng</a>
+            <a href="index.html#footer">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
@@ -36,13 +36,13 @@
                 <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
             </div>
-            <button id="signin-btn" onclick="window.location.href='index.html'">Sign in</button>
+            <button id="signin-btn" onclick="window.location.href='index.html'">Đăng nhập</button>
             <div class="navbar-profile" id="navbar-profile" style="display: none;">
                 <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
                 <ul class="nav-profile-dropdown">
-                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Orders</p></li>
+                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Đơn hàng</p></li>
                     <hr>
-                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Logout</p></li>
+                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Đăng xuất</p></li>
                 </ul>
             </div>
         </div>
@@ -51,44 +51,44 @@
     <div class="app">
         <form class="place-order" id="order-form">
             <div class="place-order-left">
-                <p class="title">Delivery Information</p>
+                <p class="title">Thông Tin Giao Hàng</p>
                 <div class="multi-fields">
-                    <input required name="firstName" type="text" placeholder="First Name">
-                    <input required name="lastName" type="text" placeholder="Last Name">
+                    <input required name="firstName" type="text" placeholder="Tên">
+                    <input required name="lastName" type="text" placeholder="Họ">
                 </div>
                 <input required name="email" type="email" placeholder="Email">
-                <input required name="street" type="text" placeholder="Street">
+                <input required name="street" type="text" placeholder="Đường">
                 <div class="multi-fields">
-                    <input required name="city" type="text" placeholder="City">
-                    <input required name="state" type="text" placeholder="State">
+                    <input required name="city" type="text" placeholder="Thành phố">
+                    <input required name="state" type="text" placeholder="Tỉnh/Thành phố">
                 </div>
                 <div class="multi-fields">
-                    <input required name="zipcode" type="text" placeholder="Zip Code">
-                    <input required name="country" type="text" placeholder="Country">
+                    <input required name="zipcode" type="text" placeholder="Mã bưu chính">
+                    <input required name="country" type="text" placeholder="Quốc gia">
                 </div>
-                <input required name="phone" type="text" placeholder="Phone">
+                <input required name="phone" type="text" placeholder="Số điện thoại">
             </div>
 
             <div class="place-order-right">
                 <div class="cart-total">
-                    <h2>Cart Totals</h2>
+                    <h2>Tổng Giỏ Hàng</h2>
                     <div>
                         <div class="cart-total-details">
-                            <p>Subtotal</p>
+                            <p>Tạm tính</p>
                             <p id="subtotal">$0</p>
                         </div>
                         <hr>
                         <div class="cart-total-details">
-                            <p>Delivery Fee</p>
+                            <p>Phí giao hàng</p>
                             <p id="delivery-fee">$0</p>
                         </div>
                         <hr>
                         <div class="cart-total-details">
-                            <b>Total</b>
+                            <b>Tổng cộng</b>
                             <b id="total">$0</b>
                         </div>
                     </div>
-                    <button type="submit">PLACE ORDER</button>
+                    <button type="submit">ĐẶT HÀNG</button>
                 </div>
             </div>
         </form>
@@ -117,30 +117,30 @@
             </div>
 
             <div class="footer-content-center">
-                <h2>COMPANY</h2>
+                <h2>CÔNG TY</h2>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Delivery</a></li>
-                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="#">Giao hàng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
                 </ul>
             </div>
 
             <div class="footer-content-right">
-                <h2>GET IN TOUCH</h2>
+                <h2>LIÊN HỆ</h2>
                 <ul>
-                    <li>(+84) 396 982 385</li>
-                    <li>nguyenlenhatlinh512@gmail.com</li>
-                    <li>69/68 Dang Thuy Tram Street,</li>
-                    <li>An Nhon Ward, Ho Chi Minh City</li>
+                    <li>(+84) 932 828 756</li>
+                    <li>phantienthinh0907@gmail.com</li>
+                    <li>120/16 Bui Dinh Tuy Street</li>
                 </ul>
             </div>
         </div>
         <hr>
-        <p class="footer-copyright">© 2023 Sugar Petals Bakery. All rights reserved.</p>
+        <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
     <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
+    <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/order.js" th:src="@{/user/js/order.js}"></script>
 </body>
 </html>

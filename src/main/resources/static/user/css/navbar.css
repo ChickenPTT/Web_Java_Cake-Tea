@@ -163,6 +163,7 @@
   gap: 10px;
   cursor: pointer;
   justify-content: flex-start;
+    width: 110px;
 }
 
 .nav-profile-dropdown img {
