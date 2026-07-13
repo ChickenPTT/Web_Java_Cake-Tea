@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chiến dịch - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('campaigns')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper form-page">
+                <div class="page-header">
+                    <h3 class="page-title">Chiến dịch giảm giá</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Chiến dịch</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="content">
+                    <div class="card rounded shadow mb-3">
+                        <div class="card-body">
+                            <form id="campaign-form">
+                                <input type="hidden" id="campaign-id">
+                                <div class="row">
+                                    <div class="col-md-6 form-group"><label>Tên chiến dịch</label><input type="text" id="campaign-name" class="form-control" required></div>
+                                    <div class="col-md-6 form-group"><label>Danh mục áp dụng</label><input type="text" id="campaign-target-category" class="form-control" placeholder="Để trống = tất cả"></div>
+                                    <div class="col-12 form-group"><label>Mô tả</label><textarea id="campaign-description" class="form-control" rows="2"></textarea></div>
+                                    <div class="col-md-3 form-group"><label>Giảm %</label><input type="number" id="campaign-discount-percent" class="form-control" min="0" max="100"></div>
+                                    <div class="col-md-3 form-group"><label>Giảm tiền (VNĐ)</label><input type="number" id="campaign-discount-amount" class="form-control" min="0"></div>
+                                    <div class="col-md-3 form-group"><label>Bắt đầu</label><input type="datetime-local" id="campaign-start" class="form-control" required></div>
+                                    <div class="col-md-3 form-group"><label>Kết thúc</label><input type="datetime-local" id="campaign-end" class="form-control" required></div>
+                                    <div class="col-12 form-group"><label><input type="checkbox" id="campaign-active" checked> Đang hoạt động</label></div>
+                                    <div class="col-12"><button type="submit" class="btn btn-success"><i class="mdi mdi-content-save"></i> Lưu chiến dịch</button></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card rounded shadow">
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover">
+                                <thead><tr><th>Tên</th><th>Giảm giá</th><th>Thời gian</th><th>TT</th><th>Thao tác</th></tr></thead>
+                                <tbody id="campaign-list-container"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/campaigns.js}"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+/* Sugar Petals - custom brand overrides on 3achemical theme */
+:root {
+    --brand-start: #c70e1c;
+    --brand-end: #e85d6f;
+}
+
+.bg-linear-gradient,
+button.btn.btn-block.btn-success.btn-lg.font-weight-medium.auth-form-btn {
+    background: linear-gradient(93deg, var(--brand-start) 0%, var(--brand-end) 100%) !important;
+}
+
+.bg-primary,
+.dropdown-menu .bg-primary,
+.p-3.text-center.bg-primary {
+    background-color: var(--brand-start) !important;
+}
+
+.btn-success,
+.btn.btn-success {
+    background: linear-gradient(93deg, var(--brand-start) 0%, var(--brand-end) 100%);
+    border-color: var(--brand-start);
+}
+
+.text-gradient-right {
+    background: linear-gradient(to right, var(--brand-start), var(--brand-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar .nav .nav-item.active > .nav-link .menu-title,
+.sidebar .nav .nav-item.active > .nav-link i {
+    color: var(--brand-start);
+}
+
+.sidebar .nav .nav-item .nav-link:hover .menu-title,
+.sidebar .nav .nav-item .nav-link:hover i {
+    color: var(--brand-start);
+}
+
+.dashboard-progress.item-parent::before {
+    background: linear-gradient(var(--brand-start), var(--brand-end));
+}
+
+.navbar.default-layout-navbar {
+    box-shadow: 0 4px 16px rgba(199, 14, 28, 0.08);
+}
+
+.content-wrapper {
+    background: #f4f6f9;
+    padding: 1.5rem;
+}
+
+.card.rounded.shadow {
+    border: none;
+}
+
+.table-admin img.thumb {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.form-page .card-body {
+    padding: 1.5rem;
+}
+
+.badge-pending { background: #ffc107; color: #333; }
+.badge-delivered { background: #28a745; }
+.badge-cancelled { background: #dc3545; }
+
+.auth-form-light {
+    background-image: url('/admin/extensions/images/footer_auth.png') !important;
+    background-position: bottom !important;
+    background-repeat: no-repeat !important;
+}
+
+.auth .auth-form-light {
+    padding: 50px 20px;
+}
+
+.auth-form-light.text-left {
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}

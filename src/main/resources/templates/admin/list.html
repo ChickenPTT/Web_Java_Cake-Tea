@@ -1,67 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Items - Admin Panel</title>
-    <link rel="stylesheet" href="/admin/css/style.css" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" href="/admin/css/navbar.css" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" href="/admin/css/sidebar.css" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" href="/admin/css/list.css" th:href="@{/admin/css/list.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sản phẩm - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-left">
-            <img class="logo" src="/admin/assets/logo.png" th:src="@{/admin/assets/logo.png}" alt="">
-            <div class="site-info">
-                <h1 class="site-name">Sugar Petals</h1>
-                <p class="site-slogan">Admin Panel</p>
-            </div>
-        </div>
-        <div class="navbar-right">
-            <img class="profile" src="/admin/assets/profile_image.png" th:src="@{/admin/assets/profile_image.png}" alt="">
-            <button onclick="adminLogout()" class="logout-btn">Logout</button>
-        </div>
-    </div>
-    <hr>
-    <div class="app-content">
-        <div class="sidebar">
-            <div class="sidebar-options">
-                <a href="add.html" class="sidebar-option" id="nav-add">
-                    <img src="/admin/assets/add_icon.png" th:src="@{/admin/assets/add_icon.png}" alt="">
-                    <p>Add Items</p>
-                </a>
-                <a href="list.html" class="sidebar-option active" id="nav-list">
-                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
-                    <p>List Items</p>
-                </a>
-                <a href="orders.html" class="sidebar-option" id="nav-orders">
-                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
-                    <p>Orders</p>
-                </a>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="list add flex-col">
-                <p>All Foods List</p>
-                <div class="list-table">
-                    <div class="list-table-format title">
-                        <b>Image</b>
-                        <b>Name</b>
-                        <b>Category</b>
-                        <b>Price</b>
-                        <b>Action</b>
-                    </div>
-                    <div id="food-list-container">
-                        <!-- Food items will be populated by JavaScript -->
-                    </div>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('products')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title">Quản lý sản phẩm</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Sản phẩm</li>
+                        </ol>
+                    </nav>
                 </div>
+                <section class="content">
+                    <div class="form-group mb-3">
+                        <a class="btn btn-sm btn-success" th:href="@{/admin/products/add}"><i class="fas fa-plus mr-2"></i>Thêm mới</a>
+                    </div>
+                    <div class="card rounded shadow">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-admin">
+                                    <thead>
+                                    <tr>
+                                        <th>Ảnh</th>
+                                        <th>Tên</th>
+                                        <th>Danh mục</th>
+                                        <th>Giá</th>
+                                        <th width="80">Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="food-list-container"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-
-    <script src="/admin/js/main.js" th:src="@{/admin/js/main.js}"></script>
-    <script src="/admin/js/list.js" th:src="@{/admin/js/list.js}"></script>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/list.js}"></script>
 </body>
 </html>

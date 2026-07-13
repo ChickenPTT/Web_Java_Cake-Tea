@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Khách hàng - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
+</head>
+<body>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('customers')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title">Chăm sóc khách hàng</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Khách hàng</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="content">
+                    <div class="card rounded shadow mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="mdi mdi-cake-variant mr-2"></i>Sinh nhật hôm nay</h5>
+                            <div id="birthday-today-container"></div>
+                        </div>
+                    </div>
+                    <div class="card rounded shadow">
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover">
+                                <thead><tr><th>ID</th><th>Tên</th><th>Email</th><th>Sinh nhật</th><th>Thao tác</th></tr></thead>
+                                <tbody id="customer-list-container"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/customers.js}"></script>
+</body>
+</html>
