@@ -1,96 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Items - Admin Panel</title>
-    <link rel="stylesheet" href="/admin/css/style.css" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" href="/admin/css/navbar.css" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" href="/admin/css/sidebar.css" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" href="/admin/css/add.css" th:href="@{/admin/css/add.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thêm sản phẩm - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-left">
-            <img class="logo" src="/admin/assets/logo.png" th:src="@{/admin/assets/logo.png}" alt="">
-            <div class="site-info">
-                <h1 class="site-name">Sugar Petals</h1>
-                <p class="site-slogan">Admin Panel</p>
-            </div>
-        </div>
-        <div class="navbar-right">
-            <img class="profile" src="/admin/assets/profile_image.png" th:src="@{/admin/assets/profile_image.png}" alt="">
-            <button onclick="adminLogout()" class="logout-btn">Logout</button>
-        </div>
-    </div>
-    <hr>
-    <div class="app-content">
-        <div class="sidebar">
-            <div class="sidebar-options">
-                <a href="add.html" class="sidebar-option active" id="nav-add">
-                    <img src="/admin/assets/add_icon.png" th:src="@{/admin/assets/add_icon.png}" alt="">
-                    <p>Add Items</p>
-                </a>
-                <a href="list.html" class="sidebar-option" id="nav-list">
-                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
-                    <p>List Items</p>
-                </a>
-                <a href="orders.html" class="sidebar-option" id="nav-orders">
-                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
-                    <p>Orders</p>
-                </a>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="add">
-                <form class="flex-col" id="add-form">
-                    <div class="add-img-upload flex-col">
-                        <p>Upload Image</p>
-                        <label for="image">
-                            <img id="image-preview" src="/admin/assets/upload_area.png" th:src="@{/admin/assets/upload_area.png}" alt="">
-                        </label>
-                        <input type="file" id="image" hidden required>
-                    </div>
-
-                    <div class="add-product-name flex-col">
-                        <p>Product Name</p>
-                        <input type="text" name="name" placeholder="Type here" required>
-                    </div>
-
-                    <div class="add-product-description flex-col">
-                        <p>Product Description</p>
-                        <textarea name="description" rows="6" placeholder="Write content here" required></textarea>
-                    </div>
-
-                    <div class="add-category-price">
-                        <div class="add-category flex-col">
-                            <p>Product category</p>
-                            <select name="category">
-                                <option value="Cake">Cake</option>
-                                <option value="Cupcake">Cupcake</option>
-                                <option value="Croissant">Croissant</option>
-                                <option value="Cheesecake">Cheesecake</option>
-                                <option value="Donut">Donut</option>
-                                <option value="Cookies">Cookies</option>
-                                <option value="Mousse">Mousse</option>
-                                <option value="Sweet Buns">Sweet Buns</option>
-                            </select>
-                        </div>
-
-                        <div class="add-price flex-col">
-                            <p>Product Price</p>
-                            <input type="Number" name="price" placeholder="$20" required>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('add')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper form-page">
+                <div class="page-header">
+                    <h3 class="page-title">Thêm sản phẩm</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/products}">Sản phẩm</a></li>
+                            <li class="breadcrumb-item active">Thêm mới</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="content">
+                    <div class="card rounded shadow">
+                        <div class="card-body">
+                            <form id="add-form">
+                                <div class="row">
+                                    <div class="col-md-4 text-center mb-3">
+                                        <label class="d-block font-weight-bold mb-2">Ảnh sản phẩm</label>
+                                        <label for="image" style="cursor:pointer;">
+                                            <img id="image-preview" th:src="@{/admin/assets/upload_area.png}" alt="" class="img-fluid rounded" style="max-height:200px;">
+                                        </label>
+                                        <input type="file" id="image" accept="image/*" class="form-control-file mt-2">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tên sản phẩm *</label>
+                                            <input type="text" name="name" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả *</label>
+                                            <textarea name="description" class="form-control" rows="4" required></textarea>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Danh mục *</label>
+                                                <select name="category" id="category-select" class="form-control" required>
+                                                    <option value="">-- Chọn danh mục --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Giá (VNĐ) *</label>
+                                                <input type="number" name="price" class="form-control" min="0" required>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success"><i class="mdi mdi-content-save mr-1"></i> Lưu sản phẩm</button>
+                                        <a th:href="@{/admin/products}" class="btn btn-light">Hủy</a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
-                    <button type="submit" class="add-btn">ADD</button>
-                </form>
+                </section>
             </div>
         </div>
     </div>
-
-    <script src="/admin/js/main.js" th:src="@{/admin/js/main.js}"></script>
-    <script src="/admin/js/add.js" th:src="@{/admin/js/add.js}"></script>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
+<script th:src="@{/admin/js/add.js}"></script>
 </body>
 </html>

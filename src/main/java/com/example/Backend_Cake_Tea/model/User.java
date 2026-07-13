@@ -23,6 +23,12 @@ public class User {
     
     @Column(length = 255)
     private String name;
+
+    @Column(name = "birthday")
+    private java.time.LocalDate birthday;
+
+    @Column(name = "email_marketing")
+    private Boolean emailMarketing = true;
     
     @Column(name = "created_at")
     private java.time.LocalDateTime createdAt;
@@ -34,6 +40,7 @@ public class User {
     protected void onCreate() {
         createdAt = java.time.LocalDateTime.now();
         updatedAt = java.time.LocalDateTime.now();
+        if (emailMarketing == null) emailMarketing = true;
     }
     
     @PreUpdate

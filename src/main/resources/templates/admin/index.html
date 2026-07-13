@@ -1,69 +1,129 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Sugar Petals</title>
-    <link rel="stylesheet" href="/admin/css/style.css" th:href="@{/admin/css/style.css}">
-    <link rel="stylesheet" href="/admin/css/navbar.css" th:href="@{/admin/css/navbar.css}">
-    <link rel="stylesheet" href="/admin/css/sidebar.css" th:href="@{/admin/css/sidebar.css}">
-    <link rel="stylesheet" href="/admin/css/dashboard.css" th:href="@{/admin/css/dashboard.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/admin/extensions/images/brand-logo.png}" rel="shortcut icon" type="image/png"/>
+    <title>Dashboard - Sugar Petals Admin</title>
+    <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-left">
-            <img class="logo" src="/admin/assets/logo.png" th:src="@{/admin/assets/logo.png}" alt="">
-            <div class="site-info">
-                <h1 class="site-name">Sugar Petals</h1>
-                <p class="site-slogan">Admin Panel</p>
-            </div>
-        </div>
-        <div class="navbar-right">
-            <img class="profile" src="/admin/assets/profile_image.png" th:src="@{/admin/assets/profile_image.png}" alt="">
-            <button onclick="adminLogout()" class="logout-btn">Logout</button>
-        </div>
-    </div>
-    <hr>
-    <div class="app-content">
-        <div class="sidebar">
-            <div class="sidebar-options">
-                <a href="add.html" class="sidebar-option" id="nav-add">
-                    <img src="/admin/assets/add_icon.png" th:src="@{/admin/assets/add_icon.png}" alt="">
-                    <p>Add Items</p>
-                </a>
-                <a href="list.html" class="sidebar-option" id="nav-list">
-                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
-                    <p>List Items</p>
-                </a>
-                <a href="orders.html" class="sidebar-option" id="nav-orders">
-                    <img src="/admin/assets/order_icon.png" th:src="@{/admin/assets/order_icon.png}" alt="">
-                    <p>Orders</p>
-                </a>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="welcome-section">
-                <h2>Welcome to Admin Panel</h2>
-                <p>Select an option from the sidebar to manage your bakery.</p>
-                <div class="dashboard-cards">
-                    <div class="card">
-                        <h3>Total Items</h3>
-                        <p id="total-items">0</p>
+<div class="container-scroller">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+    <div class="container-fluid page-body-wrapper">
+        <div th:replace="~{admin/layout/menu :: menu('dashboard')}"></div>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <section class="content mb-3">
+                    <div class="d-xl-flex justify-content-between align-items-start">
+                        <h2 class="text-dark font-weight-bold mb-2">Dashboard</h2>
                     </div>
-                    <div class="card">
-                        <h3>Total Orders</h3>
-                        <p id="total-orders">0</p>
-                    </div>
-                    <div class="card">
-                        <h3>Pending Orders</h3>
-                        <p id="pending-orders">0</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </section>
 
-    <script src="/admin/js/main.js" th:src="@{/admin/js/main.js}"></script>
+                <section class="content">
+                    <div class="row form-group">
+                        <div class="col-xl-4 col-lg-6 col-sm-6 mb-3">
+                            <div class="d-flex bg-white p-3 align-items-center rounded shadow h-100">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-dropbox icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Tổng sản phẩm</h5>
+                                    <p class="font-weight-bold text-dark mb-0" id="total-items" style="font-size:28px;">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-sm-6 mb-3">
+                            <a th:href="@{/admin/orders}" class="d-flex bg-white p-3 align-items-center rounded shadow h-100 text-decoration-none">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-shopping icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Tổng đơn hàng</h5>
+                                    <p class="font-weight-bold text-dark mb-0" id="total-orders" style="font-size:28px;">0</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-sm-6 mb-3">
+                            <a th:href="@{/admin/orders}" class="d-flex bg-white p-3 align-items-center rounded shadow h-100 text-decoration-none">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-clock-outline icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Đơn chờ xử lý</h5>
+                                    <p class="font-weight-bold text-dark mb-0" id="pending-orders" style="font-size:28px;">0</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content">
+                    <div class="row form-group">
+                        <div class="col-xl-3 col-lg-6 col-sm-6 mb-3">
+                            <a th:href="@{/admin/categories}" class="d-flex bg-white p-3 align-items-center rounded shadow">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-filter icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Danh mục</h5>
+                                    <p class="font-weight-bold text-dark mb-0">Quản lý</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-sm-6 mb-3">
+                            <a th:href="@{/admin/products}" class="d-flex bg-white p-3 align-items-center rounded shadow">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-cupcake icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Sản phẩm</h5>
+                                    <p class="font-weight-bold text-dark mb-0">Chi tiết</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-sm-6 mb-3">
+                            <a th:href="@{/admin/campaigns}" class="d-flex bg-white p-3 align-items-center rounded shadow">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-ticket-confirmation icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Chiến dịch</h5>
+                                    <p class="font-weight-bold text-dark mb-0">Giảm giá</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-sm-6 mb-3">
+                            <a th:href="@{/admin/statistics}" class="d-flex bg-white p-3 align-items-center rounded shadow">
+                                <div class="dashboard-link-icon text-center">
+                                    <div class="dashboard-progress d-flex align-items-center justify-content-center item-parent position-relative">
+                                        <i class="mdi mdi-chart-line icon-md absolute-center text-gradient-right"></i>
+                                    </div>
+                                </div>
+                                <div class="dashboard-link-text ml-3">
+                                    <h5 class="mb-0 text-gradient-right font-weight-bold">Thống kê</h5>
+                                    <p class="font-weight-bold text-dark mb-0">Doanh số</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{admin/layout/js :: js}"></th:block>
 </body>
 </html>

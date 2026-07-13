@@ -2,20 +2,27 @@ package com.example.Backend_Cake_Tea.config;
 
 import com.example.Backend_Cake_Tea.model.Food;
 import com.example.Backend_Cake_Tea.model.Menu;
+import com.example.Backend_Cake_Tea.model.User;
 import com.example.Backend_Cake_Tea.repository.FoodRepository;
 import com.example.Backend_Cake_Tea.repository.MenuRepository;
+import com.example.Backend_Cake_Tea.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
     private final FoodRepository foodRepository;
     private final MenuRepository menuRepository;
+    private final UserRepository userRepository;
 
-    public DataLoader(FoodRepository foodRepository, MenuRepository menuRepository) {
+    public DataLoader(FoodRepository foodRepository, MenuRepository menuRepository,
+                      UserRepository userRepository) {
         this.foodRepository = foodRepository;
         this.menuRepository = menuRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -28,6 +35,10 @@ public class DataLoader implements CommandLineRunner {
         // Load food items if database is empty
         if (foodRepository.count() == 0) {
             loadFoodItems();
+        }
+
+        if (userRepository.count() == 0) {
+            loadSampleUsers();
         }
     }
 
@@ -143,5 +154,25 @@ public class DataLoader implements CommandLineRunner {
                 .build());
 
         System.out.println("Food items loaded successfully!");
+    }
+
+    private void loadSampleUsers() {
+        userRepository.save(User.builder()
+                .email("khach1@example.com")
+                .password("password")
+                .name("Nguyễn Văn A")
+                .birthday(LocalDate.now())
+                .emailMarketing(true)
+                .build());
+
+        userRepository.save(User.builder()
+                .email("khach2@example.com")
+                .password("password")
+                .name("Trần Thị B")
+                .birthday(LocalDate.of(1995, 6, 15))
+                .emailMarketing(true)
+                .build());
+
+        System.out.println("Sample users loaded successfully!");
     }
 }

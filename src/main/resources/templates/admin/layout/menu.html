@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="menu(active)" class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-category">Menu</li>
+        <li class="nav-item" th:classappend="${active == 'dashboard'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin}">
+                <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                <span class="menu-title">Bảng điều khiển</span>
+            </a>
+        </li>
+
+        <li class="nav-item nav-category">Sản phẩm</li>
+        <li class="nav-item" th:classappend="${active == 'categories'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/categories}">
+                <span class="icon-bg"><i class="mdi mdi-filter menu-icon"></i></span>
+                <span class="menu-title">Danh mục</span>
+            </a>
+        </li>
+        <li class="nav-item" th:classappend="${active == 'products'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/products}">
+                <span class="icon-bg"><i class="mdi mdi-dropbox menu-icon"></i></span>
+                <span class="menu-title">Sản phẩm</span>
+            </a>
+        </li>
+        <li class="nav-item" th:classappend="${active == 'add'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/products/add}">
+                <span class="icon-bg"><i class="mdi mdi-plus-circle menu-icon"></i></span>
+                <span class="menu-title">Thêm sản phẩm</span>
+            </a>
+        </li>
+
+        <li class="nav-item nav-category">Bán hàng</li>
+        <li class="nav-item" th:classappend="${active == 'orders'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/orders}">
+                <span class="icon-bg"><i class="mdi mdi-shopping menu-icon"></i></span>
+                <span class="menu-title">Đơn hàng</span>
+            </a>
+        </li>
+        <li class="nav-item" th:classappend="${active == 'campaigns'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/campaigns}">
+                <span class="icon-bg"><i class="mdi mdi-ticket-confirmation menu-icon"></i></span>
+                <span class="menu-title">Chiến dịch giảm giá</span>
+            </a>
+        </li>
+        <li class="nav-item" th:classappend="${active == 'combos'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/combos}">
+                <span class="icon-bg"><i class="mdi mdi-package-variant menu-icon"></i></span>
+                <span class="menu-title">Combo</span>
+            </a>
+        </li>
+
+        <li class="nav-item nav-category">Khách hàng</li>
+        <li class="nav-item" th:classappend="${active == 'customers'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/customers}">
+                <span class="icon-bg"><i class="mdi mdi-account-multiple menu-icon"></i></span>
+                <span class="menu-title">Chăm sóc KH</span>
+            </a>
+        </li>
+        <li class="nav-item" th:classappend="${active == 'statistics'} ? 'active'">
+            <a class="nav-link" th:href="@{/admin/statistics}">
+                <span class="icon-bg"><i class="mdi mdi-chart-line menu-icon"></i></span>
+                <span class="menu-title">Thống kê doanh số</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
