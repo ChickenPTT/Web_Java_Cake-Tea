@@ -15,3 +15,71 @@
     gap: 30px;
     row-gap: 50px;
 }
+
+/* --- Phân trang --- */
+.pagination-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    color: #333;
+    font-size: 15px;
+}
+
+.pagination-bar label {
+    font-weight: 600;
+}
+
+.pagination-bar select {
+    padding: 6px 10px;
+    border: 1px solid #c70e1c;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+}
+
+.pagination-bar .page-info {
+    margin-left: auto;
+    color: #777;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.pagination-controls .page-btn {
+    min-width: 40px;
+    padding: 8px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.pagination-controls .page-btn:hover:not(:disabled) {
+    border-color: #c70e1c;
+    color: #c70e1c;
+}
+
+.pagination-controls .page-btn.active {
+    background: #c70e1c;
+    border-color: #c70e1c;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination-controls .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

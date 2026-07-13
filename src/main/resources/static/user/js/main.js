@@ -2,6 +2,11 @@
 let allFoodItems = [];
 let allMenuItems = [];
 
+// --- Trạng thái phân trang ---
+let currentPage = 1;            // trang hiện tại (bắt đầu từ 1)
+let pageSize = 8;               // số sản phẩm hiển thị trong 1 trang (người dùng chọn)
+let currentFoodList = [];       // toàn bộ danh sách đang được phân trang (sau khi lọc/tìm kiếm)
+
 // Render menu categories
 function renderMenuCategories() {
     const menuContainer = document.getElementById('menu-categories');
@@ -31,13 +36,14 @@ function setCategory(category) {
 }
 
 // Render food items
+// Tính danh sách sản phẩm cần hiển thị (theo tìm kiếm/lọc danh mục), lưu lại rồi hiển thị trang hiện tại.
 function renderFoodItems(itemsToRender = null) {
     const foodContainer = document.getElementById('food-list');
     if (!foodContainer) return;
 
     // Use provided items or fallback to current data
     let items = itemsToRender;
-    
+
     // If no items provided, use local data or backend data
     if (!items) {
         if (allFoodItems.length > 0) {
@@ -51,6 +57,32 @@ function renderFoodItems(itemsToRender = null) {
     if (currentCategory !== 'All' && !itemsToRender) {
         items = items.filter(item => item.category === currentCategory);
     }
+
+    // Lưu danh sách đầy đủ và quay lại trang 1 mỗi khi nguồn dữ liệu thay đổi (tìm kiếm/lọc/tải lại)
+    currentFoodList = Array.isArray(items) ? items : [];
+    currentPage = 1;
+    renderCurrentPage();
+}
+
+// Hiển thị đúng phần sản phẩm thuộc trang hiện tại (dựa trên currentFoodList, currentPage, pageSize)
+function renderCurrentPage() {
+    const foodContainer = document.getElementById('food-list');
+    if (!foodContainer) return;
+
+    const fullList = currentFoodList;
+    const totalItems = fullList.length;
+
+    // pageSize === 'all' => hiển thị tất cả trong 1 trang
+    const showAll = pageSize === 'all';
+    const size = showAll ? (totalItems || 1) : pageSize;
+    const totalPages = showAll ? 1 : Math.max(1, Math.ceil(totalItems / size));
+
+    // Chặn currentPage trong khoảng hợp lệ
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const startIndex = showAll ? 0 : (currentPage - 1) * size;
+    const items = fullList.slice(startIndex, startIndex + size);
 
     // Prevent single item from stretching to full width
     // Reset any previous layout adjustments
@@ -97,6 +129,68 @@ function renderFoodItems(itemsToRender = null) {
             // Make sure it doesn't visually stretch by constraining its inner layout
             singleEl.style.display = 'block';
         }
+    }
+
+    // Vẽ nút chuyển trang + thông tin trang
+    renderPaginationControls(totalItems, totalPages, showAll);
+}
+
+// Vẽ thanh điều hướng phân trang (Trước / các số trang / Sau) và thông tin trang
+function renderPaginationControls(totalItems, totalPages, showAll) {
+    const controls = document.getElementById('pagination-controls');
+    const pageInfo = document.getElementById('page-info');
+
+    if (pageInfo) {
+        if (totalItems === 0) {
+            pageInfo.textContent = 'Không có sản phẩm';
+        } else if (showAll) {
+            pageInfo.textContent = `Hiển thị tất cả ${totalItems} sản phẩm`;
+        } else {
+            const start = (currentPage - 1) * pageSize + 1;
+            const end = Math.min(currentPage * pageSize, totalItems);
+            pageInfo.textContent = `Hiển thị ${start}-${end} / ${totalItems} sản phẩm`;
+        }
+    }
+
+    if (!controls) return;
+
+    // Không cần nút chuyển trang khi chỉ có 1 trang hoặc đang hiển thị tất cả
+    if (showAll || totalPages <= 1) {
+        controls.innerHTML = '';
+        return;
+    }
+
+    let html = '';
+    // Nút "Trước"
+    html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>&laquo; Trước</button>`;
+
+    // Các nút số trang
+    for (let p = 1; p <= totalPages; p++) {
+        const activeClass = p === currentPage ? ' active' : '';
+        html += `<button class="page-btn${activeClass}" onclick="goToPage(${p})">${p}</button>`;
+    }
+
+    // Nút "Sau"
+    html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Sau &raquo;</button>`;
+
+    controls.innerHTML = html;
+}
+
+// Người dùng đổi số sản phẩm hiển thị trong 1 trang
+function changePageSize(value) {
+    pageSize = value === 'all' ? 'all' : parseInt(value, 10);
+    currentPage = 1;
+    renderCurrentPage();
+}
+
+// Chuyển tới trang được chọn
+function goToPage(page) {
+    currentPage = page;
+    renderCurrentPage();
+    // Cuộn lên đầu khu vực sản phẩm để dễ xem
+    const foodDisplay = document.getElementById('food-display');
+    if (foodDisplay) {
+        foodDisplay.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -274,6 +368,8 @@ window.loadHotProducts = loadHotProducts;
 window.loadBestSellersProducts = loadBestSellersProducts;
 window.searchByCategory = searchByCategory;
 window.advancedSearch = advancedSearch;
+window.changePageSize = changePageSize;
+window.goToPage = goToPage;
 
 // Cart functions - loaded from cart.js
 // These functions are implemented in cart.js

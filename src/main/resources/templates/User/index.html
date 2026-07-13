@@ -111,8 +111,27 @@
         <!-- Food Display -->
         <div class="food-display" id="food-display">
             <h1>Các loại bánh nổi bật gần bạn</h1>
+
+            <!-- Phân trang: cho phép người dùng tự chọn số sản phẩm hiển thị trong 1 trang -->
+            <div class="pagination-bar" id="page-size-bar">
+                <label for="page-size-select">Số sản phẩm mỗi trang:</label>
+                <select id="page-size-select" onchange="changePageSize(this.value)">
+                    <option value="4">4</option>
+                    <option value="8" selected>8</option>
+                    <option value="12">12</option>
+                    <option value="16">16</option>
+                    <option value="all">Tất cả</option>
+                </select>
+                <span id="page-info" class="page-info"></span>
+            </div>
+
             <div class="food-display-list" id="food-list">
                 <!-- Food items will be populated by JavaScript -->
+            </div>
+
+            <!-- Nút chuyển trang -->
+            <div class="pagination-controls" id="pagination-controls">
+                <!-- Pagination buttons will be populated by JavaScript -->
             </div>
         </div>
 

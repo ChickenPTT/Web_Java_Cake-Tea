@@ -55,7 +55,6 @@ public class HomeController {
                        Model model) {
         User user = userService.loginUser(email, password);
         if (user != null) {
-            // Redirect to home page after successful login
             return "redirect:/";
         } else {
             model.addAttribute("error", "Invalid email or password");
@@ -83,7 +82,6 @@ public class HomeController {
                     .name(name)
                     .build();
             userService.registerUser(user);
-            // After successful registration, redirect to login
             return "redirect:/login";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
@@ -104,6 +102,25 @@ public class HomeController {
     public ResponseEntity<List<Food>> searchFood(@RequestParam String name) {
         List<Food> foods = foodService.searchFoodByName(name);
         return ResponseEntity.ok(foods);
+    }
+
+    // Phân trang: người dùng tự chọn
+    @GetMapping("/api/food/page")
+    @ResponseBody
+    public ResponseEntity<?> getFoodPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+        var foodPage = foodService.getFoodPage(page, size);
+
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        response.put("content", foodPage.getContent());
+        response.put("currentPage", foodPage.getNumber());
+        response.put("pageSize", foodPage.getSize());
+        response.put("totalItems", foodPage.getTotalElements());
+        response.put("totalPages", foodPage.getTotalPages());
+        response.put("first", foodPage.isFirst());
+        response.put("last", foodPage.isLast());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/api/food/category/{category}")
