@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order - Sugar Petals</title>
+    <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
+    <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
+    <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
+    <link rel="stylesheet" href="/user/css/cart.css" th:href="@{/user/css/cart.css}">
+    <link rel="stylesheet" href="/user/css/place-order.css" th:href="@{/user/css/place-order.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="index.html"><img src="/user/assets/logo.png" th:src="@{/user/assets/logo.png}" alt="Logo" class="logo"></a>
+            <div class="site-info">
+                <h1 class="site-name">Sugar Petals</h1>
+                <p class="site-slogan">Delicate bites, blooming delights</p>
+            </div>
+        </div>
+        
+        <ul class="navbar-menu">
+            <a href="index.html">Home</a>
+            <a href="index.html#explore-menu">Menu</a>
+            <a href="index.html#app-download">Mobile-app</a>
+            <a href="index.html#footer">Contact us</a>
+        </ul>
+
+        <div class="navbar-right">
+            <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Search">
+            
+            <div class="navbar-search-icon">
+                <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
+                <div class="dot" id="cart-dot" style="display: none;"></div>
+            </div>
+            <button id="signin-btn" onclick="window.location.href='index.html'">Sign in</button>
+            <div class="navbar-profile" id="navbar-profile" style="display: none;">
+                <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
+                <ul class="nav-profile-dropdown">
+                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Orders</p></li>
+                    <hr>
+                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Logout</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="app">
+        <form class="place-order" id="order-form">
+            <div class="place-order-left">
+                <p class="title">Delivery Information</p>
+                <div class="multi-fields">
+                    <input required name="firstName" type="text" placeholder="First Name">
+                    <input required name="lastName" type="text" placeholder="Last Name">
+                </div>
+                <input required name="email" type="email" placeholder="Email">
+                <input required name="street" type="text" placeholder="Street">
+                <div class="multi-fields">
+                    <input required name="city" type="text" placeholder="City">
+                    <input required name="state" type="text" placeholder="State">
+                </div>
+                <div class="multi-fields">
+                    <input required name="zipcode" type="text" placeholder="Zip Code">
+                    <input required name="country" type="text" placeholder="Country">
+                </div>
+                <input required name="phone" type="text" placeholder="Phone">
+            </div>
+
+            <div class="place-order-right">
+                <div class="cart-total">
+                    <h2>Cart Totals</h2>
+                    <div>
+                        <div class="cart-total-details">
+                            <p>Subtotal</p>
+                            <p id="subtotal">$0</p>
+                        </div>
+                        <hr>
+                        <div class="cart-total-details">
+                            <p>Delivery Fee</p>
+                            <p id="delivery-fee">$0</p>
+                        </div>
+                        <hr>
+                        <div class="cart-total-details">
+                            <b>Total</b>
+                            <b id="total">$0</b>
+                        </div>
+                    </div>
+                    <button type="submit">PLACE ORDER</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-content-left">
+                <div class="footer-content-left-title">
+                    <img class="footer-logo" src="/user/assets/logo1.png" th:src="@{/user/assets/logo1.png}" alt="">
+                    <div class="footer-logo-texts">
+                        <h1 class="footer-company-title">SUGAR PETALS</h1>
+                        <h4 class="footer-tagline">Delicate bites, blooming delights</h4>
+                    </div>
+                </div>
+                <p>
+                    Sugar Petals Bakery offers handcrafted desserts with delicate flavors and premium ingredients.
+                    We are dedicated to creating sweet and memorable moments for you and your loved ones.
+                </p>
+                <div class="footer-social-icons">
+                    <a href="https://www.vlu.edu.vn/" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/website_icon.png" th:src="@{/user/assets/website_icon.png}" alt="Website"></a>
+                    <a href="https://www.facebook.com/itvlu#" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/facebook_icon.png" th:src="@{/user/assets/facebook_icon.png}" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/vanlanguniversity/" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/instagram_icon.png" th:src="@{/user/assets/instagram_icon.png}" alt="Instagram"></a>
+                </div>
+            </div>
+
+            <div class="footer-content-center">
+                <h2>COMPANY</h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Privacy policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-content-right">
+                <h2>GET IN TOUCH</h2>
+                <ul>
+                    <li>(+84) 396 982 385</li>
+                    <li>nguyenlenhatlinh512@gmail.com</li>
+                    <li>69/68 Dang Thuy Tram Street,</li>
+                    <li>An Nhon Ward, Ho Chi Minh City</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="footer-copyright">© 2023 Sugar Petals Bakery. All rights reserved.</p>
+    </div>
+
+    <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
+    <script src="/user/js/order.js" th:src="@{/user/js/order.js}"></script>
+</body>
+</html>

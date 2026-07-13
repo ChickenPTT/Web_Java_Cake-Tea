@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugar Petals - Delicate bites, blooming delights</title>
+    <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
+    <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
+    <link rel="stylesheet" href="/user/css/header.css" th:href="@{/user/css/header.css}">
+    <link rel="stylesheet" href="/user/css/explore-menu.css" th:href="@{/user/css/explore-menu.css}">
+    <link rel="stylesheet" href="/user/css/food-display.css" th:href="@{/user/css/food-display.css}">
+    <link rel="stylesheet" href="/user/css/food-item.css" th:href="@{/user/css/food-item.css}">
+    <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
+    <link rel="stylesheet" href="/user/css/login-popup.css" th:href="@{/user/css/login-popup.css}">
+    <link rel="stylesheet" href="/user/css/app-download.css" th:href="@{/user/css/app-download.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Popup -->
+    <div id="login-popup" class="login-popup" style="display: none;">
+        <form class="login-popup-container" id="login-form">
+            <div class="login-popup-title">
+                <h2 id="login-title">Login</h2>
+                <img src="/user/assets/cross_icon.png" th:src="@{/user/assets/cross_icon.png}" alt="" onclick="closeLoginPopup()">
+            </div>
+            <div class="login-popup-inputs">
+                <input type="text" id="name-input" placeholder="Enter your name" style="display: none;">
+                <input type="email" id="email-input" placeholder="Enter your email" required>
+                <input type="password" id="password-input" placeholder="Enter password" required>
+            </div>
+            <button type="submit" id="login-button">Login</button>
+            <div class="login-popup-condition">
+                <input type="checkbox" required>
+                <p>By continuing, you agree to our Terms of Service and Privacy Policy.</p>
+            </div>
+            <p id="login-toggle">Create a new account? <span onclick="toggleLoginMode()">Click here!</span></p>
+        </form>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="index.html"><img src="/user/assets/logo.png" th:src="@{/user/assets/logo.png}" alt="Logo" class="logo"></a>
+            <div class="site-info">
+                <h1 class="site-name">Sugar Petals</h1>
+                <p class="site-slogan">Delicate bites, blooming delights</p>
+            </div>
+        </div>
+        
+        <ul class="navbar-menu">
+            <a href="index.html" class="active">Home</a>
+            <a href="#explore-menu">Menu</a>
+            <a href="#app-download">Mobile-app</a>
+            <a href="#footer">Contact us</a>
+        </ul>
+
+        <div class="navbar-right">
+            <div class="navbar-search">
+                <input type="text" id="search-input" placeholder="Search food..." onkeyup="handleSearch(event)">
+                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Search" onclick="performSearch()">
+            </div>
+            
+            <div class="navbar-search-icon">
+                <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
+            </div>
+            <button id="signin-btn" onclick="showLoginPopup()">Sign in</button>
+            <div class="navbar-profile" id="navbar-profile" style="display: none;">
+                <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
+                <ul class="nav-profile-dropdown">
+                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Orders</p></li>
+                    <hr>
+                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Logout</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-contents">
+                <h2>A Bloom of Sweet Elegance</h2>
+                <p>
+                    At Sugar Petals, we transform simple ingredients into delicate works of edible art. 
+                    Each creation blends flavor and beauty in perfect harmony, crafted to delight your senses. 
+                    Let every bite bring a touch of sweetness and a blooming moment of joy to your day.
+                </p>
+                <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">View Menu</button>
+            </div>
+        </div>
+
+        <!-- Explore Menu -->
+        <div class="explore-menu" id="explore-menu">
+            <h1>Explore our menu</h1>
+            <p class="explore-menu-text">
+                Explore our diverse menu of delicious baked goods and sweet treats. 
+                From classic pastries to delightful desserts, pick your favorite and enjoy the perfect flavor today!
+            </p>
+            <div class="explore-menu-list" id="menu-categories">
+                <!-- Categories will be populated by JavaScript -->
+            </div>
+            <hr>
+        </div>
+
+        <!-- Food Display -->
+        <div class="food-display" id="food-display">
+            <h1>Top cakes near you</h1>
+            <div class="food-display-list" id="food-list">
+                <!-- Food items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- App Download -->
+        <div class="app-download" id="app-download">
+            <p>For Better Experience Download <br>Sugar Petals App</p>
+            <div class="app-download-platforms">
+                <img src="/user/assets/play_store.jpg" th:src="@{/user/assets/play_store.jpg}" alt="">
+                <img src="/user/assets/app_store.jpg" th:src="@{/user/assets/app_store.jpg}" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-content-left">
+                <div class="footer-content-left-title">
+                    <img class="footer-logo" src="/user/assets/logo1.png" th:src="@{/user/assets/logo1.png}" alt="">
+                    <div class="footer-logo-texts">
+                        <h1 class="footer-company-title">SUGAR PETALS</h1>
+                        <h4 class="footer-tagline">Delicate bites, blooming delights</h4>
+                    </div>
+                </div>
+                <p>
+                    Sugar Petals Bakery offers handcrafted desserts with delicate flavors and premium ingredients.
+                    We are dedicated to creating sweet and memorable moments for you and your loved ones.
+                </p>
+                <div class="footer-social-icons">
+                    <a href="https://www.vlu.edu.vn/" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/website_icon.png" th:src="@{/user/assets/website_icon.png}" alt="Website"></a>
+                    <a href="https://www.facebook.com/itvlu#" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/facebook_icon.png" th:src="@{/user/assets/facebook_icon.png}" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/vanlanguniversity/" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/instagram_icon.png" th:src="@{/user/assets/instagram_icon.png}" alt="Instagram"></a>
+                </div>
+            </div>
+
+            <div class="footer-content-center">
+                <h2>COMPANY</h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Delivery</a></li>
+                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="admin/login.html">Admin</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-content-right">
+                <h2>GET IN TOUCH</h2>
+                <ul>
+                    <li>(+84) 396 982 385</li>
+                    <li>nguyenlenhatlinh512@gmail.com</li>
+                    <li>69/68 Dang Thuy Tram Street,</li>
+                    <li>An Nhon Ward, Ho Chi Minh City</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="footer-copyright">© 2023 Sugar Petals Bakery. All rights reserved.</p>
+    </div>
+
+    <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
+    <script src="/user/js/main.js" th:src="@{/user/js/main.js}"></script>
+</body>
+</html>
