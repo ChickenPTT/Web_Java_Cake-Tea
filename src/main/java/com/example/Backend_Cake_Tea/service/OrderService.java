@@ -1,7 +1,6 @@
 package com.example.Backend_Cake_Tea.service;
 
 import com.example.Backend_Cake_Tea.model.Order;
-import com.example.Backend_Cake_Tea.model.User;
 import com.example.Backend_Cake_Tea.repository.OrderRepository;
 import com.example.Backend_Cake_Tea.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import com.example.Backend_Cake_Tea.repository.OrderRepository;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 
 @Service
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -59,6 +54,7 @@ public class OrderService {
             return orderRepository.save(order);
         }
         return null;
+    }
     private final OrderRepository orderRepository;
 
     public OrderService(OrderRepository orderRepository) {
