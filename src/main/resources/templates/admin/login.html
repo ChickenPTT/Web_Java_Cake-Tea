@@ -93,9 +93,22 @@
             eye.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
-    if (localStorage.getItem('adminLoggedIn') === 'true') {
-        window.location.href = '/admin';
-    }
+    // Chỉ chuyển vào /admin khi session Spring Security còn hiệu lực
+    // (tránh loop: localStorage true nhưng chưa đăng nhập → /admin → /admin/login → /admin ...)
+    (async function checkAdminSession() {
+        if (localStorage.getItem('adminLoggedIn') !== 'true') return;
+        try {
+            const res = await fetch('/api/admin/dashboard/stats', { credentials: 'same-origin' });
+            if (res.ok) {
+                window.location.replace('/admin');
+            } else {
+                localStorage.removeItem('adminLoggedIn');
+            }
+        } catch (_) {
+            localStorage.removeItem('adminLoggedIn');
+        }
+    })();
+
     document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const alert = document.getElementById('login-alert');
@@ -104,6 +117,7 @@
             const res = await fetch('/api/admin/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
                 body: JSON.stringify({
                     username: document.getElementById('username').value,
                     password: document.getElementById('password').value
@@ -112,12 +126,14 @@
             const data = await res.json();
             if (data.success) {
                 localStorage.setItem('adminLoggedIn', 'true');
-                window.location.href = '/admin';
+                window.location.replace('/admin');
             } else {
+                localStorage.removeItem('adminLoggedIn');
                 alert.textContent = data.message || 'Đăng nhập thất bại';
                 alert.classList.remove('d-none');
             }
         } catch (err) {
+            localStorage.removeItem('adminLoggedIn');
             alert.textContent = 'Lỗi kết nối server';
             alert.classList.remove('d-none');
         }

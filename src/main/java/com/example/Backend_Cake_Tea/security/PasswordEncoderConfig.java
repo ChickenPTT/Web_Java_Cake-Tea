@@ -1,4 +1,4 @@
-package com.example.Backend_Cake_Tea.config;
+package com.example.Backend_Cake_Tea.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

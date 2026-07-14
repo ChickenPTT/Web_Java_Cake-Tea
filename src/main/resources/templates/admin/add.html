@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Thêm sản phẩm - Sugar Petals Admin</title>
+    <title>Sản phẩm - Sugar Petals Admin</title>
     <th:block th:replace="~{admin/layout/css :: css}"></th:block>
 </head>
 <body>
@@ -14,12 +14,12 @@
         <div class="main-panel">
             <div class="content-wrapper form-page">
                 <div class="page-header">
-                    <h3 class="page-title">Thêm sản phẩm</h3>
+                    <h3 class="page-title" id="page-title">Thêm sản phẩm</h3>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a th:href="@{/admin}">Bảng điều khiển</a></li>
                             <li class="breadcrumb-item"><a th:href="@{/admin/products}">Sản phẩm</a></li>
-                            <li class="breadcrumb-item active">Thêm mới</li>
+                            <li class="breadcrumb-item active" id="breadcrumb-action">Thêm mới</li>
                         </ol>
                     </nav>
                 </div>
@@ -27,6 +27,7 @@
                     <div class="card rounded shadow">
                         <div class="card-body">
                             <form id="add-form">
+                                <input type="hidden" id="product-id">
                                 <div class="row">
                                     <div class="col-md-4 text-center mb-3">
                                         <label class="d-block font-weight-bold mb-2">Ảnh sản phẩm</label>
@@ -34,15 +35,27 @@
                                             <img id="image-preview" th:src="@{/admin/assets/upload_area.png}" alt="" class="img-fluid rounded" style="max-height:200px;">
                                         </label>
                                         <input type="file" id="image" accept="image/*" class="form-control-file mt-2">
+                                        <input type="hidden" id="existing-image">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Tên sản phẩm *</label>
-                                            <input type="text" name="name" class="form-control" required>
+                                            <input type="text" name="name" id="product-name" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Slug</label>
+                                            <input type="text" name="slug" id="product-slug" class="form-control"
+                                                   placeholder="tu-dong-tao-tu-ten" readonly>
+                                            <div class="form-check mt-2">
+                                                <input class="form-check-input" type="checkbox" id="product-slug-auto" checked>
+                                                <label class="form-check-label" for="product-slug-auto">
+                                                    Tự động tạo slug từ tên
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Mô tả *</label>
-                                            <textarea name="description" class="form-control" rows="4" required></textarea>
+                                            <textarea name="description" id="product-description" class="form-control" rows="4" required></textarea>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
@@ -53,10 +66,12 @@
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label>Giá (VNĐ) *</label>
-                                                <input type="number" name="price" class="form-control" min="0" required>
+                                                <input type="number" name="price" id="product-price" class="form-control" min="0" required>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-success"><i class="mdi mdi-content-save mr-1"></i> Lưu sản phẩm</button>
+                                        <button type="submit" class="btn btn-success" id="submit-btn">
+                                            <i class="mdi mdi-content-save mr-1"></i> Lưu sản phẩm
+                                        </button>
                                         <a th:href="@{/admin/products}" class="btn btn-light">Hủy</a>
                                     </div>
                                 </div>

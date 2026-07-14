@@ -17,7 +17,10 @@ public class Menu {
     
     @Column(nullable = false, unique = true, length = 100)
     private String menuName;
-    
+
+    @Column(unique = true, length = 150)
+    private String slug;
+
     @Column(length = 500)
     private String menuImage;
     
