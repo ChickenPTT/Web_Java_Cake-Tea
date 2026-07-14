@@ -1,6 +1,8 @@
 package com.example.Backend_Cake_Tea.service;
 
+import com.example.Backend_Cake_Tea.model.Role;
 import com.example.Backend_Cake_Tea.model.User;
+import com.example.Backend_Cake_Tea.repository.RoleRepository;
 import com.example.Backend_Cake_Tea.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public Optional<User> findByEmail(String email) {
@@ -26,6 +31,11 @@ public class UserService {
             throw new RuntimeException("Email already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getRole() == null) {
+            Role userRole = roleRepository.findByName(Role.USER)
+                    .orElseThrow(() -> new RuntimeException("Role USER not found"));
+            user.setRole(userRole);
+        }
         return userRepository.save(user);
     }
 

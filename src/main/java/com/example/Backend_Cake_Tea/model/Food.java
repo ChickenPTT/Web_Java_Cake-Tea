@@ -17,7 +17,10 @@ public class Food {
     
     @Column(nullable = false, length = 255)
     private String name;
-    
+
+    @Column(unique = true, length = 255)
+    private String slug;
+
     @Column(columnDefinition = "TEXT")
     private String description;
     

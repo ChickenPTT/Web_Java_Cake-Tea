@@ -37,4 +37,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("from") LocalDateTime from,
             @Param("to") LocalDateTime to,
             @Param("status") String status);
+
+    @Query("SELECT o.status, COUNT(o) FROM Order o GROUP BY o.status")
+    List<Object[]> countGroupByStatus();
+
+    @Query("SELECT FUNCTION('DATE', o.createdAt), COUNT(o) " +
+           "FROM Order o WHERE o.createdAt BETWEEN :from AND :to " +
+           "GROUP BY FUNCTION('DATE', o.createdAt) ORDER BY FUNCTION('DATE', o.createdAt)")
+    List<Object[]> countDailyOrders(
+            @Param("from") LocalDateTime from,
+            @Param("to") LocalDateTime to);
 }

@@ -145,22 +145,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             fetch(endpoint, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                credentials: 'same-origin'
             })
-            .then(response => {
+            .then(async response => {
                 if (response.ok) {
-                    closeLoginPopup();
-                    checkUserSession();
-                    loginForm.reset();
-                    resetLoginForm();
-                    
-                    // Show success message
-                    const message = isLoginMode ? 'Đăng nhập thành công!' : 'Đăng ký thành công!';
-                    console.log(message);
+                    if (isLoginMode) {
+                        closeLoginPopup();
+                        checkUserSession();
+                        loginForm.reset();
+                        resetLoginForm();
+                    } else {
+                        alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                        isLoginMode = true;
+                        const email = emailInput.value;
+                        resetLoginForm();
+                        document.getElementById('email-input').value = email;
+                    }
                 } else {
-                    response.text().then(text => {
-                        alert('Lỗi: ' + (text || 'Đăng nhập/đăng ký thất bại'));
-                    });
+                    let message = 'Đăng nhập/đăng ký thất bại';
+                    try {
+                        const data = await response.json();
+                        message = data.message || message;
+                    } catch (_) {
+                        const text = await response.text();
+                        if (text) message = text;
+                    }
+                    alert('Lỗi: ' + message);
                 }
             })
             .catch(error => {

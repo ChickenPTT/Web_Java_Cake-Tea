@@ -214,7 +214,10 @@ function refreshFoodItems() {
 // Load hot/new products (Feature 6)
 function loadHotProducts() {
     fetch('/api/food/hot')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('hot products failed');
+            return response.json();
+        })
         .then(data => {
             allFoodItems = data;
             renderFoodItems(data);
@@ -224,7 +227,6 @@ function loadHotProducts() {
         })
         .catch(error => {
             console.error('Error loading hot products:', error);
-            // Fallback to showing all products sorted by relevance
             loadAllFood();
         });
 }
@@ -232,7 +234,10 @@ function loadHotProducts() {
 // Load best-selling products
 function loadBestSellersProducts() {
     fetch('/api/food/bestsellers')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('bestsellers failed');
+            return response.json();
+        })
         .then(data => {
             allFoodItems = data;
             renderFoodItems(data);
@@ -242,7 +247,6 @@ function loadBestSellersProducts() {
         })
         .catch(error => {
             console.error('Error loading best sellers:', error);
-            // Fallback to showing all products
             loadAllFood();
         });
 }
@@ -347,12 +351,10 @@ function loadAllMenus() {
         });
 }
 
-// Initialize
+// Initialize — luôn lấy dữ liệu từ API (cùng DB với admin)
 document.addEventListener('DOMContentLoaded', function() {
-    // loadAllMenus(); // Load menus from backend on page load
-    // loadAllFood(); // Load food from backend on page load
-    renderMenuCategories(); // Use local data from data.js
-    renderFoodItems(); // Use local data from data.js
+    loadAllMenus();
+    loadAllFood();
 });
 
 // Make functions globally available

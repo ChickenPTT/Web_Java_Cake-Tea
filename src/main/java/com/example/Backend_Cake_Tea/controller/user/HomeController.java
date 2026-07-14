@@ -9,10 +9,10 @@ import com.example.Backend_Cake_Tea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -48,33 +48,11 @@ public class HomeController {
 
 
 
-    // Handle login
-    @PostMapping("/login")
-    public String login(@RequestParam("email") String email, 
-                       @RequestParam("password") String password,
-                       Model model) {
-        User user = userService.loginUser(email, password);
-        if (user != null) {
-            return "redirect:/";
-        } else {
-            model.addAttribute("error", "Invalid email or password");
-            return "User/login";
-        }
-    }
-
-    // Logout
-    @GetMapping("/logout")
-    public String logout() {
-        return "redirect:/";
-    }
-
-
-    // Handle registration
+    // Registration only — login is handled by Spring Security formLogin (/login)
     @PostMapping("/register")
-    public String register(@RequestParam("email") String email,
-                         @RequestParam("password") String password,
-                         @RequestParam("name") String name,
-                         Model model) {
+    public ResponseEntity<?> register(@RequestParam("email") String email,
+                                      @RequestParam("password") String password,
+                                      @RequestParam("name") String name) {
         try {
             User user = User.builder()
                     .email(email)
@@ -82,10 +60,9 @@ public class HomeController {
                     .name(name)
                     .build();
             userService.registerUser(user);
-            return "redirect:/login";
+            return ResponseEntity.ok(Map.of("success", true, "message", "Đăng ký thành công"));
         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            return "User/register";
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", e.getMessage()));
         }
     }
 
@@ -95,6 +72,20 @@ public class HomeController {
     public ResponseEntity<List<Food>> getAllFood() {
         List<Food> foods = foodService.getAllFood();
         return ResponseEntity.ok(foods);
+    }
+
+    @GetMapping("/api/food/hot")
+    @ResponseBody
+    public ResponseEntity<List<Food>> getHotFood(
+            @RequestParam(defaultValue = "8") int limit) {
+        return ResponseEntity.ok(foodService.getHotFood(limit));
+    }
+
+    @GetMapping("/api/food/bestsellers")
+    @ResponseBody
+    public ResponseEntity<List<Food>> getBestSellers(
+            @RequestParam(defaultValue = "8") int limit) {
+        return ResponseEntity.ok(foodService.getBestSellers(limit));
     }
 
     @GetMapping("/api/food/search")

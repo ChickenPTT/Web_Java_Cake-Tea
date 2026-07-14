@@ -23,6 +23,16 @@ public class AdminPageController {
         return "admin/categories";
     }
 
+    @GetMapping("/categories/add")
+    public String addCategory() {
+        return "admin/category-form";
+    }
+
+    @GetMapping("/categories/edit/{id}")
+    public String editCategory() {
+        return "admin/category-form";
+    }
+
     @GetMapping("/products")
     public String products() {
         return "admin/list";
@@ -30,6 +40,11 @@ public class AdminPageController {
 
     @GetMapping("/products/add")
     public String addProduct() {
+        return "admin/add";
+    }
+
+    @GetMapping("/products/edit/{id}")
+    public String editProduct() {
         return "admin/add";
     }
 

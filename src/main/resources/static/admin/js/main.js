@@ -1,6 +1,7 @@
 function adminLogout() {
     localStorage.removeItem('adminLoggedIn');
-    window.location.href = '/admin/login';
+    fetch('/logout', { method: 'GET', credentials: 'same-origin' })
+        .finally(() => { window.location.href = '/admin/login'; });
 }
 window.adminLogout = adminLogout;
 
@@ -24,13 +25,28 @@ async function updateDashboardStats() {
     } catch (e) { console.error(e); }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const path = window.location.pathname;
-    if (!path.includes('/admin/login') && localStorage.getItem('adminLoggedIn') !== 'true') {
-        window.location.href = '/admin/login';
-        return;
-    }
-    if (path === '/admin' || path === '/admin/') {
-        updateDashboardStats();
+    if (path.includes('/admin/login')) return;
+
+    // Ưu tiên session server; localStorage chỉ là flag UI tạm
+    try {
+        const res = await fetch('/api/admin/dashboard/stats', { credentials: 'same-origin' });
+        if (!res.ok) {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.replace('/admin/login');
+            return;
+        }
+        localStorage.setItem('adminLoggedIn', 'true');
+        if (path === '/admin' || path === '/admin/') {
+            const data = await res.json();
+            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? 0; };
+            set('total-items', data.totalItems);
+            set('total-orders', data.totalOrders);
+            set('pending-orders', data.pendingOrders);
+        }
+    } catch (e) {
+        localStorage.removeItem('adminLoggedIn');
+        window.location.replace('/admin/login');
     }
 });
