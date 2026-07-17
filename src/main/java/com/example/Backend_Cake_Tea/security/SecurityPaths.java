@@ -7,6 +7,7 @@ public final class SecurityPaths {
     public static final String[] PUBLIC = {
             "/",
             "/index.html",
+            "/product.html",
             "/cart.html",
             "/login",
             "/register",

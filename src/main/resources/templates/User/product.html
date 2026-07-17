@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sugar Petals - Vị ngọt tinh tế, niềm vui nở rộ</title>
+    <title>Chi tiết sản phẩm - Sugar Petals</title>
     <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
     <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
-    <link rel="stylesheet" href="/user/css/header.css" th:href="@{/user/css/header.css}">
-    <link rel="stylesheet" href="/user/css/explore-menu.css" th:href="@{/user/css/explore-menu.css}">
-    <link rel="stylesheet" href="/user/css/food-display.css" th:href="@{/user/css/food-display.css}">
     <link rel="stylesheet" href="/user/css/food-item.css" th:href="@{/user/css/food-item.css}">
     <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
     <link rel="stylesheet" href="/user/css/login-popup.css" th:href="@{/user/css/login-popup.css}">
-    <link rel="stylesheet" href="/user/css/app-download.css" th:href="@{/user/css/app-download.css}">
+    <link rel="stylesheet" href="/user/css/product-detail.css" th:href="@{/user/css/product-detail.css}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -47,20 +44,20 @@
                 <p class="site-slogan">Delicate bites, blooming delights</p>
             </div>
         </div>
-        
+
         <ul class="navbar-menu">
-            <a href="index.html" class="active">Trang chủ</a>
-            <a href="#explore-menu">Thực đơn</a>
-            <a href="#app-download">Ứng dụng</a>
-            <a href="#footer">Liên hệ</a>
+            <a href="index.html">Trang chủ</a>
+            <a href="index.html#explore-menu">Thực đơn</a>
+            <a href="index.html#app-download">Ứng dụng</a>
+            <a href="index.html#footer">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
             <div class="navbar-search">
-                <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="handleSearch(event)">
-                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Tìm kiếm" onclick="performSearch()">
+                <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="if(event.key==='Enter'){window.location.href='index.html'}">
+                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Tìm kiếm">
             </div>
-            
+
             <div class="navbar-search-icon">
                 <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
@@ -78,70 +75,25 @@
     </div>
 
     <div class="app">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-contents">
-                <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
-                <p>
-                    Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
-                    Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
-                    Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
-                </p>
-                <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
-            </div>
-        </div>
-
-        <!-- Explore Menu -->
-        <div class="explore-menu" id="explore-menu">
-            <h1>Khám phá thực đơn của chúng tôi</h1>
-            <p class="explore-menu-text">
-                Khám phá thực đơn đa dạng của chúng tôi với các loại bánh ngọt và đồ ăn vặt ngon miệng.
-                Từ bánh pastry cổ điển đến dessert hấp dẫn, hãy chọn món yêu thích của bạn và thưởng thức hương vị hoàn hảo ngay hôm nay!
-            </p>
-            <div class="explore-menu-list" id="menu-categories">
-                <!-- Categories will be populated by JavaScript -->
-            </div>
-            <!-- Feature 6: Hot/New Products Filter -->
-            <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
-                <button onclick="loadHotProducts()" style="padding: 10px 20px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Sản Phẩm Mới (Hot)</button>
-                <button onclick="loadBestSellersProducts()" style="padding: 10px 20px; background: #ffd700; color: #333; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Bán Chạy Nhất</button>
-            </div>
-            <hr>
-        </div>
-
-        <!-- Food Display -->
-        <div class="food-display" id="food-display">
-            <h1>Các loại bánh nổi bật gần bạn</h1>
-
-            <!-- Phân trang: cho phép người dùng tự chọn số sản phẩm hiển thị trong 1 trang -->
-            <div class="pagination-bar" id="page-size-bar">
-                <label for="page-size-select">Số sản phẩm mỗi trang:</label>
-                <select id="page-size-select" onchange="changePageSize(this.value)">
-                    <option value="4">4</option>
-                    <option value="8" selected>8</option>
-                    <option value="12">12</option>
-                    <option value="16">16</option>
-                    <option value="all">Tất cả</option>
-                </select>
-                <span id="page-info" class="page-info"></span>
+        <div class="product-page">
+            <!-- Breadcrumb -->
+            <div class="product-breadcrumb">
+                <a href="index.html">Trang chủ</a>
+                <span class="sep">/</span>
+                <a href="index.html#explore-menu">Thực đơn</a>
+                <span class="sep">/</span>
+                <span class="current" id="breadcrumb-current">Chi tiết sản phẩm</span>
             </div>
 
-            <div class="food-display-list" id="food-list">
-                <!-- Food items will be populated by JavaScript -->
+            <!-- Chi tiết sản phẩm (render bằng JS) -->
+            <div class="product-detail" id="product-detail">
+                <div class="product-loading">Đang tải thông tin sản phẩm...</div>
             </div>
 
-            <!-- Nút chuyển trang -->
-            <div class="pagination-controls" id="pagination-controls">
-                <!-- Pagination buttons will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- App Download -->
-        <div class="app-download" id="app-download">
-            <p>Để Trải Nghiệm Tốt Hơn, Hãy Tải <br>Ứng Dụng Sugar Petals</p>
-            <div class="app-download-platforms">
-                <img src="/user/assets/play_store.jpg" th:src="@{/user/assets/play_store.jpg}" alt="">
-                <img src="/user/assets/app_store.jpg" th:src="@{/user/assets/app_store.jpg}" alt="">
+            <!-- Sản phẩm liên quan -->
+            <div class="related-products" id="related-section">
+                <h1>Sản phẩm liên quan</h1>
+                <div class="related-products-list" id="related-products-list"></div>
             </div>
         </div>
     </div>
@@ -192,9 +144,8 @@
         <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
-    <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
     <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
-    <script src="/user/js/main.js" th:src="@{/user/js/main.js}"></script>
     <script src="/user/js/cart.js" th:src="@{/user/js/cart.js}"></script>
+    <script src="/user/js/product.js" th:src="@{/user/js/product.js}"></script>
 </body>
 </html>
