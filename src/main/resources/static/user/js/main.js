@@ -98,11 +98,11 @@ function renderCurrentPage() {
 
     foodContainer.innerHTML = items.map((item) => {
         const itemId = item.id || item._id;
-        // Cart functionality will be implemented with Java backend
-        const cartControl = `<img class="add" onclick="addToCart('${itemId}')" src="/user/assets/add_icon_green.png" alt="">`;
+        // Click card -> mở trang chi tiết; nút thêm giỏ hàng chặn sự kiện lan ra ngoài
+        const cartControl = `<img class="add" onclick="event.stopPropagation(); addToCart('${itemId}')" src="/user/assets/add_icon_green.png" alt="">`;
 
         return `
-            <div class="food-item${isSingleItem ? ' single' : ''}">
+            <div class="food-item${isSingleItem ? ' single' : ''}" onclick="window.location.href='product.html?id=${itemId}'" style="cursor:pointer;">
                 <div class="food-item-img-container">
                     <img class="food-item-img" src="${item.image}" alt="${item.name}">
                     ${cartControl}

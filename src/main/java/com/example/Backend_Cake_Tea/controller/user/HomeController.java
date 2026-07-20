@@ -41,6 +41,11 @@ public class HomeController {
         return "User/order";
     }
 
+    @GetMapping("/product.html")
+    public String productDetail() {
+        return "User/product";
+    }
+
     @GetMapping("/myorders.html")
     public String myOrders() {
         return "User/myorders";
@@ -52,13 +57,26 @@ public class HomeController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestParam("email") String email,
                                       @RequestParam("password") String password,
-                                      @RequestParam("name") String name) {
+                                      @RequestParam("name") String name,
+                                      @RequestParam(value = "birthday", required = false) String birthday) {
+
         try {
-            User user = User.builder()
+            User.UserBuilder userBuilder = User.builder()
                     .email(email)
                     .password(password)
-                    .name(name)
-                    .build();
+                    .name(name);
+            
+            // Parse birthday if provided
+            if (birthday != null && !birthday.isEmpty()) {
+                try {
+                    java.time.LocalDate birthdayDate = java.time.LocalDate.parse(birthday);
+                    userBuilder.birthday(birthdayDate);
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("Lỗi định dạng ngày sinh: yyyy-MM-dd");
+                }
+            }
+            
+            User user = userBuilder.build();
             userService.registerUser(user);
             return ResponseEntity.ok(Map.of("success", true, "message", "Đăng ký thành công"));
         } catch (RuntimeException e) {
@@ -112,6 +130,17 @@ public class HomeController {
         response.put("first", foodPage.isFirst());
         response.put("last", foodPage.isLast());
         return ResponseEntity.ok(response);
+    }
+
+    // Chi tiết 1 sản phẩm theo id (chỉ khớp id dạng số để không đè /hot, /search, ...)
+    @GetMapping("/api/food/{id:\\d+}")
+    @ResponseBody
+    public ResponseEntity<Food> getFoodById(@PathVariable Long id) {
+        Food food = foodService.getFoodById(id);
+        if (food == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(food);
     }
 
     @GetMapping("/api/food/category/{category}")

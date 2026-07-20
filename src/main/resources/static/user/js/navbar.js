@@ -65,6 +65,7 @@ function closeLoginPopup() {
 // Reset login form to default state (login mode)
 function resetLoginForm() {
     const nameInput = document.getElementById('name-input');
+    const birthdayInput = document.getElementById('birthday-input');
     const loginTitle = document.getElementById('login-title');
     const loginButton = document.getElementById('login-button');
     const loginToggle = document.getElementById('login-toggle');
@@ -72,6 +73,8 @@ function resetLoginForm() {
     
     nameInput.style.display = 'none';
     nameInput.value = '';
+    birthdayInput.style.display = 'none';
+    birthdayInput.value = '';
     loginTitle.textContent = 'Đăng nhập';
     loginButton.textContent = 'Đăng nhập';
     loginToggle.innerHTML = 'Tạo tài khoản mới? <span onclick="toggleLoginMode()">Bấm vào đây!</span>';
@@ -87,6 +90,7 @@ function toggleLoginMode() {
     isLoginMode = !isLoginMode;
     
     const nameInput = document.getElementById('name-input');
+    const birthdayInput = document.getElementById('birthday-input');
     const loginTitle = document.getElementById('login-title');
     const loginButton = document.getElementById('login-button');
     const loginToggle = document.getElementById('login-toggle');
@@ -95,6 +99,8 @@ function toggleLoginMode() {
         // Switch to login mode
         nameInput.style.display = 'none';
         nameInput.value = '';
+        birthdayInput.style.display = 'none';
+        birthdayInput.value = '';
         loginTitle.textContent = 'Đăng nhập';
         loginButton.textContent = 'Đăng nhập';
         loginToggle.innerHTML = 'Tạo tài khoản mới? <span onclick="toggleLoginMode()">Bấm vào đây!</span>';
@@ -102,6 +108,8 @@ function toggleLoginMode() {
         // Switch to register mode
         nameInput.style.display = 'block';
         nameInput.value = '';
+        birthdayInput.style.display = 'block';
+        birthdayInput.value = '';
         loginTitle.textContent = 'Đăng ký';
         loginButton.textContent = 'Đăng ký';
         loginToggle.innerHTML = 'Đã có tài khoản? <span onclick="toggleLoginMode()">Bấm vào đây!</span>';
@@ -135,12 +143,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const endpoint = isLoginMode ? '/login' : '/register';
             
             if (!isLoginMode) {
-                // Register mode - include name
+                // Register mode - include name and birthday
                 if (!nameInput.value.trim()) {
                     alert('Vui lòng nhập tên của bạn');
                     return;
                 }
                 formData.append('name', nameInput.value);
+                
+                // Add birthday if provided
+                const birthdayInput = document.getElementById('birthday-input');
+                if (birthdayInput && birthdayInput.value) {
+                    formData.append('birthday', birthdayInput.value);
+                }
             }
             
             fetch(endpoint, {
