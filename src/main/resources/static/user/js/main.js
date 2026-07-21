@@ -63,7 +63,9 @@ function renderFoodItems(itemsToRender = null) {
     currentPage = 1;
     renderCurrentPage();
 }
-
+function formatPrice(price){
+    return price.toLocaleString('vi-VN') + " VND";
+}
 // Hiển thị đúng phần sản phẩm thuộc trang hiện tại (dựa trên currentFoodList, currentPage, pageSize)
 function renderCurrentPage() {
     const foodContainer = document.getElementById('food-list');
@@ -113,7 +115,7 @@ function renderCurrentPage() {
                         <img src="/user/assets/rating_starts.jpg" alt="">
                     </div>
                     <p class="food-item-desc">${item.description}</p>
-                    <p class="food-item-price">${item.price} VND</p>
+                    <p class="food-item-price">${formatPrice(item.price)}</p>
                 </div>
             </div>
         `;

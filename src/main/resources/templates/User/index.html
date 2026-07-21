@@ -50,9 +50,14 @@
         
         <ul class="navbar-menu">
             <a href="index.html" class="active">Trang chủ</a>
-            <a href="#explore-menu">Thực đơn</a>
+            <li class="nav-dropdown">
+                <a href="menu.html">Thực đơn</a>
+                <ul class="nav-category-dropdown" id="nav-category-dropdown">
+                    <!-- Danh mục được nạp bằng JavaScript (navbar.js) -->
+                </ul>
+            </li>
             <a href="#app-download">Ứng dụng</a>
-            <a href="#footer">Liên hệ</a>
+            <a href="contact.html">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
@@ -79,17 +84,35 @@
 
     <div class="app">
         <!-- Header -->
-        <div class="header">
-            <div class="header-contents">
-                <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
-                <p>
-                    Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
-                    Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
-                    Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
-                </p>
-                <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
+        <div class="header-slide">
+            <div class="header">
+                <div class="header-contents">
+                    <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
+                    <p>
+                        Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
+                        Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
+                        Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
+                    </p>
+                    <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
+                </div>
+                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header_img.jpg}" alt="">
             </div>
+            <div class="header">
+                <div class="header-contents">
+                    <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
+                    <p>
+                        Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
+                        Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
+                        Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
+                    </p>
+                    <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
+                </div>
+                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header_img.jpg}" alt="">
+            </div>
+
+
         </div>
+
 
         <!-- Explore Menu -->
         <div class="explore-menu" id="explore-menu">
@@ -136,15 +159,7 @@
             </div>
         </div>
 
-        <!-- App Download -->
-        <div class="app-download" id="app-download">
-            <p>Để Trải Nghiệm Tốt Hơn, Hãy Tải <br>Ứng Dụng Sugar Petals</p>
-            <div class="app-download-platforms">
-                <img src="/user/assets/play_store.jpg" th:src="@{/user/assets/play_store.jpg}" alt="">
-                <img src="/user/assets/app_store.jpg" th:src="@{/user/assets/app_store.jpg}" alt="">
-            </div>
-        </div>
-    </div>
+
 
     <!-- Footer -->
     <div class="footer" id="footer">

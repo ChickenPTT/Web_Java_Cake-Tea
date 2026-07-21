@@ -51,6 +51,16 @@ public class HomeController {
         return "User/myorders";
     }
 
+    @GetMapping("/contact.html")
+    public String contact() {
+        return "User/contact";
+    }
+
+    @GetMapping("/menu.html")
+    public String menu() {
+        return "User/menu";
+    }
+
 
 
     // Registration only — login is handled by Spring Security formLogin (/login)

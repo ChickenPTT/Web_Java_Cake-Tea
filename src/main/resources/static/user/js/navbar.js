@@ -31,6 +31,31 @@ function checkUserSession() {
         });
 }
 
+// Nạp danh mục vào dropdown "Thực đơn" trên navbar (hiển thị khi hover)
+function loadNavCategories() {
+    const dropdown = document.getElementById('nav-category-dropdown');
+    if (!dropdown) return;
+
+    const allItem = `<li onclick="window.location.href='menu.html'"><span>Tất cả sản phẩm</span></li>`;
+
+    fetch('/api/menu')
+        .then(response => response.ok ? response.json() : [])
+        .then(menus => {
+            const list = Array.isArray(menus) ? menus : [];
+            const items = list.map(m => {
+                const name = m.menuName || m.menu_name;
+                const img = m.menuImage || m.menu_image || '';
+                const imgTag = img ? `<img src="${img}" alt="${name}">` : '';
+                return `<li onclick="window.location.href='menu.html?category=${encodeURIComponent(name)}'">${imgTag}<span>${name}</span></li>`;
+            }).join('');
+            dropdown.innerHTML = allItem + items;
+        })
+        .catch(error => {
+            console.error('Error loading nav categories:', error);
+            dropdown.innerHTML = allItem;
+        });
+}
+
 // Track login mode (true = login, false = register)
 let isLoginMode = true;
 
@@ -197,4 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check user session on page load
     checkUserSession();
+
+    // Nạp danh mục cho dropdown "Thực đơn"
+    loadNavCategories();
 });

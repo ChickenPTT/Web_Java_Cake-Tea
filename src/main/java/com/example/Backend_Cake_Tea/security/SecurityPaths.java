@@ -9,6 +9,8 @@ public final class SecurityPaths {
             "/index.html",
             "/product.html",
             "/cart.html",
+            "/contact.html",
+            "/menu.html",
             "/login",
             "/register",
             "/logout",
