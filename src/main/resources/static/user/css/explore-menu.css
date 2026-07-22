@@ -59,3 +59,16 @@
     border: 6px solid #c70e1c;
     padding: 4px;
 }
+
+@media (max-width: 768px) {
+    .explore-menu h1{
+        font-size: 7vw;
+    }
+    .explore-menu-text{
+        font-size: 3.2vw;
+    }
+    .food-display h1{
+        font-size: 7vw;
+
+    }
+}

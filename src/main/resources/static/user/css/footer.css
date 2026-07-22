@@ -90,3 +90,57 @@
     flex-direction: column;
     gap: 10px;
 }
+
+/* ===== Tablet: giảm khoảng cách giữa các cột ===== */
+@media (max-width: 992px) {
+    .footer-content {
+        gap: 40px;
+    }
+}
+
+/* ===== Mobile: xếp các cột thành 1 hàng dọc, canh giữa ===== */
+@media (max-width: 768px) {
+    .footer {
+        padding: 40px 6vw 24px;
+        margin-top: 40px;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer-content-left,
+    .footer-content-right,
+    .footer-content-center {
+        align-items: center;
+    }
+
+    .footer-content-left p {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-content-left li,
+    .footer-content-right li,
+    .footer-content-center li {
+        text-align: center;
+    }
+
+    .footer-content-left-title {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-social-icons {
+        justify-content: center;
+        margin-right: 0;
+    }
+
+    .footer-copyright {
+        font-size: 13px;
+    }
+}

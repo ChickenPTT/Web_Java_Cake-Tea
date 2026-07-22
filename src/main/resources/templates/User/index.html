@@ -93,23 +93,31 @@
                         Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
                         Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
                     </p>
-                    <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
+                    <a href="menu.html">Xem Thực Đơn</a>
                 </div>
                 <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header_img.jpg}" alt="">
             </div>
-            <div class="header">
+            <div  class="header">
                 <div class="header-contents">
-                    <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
-                    <p>
-                        Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
-                        Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
-                        Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
-                    </p>
-                    <button onclick="document.getElementById('explore-menu').scrollIntoView({behavior: 'smooth'})">Xem Thực Đơn</button>
+                    <h2 class="header-contents-text">Nghệ Thuật Ướp Trà, Hương Vị Đọng Lại</h2>
+                    <p class="header-contents-decription"> Tại Sugar Petals, chúng tôi
+                        gói trọn tinh hoa của những vườn trà thượng hạng vào từng hộp trà tinh xảo. Mỗi hương vị là sự giao thoa tinh tế
+                        giữa lá trà thuần khiết và trái cây tươi mọng, được tuyển chọn để đánh thức mọi giác quan. Hãy để từng tách trà
+                        mang lại chút thanh tao và khoảnh khắc lắng đọng trọn vẹn trong ngày của bạn.</p>
+                    <a href="menu.html">Xem Thực Đơn</a>
                 </div>
-                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header_img.jpg}" alt="">
+                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header3_img.jpg}" alt="">
             </div>
 
+            <!-- Navigation Buttons -->
+            <button class="slide-nav prev" onclick="headerSlider.prevSlide()">&#10094;</button>
+            <button class="slide-nav next" onclick="headerSlider.nextSlide()">&#10095;</button>
+
+            <!-- Slide Indicators -->
+            <div class="slide-indicators">
+                <div class="slide-indicator active" onclick="headerSlider.goToSlide(0)"></div>
+                <div class="slide-indicator" onclick="headerSlider.goToSlide(1)"></div>
+            </div>
 
         </div>
 
@@ -158,8 +166,8 @@
                 <!-- Pagination buttons will be populated by JavaScript -->
             </div>
         </div>
-
-
+    </div>
+    <!-- /.app -->
 
     <!-- Footer -->
     <div class="footer" id="footer">
@@ -208,6 +216,7 @@
     </div>
 
     <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
+    <script src="/user/js/header.js" th:src="@{/user/js/header.js}"></script>
     <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/main.js" th:src="@{/user/js/main.js}"></script>
     <script src="/user/js/cart.js" th:src="@{/user/js/cart.js}"></script>

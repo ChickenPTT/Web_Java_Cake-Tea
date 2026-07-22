@@ -22,12 +22,26 @@ img.header-img {
     animation: fadeIn 3s ease-in-out;
     z-index: 1;
 }
+.header-contents .header-contents-text{
+    font-weight: 700;
+    color: cadetblue;
+    font-size: max(3vw, 28px);
+    line-height: 1.2;
 
+}
+.header-contents .header-contents-decription{
+    font-size: 1.1vw;
+    color: #FFFFFF;
+    line-height: 1.6;
+    max-width: 60%;
+    text-align: justify;
+}
 .header-contents h2 {
     font-weight: 700;
     color: #c70e1c;
     font-size: max(3vw, 28px);
     line-height: 1.2;
+
 }
 
 .header-contents p {
@@ -38,7 +52,7 @@ img.header-img {
     text-align: justify;
 }
 
-.header-contents button {
+.header-contents a {
     padding: 1vw 2.3vw;
     font-size: max(1vw, 13px);
     font-weight: 500;
@@ -49,9 +63,115 @@ img.header-img {
     cursor: pointer;
 }
 
-.header-contents button:hover {
+.header-contents a:hover {
   background-color: white;
   color: #c70e1c;
   border: 2px solid #c70e1c;
   transform: scale(1.05);
+}
+
+/* Header Slide Styles */
+.header-slide {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+    transition: transform 0.5s ease-in-out;
+}
+
+.header-slide .header {
+  display: none;
+  animation: slideIn 1s ease-in-out;
+}
+
+.header-slide .header.active {
+  display: block;
+}
+
+/* Ensure all header images have consistent sizing */
+.header-slide .header img.header-img {
+  object-fit: cover;
+  object-position: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+/* Slide Navigation Buttons */
+.slide-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-nav:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slide-nav.prev {
+  left: 20px;
+}
+
+.slide-nav.next {
+  right: 20px;
+}
+
+/* Slide Indicators */
+.slide-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.slide-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slide-indicator.active {
+  background-color: #c70e1c;
+  transform: scale(1.2);
+}
+
+.slide-indicator:hover {
+  background-color: rgba(255, 255, 255, 0.8);
 }

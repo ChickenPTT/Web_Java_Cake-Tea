@@ -225,4 +225,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Nạp danh mục cho dropdown "Thực đơn"
     loadNavCategories();
+
+    // Khởi tạo menu hamburger cho mobile
+    initMobileNav();
 });
+
+// ===== Menu hamburger cho mobile =====
+function initMobileNav() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar || navbar.querySelector('.nav-toggle')) return;
+
+    // Tạo nút hamburger
+    const toggle = document.createElement('button');
+    toggle.className = 'nav-toggle';
+    toggle.setAttribute('type', 'button');
+    toggle.setAttribute('aria-label', 'Mở menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<span></span><span></span><span></span>';
+    navbar.appendChild(toggle);
+
+    // Đóng/mở menu khi bấm nút
+    toggle.addEventListener('click', function () {
+        const isOpen = navbar.classList.toggle('nav-open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Đóng menu khi bấm vào một liên kết điều hướng
+    const menu = navbar.querySelector('.navbar-menu');
+    if (menu) {
+        menu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                navbar.classList.remove('nav-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    // Tự đóng menu khi phóng to lên desktop
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            navbar.classList.remove('nav-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+}

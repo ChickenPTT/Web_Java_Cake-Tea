@@ -1,0 +1,153 @@
+/* ===== Trang Thực đơn - Sugar Petals ===== */
+
+.menu-page {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 30px 6vw 20px;
+    font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Banner đầu trang */
+.menu-hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.menu-hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #c70e1c;
+    margin-bottom: 10px;
+}
+
+.menu-hero p {
+    font-size: 17px;
+    color: #666;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Bố cục: sidebar danh mục + lưới sản phẩm */
+.menu-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 36px;
+    align-items: start;
+}
+
+/* Sidebar danh mục */
+.menu-sidebar {
+    position: sticky;
+    top: 20px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.menu-sidebar h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fdeaec;
+}
+
+.menu-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-category-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #444;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.menu-category-list li img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.menu-category-list li:hover {
+    background: #fdeaec;
+    color: #c70e1c;
+}
+
+.menu-category-list li.active {
+    background: #c70e1c;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Khu vực sản phẩm */
+.menu-products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.menu-products-header h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #333;
+}
+
+.menu-products-header .menu-count {
+    color: #888;
+    font-size: 15px;
+}
+
+.menu-product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 28px;
+    row-gap: 40px;
+}
+
+.menu-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .menu-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-sidebar {
+        position: static;
+    }
+
+    .menu-category-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .menu-hero h1 {
+        font-size: 30px;
+    }
+}
