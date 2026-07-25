@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giỏ hàng - Sugar Petals</title>
+    <title>Liên Hệ - Sugar Petals</title>
     <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
     <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
     <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
-    <link rel="stylesheet" href="/user/css/cart.css" th:href="@{/user/css/cart.css}">
+    <link rel="stylesheet" href="/user/css/contact.css" th:href="@{/user/css/contact.css}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -20,7 +20,7 @@
                 <p class="site-slogan">Delicate bites, blooming delights</p>
             </div>
         </div>
-        
+
         <ul class="navbar-menu">
             <a href="index.html">Trang chủ</a>
             <li class="nav-dropdown">
@@ -30,12 +30,12 @@
                 </ul>
             </li>
             <a href="index.html#app-download">Ứng dụng</a>
-            <a href="contact.html">Liên hệ</a>
+            <a href="contact.html" class="active">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
             <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Search">
-            
+
             <div class="navbar-search-icon">
                 <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
@@ -52,54 +52,73 @@
         </div>
     </div>
 
-    <div class="app">
-        <div class="cart">
-            <div class="cart-items">
-                <div class="cart-items-title">
-                    <p>Hình ảnh</p>
-                    <p>Tên sản phẩm</p>
-                    <p>Giá</p>
-                    <p>Số lượng</p>
-                    <p>Tổng</p>
-                    <p>Xóa</p>
+    <!-- Nội dung trang liên hệ -->
+    <div class="contact-page">
+        <div class="contact-hero">
+            <h1>Liên Hệ Với Chúng Tôi</h1>
+            <p>
+                Bạn có câu hỏi, góp ý hay muốn đặt bánh cho dịp đặc biệt? Sugar Petals luôn sẵn sàng lắng nghe.
+                Hãy ghé thăm hoặc liên hệ với chúng tôi qua các thông tin dưới đây.
+            </p>
+        </div>
+
+        <div class="contact-container">
+            <!-- Cột thông tin -->
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-card-icon">📍</div>
+                    <div class="contact-card-body">
+                        <h3>Địa chỉ</h3>
+                        <p>Trường Đại học Văn Lang<br>
+                        69/68 Đặng Thùy Trâm, Phường 13, Quận Bình Thạnh, TP. Hồ Chí Minh</p>
+                    </div>
                 </div>
-                <br>
-                <hr>
-                <div id="cart-items-container">
-                    <!-- Cart items will be populated by JavaScript -->
+
+                <div class="contact-card">
+                    <div class="contact-card-icon">📞</div>
+                    <div class="contact-card-body">
+                        <h3>Điện thoại</h3>
+                        <p><a href="tel:+84932828756">(+84) 932 828 756</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-card-icon">✉️</div>
+                    <div class="contact-card-body">
+                        <h3>Email</h3>
+                        <p><a href="mailto:phantienthinh0907@gmail.com">phantienthinh0907@gmail.com</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-hours">
+                    <h3>Giờ mở cửa</h3>
+                    <ul>
+                        <li><span>Thứ 2 - Thứ 6</span><span>07:30 - 21:00</span></li>
+                        <li><span>Thứ 7</span><span>08:00 - 22:00</span></li>
+                        <li><span>Chủ nhật</span><span>08:00 - 20:00</span></li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="cart-bottom">
-                <div class="cart-total">
-                    <h2>Tổng giỏ hàng</h2>
-                    <div>
-                        <div class="cart-total-details">
-                            <p>Tạm tính</p>
-                            <p id="subtotal">$0</p>
-                        </div>
-                        <hr>
-                        <div class="cart-total-details">
-                            <p>Phí giao hàng</p>
-                            <p id="delivery-fee">$0</p>
-                        </div>
-                        <hr>
-                        <div class="cart-total-details">
-                            <b>Tổng cộng</b>
-                            <b id="total">$0</b>
-                        </div>
-                    </div>
-                    <button onclick="window.location.href='order.html'">TIẾN HÀNH THANH TOÁN</button>
-                </div>
-                <div class="cart-promocode">
-                    <div>
-                        <p>Nếu bạn có mã khuyến mãi, hãy nhập vào đây</p>
-                        <div class="cart-promocode-input">
-                            <input type="text" placeholder="Mã khuyến mãi">
-                            <button>Áp dụng</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="contact-map">
+                <iframe
+                    src="https://maps.google.com/maps?q=Tr%C6%B0%E1%BB%9Dng%20%C4%90%E1%BA%A1i%20h%E1%BB%8Dc%20V%C4%83n%20Lang%20C%C6%A1%20s%E1%BB%9F%203&z=16&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen
+                    title="Vị trí Trường Đại học Văn Lang">
+
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Mạng xã hội -->
+        <div class="contact-socials">
+            <h3>Kết nối với chúng tôi</h3>
+            <div class="contact-socials-list">
+                <a href="https://www.vlu.edu.vn/" target="_blank" rel="noopener noreferrer"><img src="/user/assets/website_icon.png" th:src="@{/user/assets/website_icon.png}" alt="Website"></a>
+                <a href="https://www.facebook.com/itvlu#" target="_blank" rel="noopener noreferrer"><img src="/user/assets/facebook_icon.png" th:src="@{/user/assets/facebook_icon.png}" alt="Facebook"></a>
+                <a href="https://www.instagram.com/vanlanguniversity/" target="_blank" rel="noopener noreferrer"><img src="/user/assets/instagram_icon.png" th:src="@{/user/assets/instagram_icon.png}" alt="Instagram"></a>
             </div>
         </div>
     </div>
@@ -133,6 +152,7 @@
                     <li><a href="#">Về chúng tôi</a></li>
                     <li><a href="#">Giao hàng</a></li>
                     <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="admin/login.html">Admin</a></li>
                 </ul>
             </div>
 
