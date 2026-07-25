@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết sản phẩm - Sugar Petals</title>
+    <title th:text="${pageTitle != null ? pageTitle : 'Chi tiết sản phẩm - Sugar Petals'}">Chi tiết sản phẩm - Sugar Petals</title>
+    <meta name="description" th:if="${pageDescription}" th:content="${pageDescription}">
+    <link rel="canonical" th:if="${productSlug}" th:href="@{|/product/${productSlug}|}">
     <link rel="stylesheet" href="/user/css/style.css" th:href="@{/user/css/style.css}">
     <link rel="stylesheet" href="/user/css/navbar.css" th:href="@{/user/css/navbar.css}">
     <link rel="stylesheet" href="/user/css/food-item.css" th:href="@{/user/css/food-item.css}">
@@ -11,9 +13,9 @@
     <link rel="stylesheet" href="/user/css/login-popup.css" th:href="@{/user/css/login-popup.css}">
     <link rel="stylesheet" href="/user/css/product-detail.css" th:href="@{/user/css/product-detail.css}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 </head>
 <body>
-    <!-- Login Popup -->
     <div id="login-popup" class="login-popup" style="display: none;">
         <form class="login-popup-container" id="login-form" method="post">
             <div class="login-popup-title">
@@ -35,10 +37,9 @@
         </form>
     </div>
 
-    <!-- Navbar -->
     <div class="navbar">
         <div class="navbar-left">
-            <a href="index.html"><img src="/user/assets/logo.png" th:src="@{/user/assets/logo.png}" alt="Logo" class="logo"></a>
+            <a href="/"><img src="/user/assets/logo.png" th:src="@{/user/assets/logo.png}" alt="Logo" class="logo"></a>
             <div class="site-info">
                 <h1 class="site-name">Sugar Petals</h1>
                 <p class="site-slogan">Delicate bites, blooming delights</p>
@@ -46,32 +47,31 @@
         </div>
 
         <ul class="navbar-menu">
-            <a href="index.html">Trang chủ</a>
+            <a href="/">Trang chủ</a>
             <li class="nav-dropdown">
-                <a href="menu.html">Thực đơn</a>
+                <a href="/menu.html">Thực đơn</a>
                 <ul class="nav-category-dropdown" id="nav-category-dropdown">
-                    <!-- Danh mục được nạp bằng JavaScript (navbar.js) -->
                 </ul>
             </li>
-            <a href="index.html#app-download">Ứng dụng</a>
-            <a href="contact.html">Liên hệ</a>
+            <a href="/#app-download">Ứng dụng</a>
+            <a href="/contact.html">Liên hệ</a>
         </ul>
 
         <div class="navbar-right">
             <div class="navbar-search">
-                <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="if(event.key==='Enter'){window.location.href='index.html'}">
+                <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="if(event.key==='Enter'){window.location.href='/'}">
                 <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Tìm kiếm">
             </div>
 
             <div class="navbar-search-icon">
-                <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
+                <a href="/cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
             </div>
             <button id="signin-btn" onclick="showLoginPopup()">Đăng nhập</button>
             <div class="navbar-profile" id="navbar-profile" style="display: none;">
                 <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
                 <ul class="nav-profile-dropdown">
-                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Đơn hàng</p></li>
+                    <li onclick="window.location.href='/myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Đơn hàng</p></li>
                     <hr>
                     <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Đăng xuất</p></li>
                 </ul>
@@ -81,21 +81,18 @@
 
     <div class="app">
         <div class="product-page">
-            <!-- Breadcrumb -->
             <div class="product-breadcrumb">
-                <a href="index.html">Trang chủ</a>
+                <a href="/">Trang chủ</a>
                 <span class="sep">/</span>
-                <a href="menu.html">Thực đơn</a>
+                <a href="/menu.html">Thực đơn</a>
                 <span class="sep">/</span>
                 <span class="current" id="breadcrumb-current">Chi tiết sản phẩm</span>
             </div>
 
-            <!-- Chi tiết sản phẩm (render bằng JS) -->
             <div class="product-detail" id="product-detail">
                 <div class="product-loading">Đang tải thông tin sản phẩm...</div>
             </div>
 
-            <!-- Sản phẩm liên quan -->
             <div class="related-products" id="related-section">
                 <h1>Sản phẩm liên quan</h1>
                 <div class="related-products-list" id="related-products-list"></div>
@@ -103,7 +100,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer" id="footer">
         <div class="footer-content">
             <div class="footer-content-left">
@@ -128,11 +124,11 @@
             <div class="footer-content-center">
                 <h2>CÔNG TY</h2>
                 <ul>
-                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="/">Trang chủ</a></li>
                     <li><a href="#">Về chúng tôi</a></li>
                     <li><a href="#">Giao hàng</a></li>
                     <li><a href="#">Chính sách bảo mật</a></li>
-                    <li><a href="admin/login.html">Admin</a></li>
+                    <li><a href="/admin/login">Admin</a></li>
                 </ul>
             </div>
 
@@ -149,6 +145,8 @@
         <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="/user/js/notify.js" th:src="@{/user/js/notify.js}"></script>
     <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/cart.js" th:src="@{/user/js/cart.js}"></script>
     <script src="/user/js/product.js" th:src="@{/user/js/product.js}"></script>

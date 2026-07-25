@@ -7,9 +7,12 @@ import com.example.Backend_Cake_Tea.service.FoodService;
 import com.example.Backend_Cake_Tea.service.MenuService;
 import com.example.Backend_Cake_Tea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +22,7 @@ public class HomeController {
 
     @Autowired
     private FoodService foodService;
-    
+
     @Autowired
     private MenuService menuService;
 
@@ -41,9 +44,39 @@ public class HomeController {
         return "User/order";
     }
 
-    @GetMapping("/product.html")
-    public String productDetail() {
+    @GetMapping("/product/{slug}")
+    public String productBySlug(@PathVariable String slug, Model model) {
+        model.addAttribute("productSlug", slug);
+        Food food = foodService.getFoodBySlug(slug);
+        if (food != null) {
+            model.addAttribute("pageTitle", food.getName() + " - Sugar Petals");
+            if (food.getDescription() != null && !food.getDescription().isBlank()) {
+                model.addAttribute("pageDescription", food.getDescription());
+            }
+        }
         return "User/product";
+    }
+
+    @GetMapping("/product.html")
+    public Object productDetailLegacy(
+            @RequestParam(required = false) String slug,
+            @RequestParam(required = false) Long id) {
+        if (slug != null && !slug.isBlank()) {
+            return permanentRedirect("/product/" + slug.trim());
+        }
+        if (id != null) {
+            Food food = foodService.getFoodById(id);
+            if (food != null && food.getSlug() != null && !food.getSlug().isBlank()) {
+                return permanentRedirect("/product/" + food.getSlug());
+            }
+        }
+        return "User/product";
+    }
+
+    private RedirectView permanentRedirect(String path) {
+        RedirectView view = new RedirectView(path, true);
+        view.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+        return view;
     }
 
     @GetMapping("/myorders.html")
@@ -61,9 +94,6 @@ public class HomeController {
         return "User/menu";
     }
 
-
-
-    // Registration only — login is handled by Spring Security formLogin (/login)
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestParam("email") String email,
                                       @RequestParam("password") String password,
@@ -75,8 +105,7 @@ public class HomeController {
                     .email(email)
                     .password(password)
                     .name(name);
-            
-            // Parse birthday if provided
+
             if (birthday != null && !birthday.isEmpty()) {
                 try {
                     java.time.LocalDate birthdayDate = java.time.LocalDate.parse(birthday);
@@ -85,7 +114,7 @@ public class HomeController {
                     throw new IllegalArgumentException("Lỗi định dạng ngày sinh: yyyy-MM-dd");
                 }
             }
-            
+
             User user = userBuilder.build();
             userService.registerUser(user);
             return ResponseEntity.ok(Map.of("success", true, "message", "Đăng ký thành công"));
@@ -94,7 +123,6 @@ public class HomeController {
         }
     }
 
-    // API endpoints for food
     @GetMapping("/api/food")
     @ResponseBody
     public ResponseEntity<List<Food>> getAllFood() {
@@ -123,7 +151,6 @@ public class HomeController {
         return ResponseEntity.ok(foods);
     }
 
-    // Phân trang: người dùng tự chọn
     @GetMapping("/api/food/page")
     @ResponseBody
     public ResponseEntity<?> getFoodPage(
@@ -142,11 +169,20 @@ public class HomeController {
         return ResponseEntity.ok(response);
     }
 
-    // Chi tiết 1 sản phẩm theo id (chỉ khớp id dạng số để không đè /hot, /search, ...)
     @GetMapping("/api/food/{id:\\d+}")
     @ResponseBody
     public ResponseEntity<Food> getFoodById(@PathVariable Long id) {
         Food food = foodService.getFoodById(id);
+        if (food == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(food);
+    }
+
+    @GetMapping("/api/food/slug/{slug}")
+    @ResponseBody
+    public ResponseEntity<Food> getFoodBySlug(@PathVariable String slug) {
+        Food food = foodService.getFoodBySlug(slug);
         if (food == null) {
             return ResponseEntity.notFound().build();
         }
@@ -160,7 +196,6 @@ public class HomeController {
         return ResponseEntity.ok(foods);
     }
 
-    // API endpoints for menu
     @GetMapping("/api/menu")
     @ResponseBody
     public ResponseEntity<List<Menu>> getAllMenus() {
@@ -168,7 +203,6 @@ public class HomeController {
         return ResponseEntity.ok(menus);
     }
 
-    // Kiểm tra đã login ở các page khác
     @GetMapping("/api/current-user")
     @ResponseBody
     public ResponseEntity<?> getCurrentUser() {
@@ -194,4 +228,3 @@ public class HomeController {
     }
 
 }
-

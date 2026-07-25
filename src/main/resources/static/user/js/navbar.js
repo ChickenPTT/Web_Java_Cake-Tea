@@ -1,37 +1,109 @@
-// Check current user session and update navbar
+function buildProfileDropdown() {
+    const navbarProfile = document.getElementById('navbar-profile');
+    if (!navbarProfile || navbarProfile.dataset.enhanced === '1') return;
+
+    navbarProfile.innerHTML = `
+        <button type="button" class="navbar-profile-trigger" id="navbar-profile-trigger" aria-expanded="false" aria-haspopup="true">
+            <img class="navbar-profile-avatar" src="/user/assets/profile_icon.png" alt="">
+            <span class="navbar-profile-name" id="navbar-profile-name">Tài khoản</span>
+            <span class="navbar-profile-caret" aria-hidden="true"></span>
+        </button>
+        <div class="nav-profile-dropdown" id="nav-profile-dropdown">
+            <div class="nav-profile-header">
+                <img src="/user/assets/profile_icon.png" alt="">
+                <div class="nav-profile-header-text">
+                    <p class="nav-profile-header-name" id="nav-profile-header-name">Khách hàng</p>
+                    <p class="nav-profile-header-email" id="nav-profile-header-email"></p>
+                </div>
+            </div>
+            <ul class="nav-profile-menu">
+                <li>
+                    <a href="/myorders.html">
+                        <img src="/user/assets/bag_icon.png" alt="">
+                        <span>Đơn hàng của tôi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/cart.html">
+                        <img src="/user/assets/icon-basket.jpg" alt="">
+                        <span>Giỏ hàng</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-profile-divider"></div>
+            <ul class="nav-profile-menu">
+                <li class="nav-profile-logout">
+                    <button type="button" onclick="logout()">
+                        <img src="/user/assets/logout_icon.png" alt="">
+                        <span>Đăng xuất</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    `;
+    navbarProfile.dataset.enhanced = '1';
+    initProfileDropdown();
+}
+
+function initProfileDropdown() {
+    const profile = document.getElementById('navbar-profile');
+    const trigger = document.getElementById('navbar-profile-trigger');
+    if (!profile || !trigger || trigger.dataset.bound === '1') return;
+
+    trigger.dataset.bound = '1';
+    trigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const open = profile.classList.toggle('is-open');
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!profile.contains(e.target)) {
+            profile.classList.remove('is-open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
+
+function updateProfileUser(data) {
+    const displayName = data.name || data.email || 'Tài khoản';
+    const nameEl = document.getElementById('navbar-profile-name');
+    const headerName = document.getElementById('nav-profile-header-name');
+    const headerEmail = document.getElementById('nav-profile-header-email');
+    if (nameEl) nameEl.textContent = displayName;
+    if (headerName) headerName.textContent = displayName;
+    if (headerEmail) headerEmail.textContent = data.email || '';
+}
+
 function checkUserSession() {
     fetch('/api/current-user')
         .then(response => response.json())
         .then(data => {
             const signinBtn = document.getElementById('signin-btn');
             const navbarProfile = document.getElementById('navbar-profile');
-            
+
             if (data.authenticated) {
-                // User is logged in - show profile, hide signin button
                 if (signinBtn) signinBtn.style.display = 'none';
                 if (navbarProfile) {
+                    buildProfileDropdown();
                     navbarProfile.style.display = 'flex';
-                    // Optional: update profile with user name
-                    const profileText = navbarProfile.querySelector('.profile-name');
-                    if (profileText) {
-                        profileText.textContent = data.name || data.email;
-                    }
+                    updateProfileUser(data);
                 }
             } else {
-                // User not logged in - show signin button, hide profile
                 if (signinBtn) signinBtn.style.display = 'block';
-                if (navbarProfile) navbarProfile.style.display = 'none';
+                if (navbarProfile) {
+                    navbarProfile.style.display = 'none';
+                    navbarProfile.classList.remove('is-open');
+                }
             }
         })
         .catch(error => {
             console.error('Error checking user session:', error);
-            // On error, show signin button by default
             const signinBtn = document.getElementById('signin-btn');
             if (signinBtn) signinBtn.style.display = 'block';
         });
 }
 
-// Nạp danh mục vào dropdown "Thực đơn" trên navbar (hiển thị khi hover)
 function loadNavCategories() {
     const dropdown = document.getElementById('nav-category-dropdown');
     if (!dropdown) return;
@@ -56,10 +128,8 @@ function loadNavCategories() {
         });
 }
 
-// Track login mode (true = login, false = register)
-let isLoginMode = true;
+let authMode = 'login';
 
-// Logout function
 function logout() {
     fetch('/logout', { method: 'GET' })
         .then(() => {
@@ -68,18 +138,74 @@ function logout() {
         .catch(error => console.error('Logout error:', error));
 }
 
-// Show login popup
+function ensureAuthFormLayout() {
+    const form = document.getElementById('login-form');
+    if (!form || form.dataset.layoutReady === '1') return;
+
+    const title = form.querySelector('.login-popup-title');
+    if (title && !document.getElementById('login-subtitle')) {
+        const subtitle = document.createElement('p');
+        subtitle.id = 'login-subtitle';
+        subtitle.className = 'login-popup-subtitle';
+        title.insertAdjacentElement('afterend', subtitle);
+    }
+
+    const passwordInput = document.getElementById('password-input');
+    const inputs = form.querySelector('.login-popup-inputs');
+    if (passwordInput && inputs && !passwordInput.closest('.login-password-wrap')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'login-password-wrap';
+        wrap.id = 'login-password-wrap';
+        passwordInput.parentNode.insertBefore(wrap, passwordInput);
+        wrap.appendChild(passwordInput);
+
+        let forgot = document.getElementById('forgot-link');
+        if (!forgot) {
+            forgot = document.createElement('p');
+            forgot.id = 'forgot-link';
+            forgot.className = 'login-forgot-link';
+            forgot.innerHTML = '<span onclick="showForgotMode()">Quên mật khẩu?</span>';
+        }
+        wrap.appendChild(forgot);
+    }
+
+    let devBox = document.getElementById('forgot-dev-link');
+    if (!devBox) {
+        devBox = document.createElement('p');
+        devBox.id = 'forgot-dev-link';
+        devBox.className = 'login-dev-link';
+        form.appendChild(devBox);
+    }
+
+    const agreeWrap = form.querySelector('.login-popup-condition');
+    const button = document.getElementById('login-button');
+    const toggle = document.getElementById('login-toggle');
+    if (button && agreeWrap) button.after(agreeWrap);
+    if (agreeWrap && toggle) agreeWrap.after(toggle);
+    if (toggle && devBox) toggle.after(devBox);
+
+    form.dataset.layoutReady = '1';
+}
+
+function setLoginSubtitle(text) {
+    const el = document.getElementById('login-subtitle');
+    if (!el) return;
+    el.textContent = text || '';
+    el.style.display = text ? 'block' : 'none';
+}
+
 function showLoginPopup() {
     const popup = document.getElementById('login-popup');
     if (popup) {
+        ensureAuthFormLayout();
         popup.style.display = 'flex';
-        popup.style.justifyContent = "center";
-        isLoginMode = true;
+        authMode = 'login';
         resetLoginForm();
+        const emailInput = document.getElementById('email-input');
+        if (emailInput) setTimeout(() => emailInput.focus(), 50);
     }
 }
 
-// Close login popup
 function closeLoginPopup() {
     const popup = document.getElementById('login-popup');
     if (popup) {
@@ -87,155 +213,322 @@ function closeLoginPopup() {
     }
 }
 
-// Reset login form to default state (login mode)
 function resetLoginForm() {
+    ensureAuthFormLayout();
+
     const nameInput = document.getElementById('name-input');
     const birthdayInput = document.getElementById('birthday-input');
+    const passwordInput = document.getElementById('password-input');
+    const passwordWrap = document.getElementById('login-password-wrap');
+    const agreeWrap = document.querySelector('.login-popup-condition');
     const loginTitle = document.getElementById('login-title');
     const loginButton = document.getElementById('login-button');
     const loginToggle = document.getElementById('login-toggle');
-    const form = document.getElementById('login-form');
-    
-    nameInput.style.display = 'none';
-    nameInput.value = '';
-    birthdayInput.style.display = 'none';
-    birthdayInput.value = '';
-    loginTitle.textContent = 'Đăng nhập';
-    loginButton.textContent = 'Đăng nhập';
-    loginToggle.innerHTML = 'Tạo tài khoản mới? <span onclick="toggleLoginMode()">Bấm vào đây!</span>';
-    
-    // Clear form fields
-    document.getElementById('email-input').value = '';
-    document.getElementById('password-input').value = '';
-    document.getElementById('agree-checkbox').checked = false;
-}
+    const forgotLink = document.getElementById('forgot-link');
+    const devLink = document.getElementById('forgot-dev-link');
 
-// Toggle between login and register
-function toggleLoginMode() {
-    isLoginMode = !isLoginMode;
-    
-    const nameInput = document.getElementById('name-input');
-    const birthdayInput = document.getElementById('birthday-input');
-    const loginTitle = document.getElementById('login-title');
-    const loginButton = document.getElementById('login-button');
-    const loginToggle = document.getElementById('login-toggle');
-
-    if (isLoginMode) {
-        // Switch to login mode
+    if (nameInput) {
         nameInput.style.display = 'none';
         nameInput.value = '';
+        nameInput.required = false;
+    }
+    if (birthdayInput) {
         birthdayInput.style.display = 'none';
         birthdayInput.value = '';
-        loginTitle.textContent = 'Đăng nhập';
-        loginButton.textContent = 'Đăng nhập';
-        loginToggle.innerHTML = 'Tạo tài khoản mới? <span onclick="toggleLoginMode()">Bấm vào đây!</span>';
-    } else {
-        // Switch to register mode
-        nameInput.style.display = 'block';
-        nameInput.value = '';
-        birthdayInput.style.display = 'block';
-        birthdayInput.value = '';
-        loginTitle.textContent = 'Đăng ký';
-        loginButton.textContent = 'Đăng ký';
-        loginToggle.innerHTML = 'Đã có tài khoản? <span onclick="toggleLoginMode()">Bấm vào đây!</span>';
     }
-    // Clear password for security when switching modes
-    document.getElementById('password-input').value = '';
+    if (passwordWrap) passwordWrap.style.display = 'flex';
+    if (passwordInput) {
+        passwordInput.style.display = 'block';
+        passwordInput.value = '';
+        passwordInput.required = true;
+    }
+    if (agreeWrap) {
+        agreeWrap.classList.remove('is-visible');
+        agreeWrap.style.display = 'none';
+    }
+    if (forgotLink) forgotLink.style.display = 'block';
+    if (devLink) {
+        devLink.classList.remove('is-visible');
+        devLink.style.display = 'none';
+        devLink.innerHTML = '';
+    }
+
+    loginTitle.textContent = 'Đăng nhập';
+    loginButton.textContent = 'Đăng nhập';
+    setLoginSubtitle('Chào mừng bạn quay lại Sugar Petals');
+    loginToggle.innerHTML = 'Chưa có tài khoản? <span onclick="toggleLoginMode()">Đăng ký ngay</span>';
+
+    const emailInput = document.getElementById('email-input');
+    if (emailInput) emailInput.value = '';
+    const agreeCheckbox = document.getElementById('agree-checkbox');
+    if (agreeCheckbox) {
+        agreeCheckbox.checked = false;
+        agreeCheckbox.required = false;
+    }
+    authMode = 'login';
 }
 
-// Handle login/register form submission
-document.addEventListener('DOMContentLoaded', function() {
+function showForgotMode() {
+    authMode = 'forgot';
+    ensureAuthFormLayout();
+
+    const nameInput = document.getElementById('name-input');
+    const birthdayInput = document.getElementById('birthday-input');
+    const passwordInput = document.getElementById('password-input');
+    const passwordWrap = document.getElementById('login-password-wrap');
+    const agreeWrap = document.querySelector('.login-popup-condition');
+    const loginTitle = document.getElementById('login-title');
+    const loginButton = document.getElementById('login-button');
+    const loginToggle = document.getElementById('login-toggle');
+    const forgotLink = document.getElementById('forgot-link');
+    const agreeCheckbox = document.getElementById('agree-checkbox');
+    const devLink = document.getElementById('forgot-dev-link');
+
+    if (nameInput) {
+        nameInput.style.display = 'none';
+        nameInput.required = false;
+    }
+    if (birthdayInput) birthdayInput.style.display = 'none';
+    if (passwordWrap) passwordWrap.style.display = 'none';
+    if (passwordInput) {
+        passwordInput.style.display = 'none';
+        passwordInput.required = false;
+        passwordInput.value = '';
+    }
+    if (agreeWrap) {
+        agreeWrap.classList.remove('is-visible');
+        agreeWrap.style.display = 'none';
+    }
+    if (forgotLink) forgotLink.style.display = 'none';
+    if (agreeCheckbox) agreeCheckbox.required = false;
+    if (devLink) {
+        devLink.classList.remove('is-visible');
+        devLink.style.display = 'none';
+        devLink.innerHTML = '';
+    }
+
+    loginTitle.textContent = 'Quên mật khẩu';
+    loginButton.textContent = 'Gửi link đặt lại';
+    setLoginSubtitle('Nhập email đã đăng ký, chúng tôi sẽ gửi link đặt lại mật khẩu.');
+    loginToggle.innerHTML = 'Nhớ mật khẩu? <span onclick="backToLoginMode()">Quay lại đăng nhập</span>';
+}
+
+function backToLoginMode() {
+    authMode = 'login';
+    resetLoginForm();
+}
+
+function toggleLoginMode() {
+    if (authMode === 'forgot') {
+        backToLoginMode();
+        return;
+    }
+
+    authMode = authMode === 'login' ? 'register' : 'login';
+    ensureAuthFormLayout();
+
+    const nameInput = document.getElementById('name-input');
+    const birthdayInput = document.getElementById('birthday-input');
+    const passwordInput = document.getElementById('password-input');
+    const passwordWrap = document.getElementById('login-password-wrap');
+    const agreeWrap = document.querySelector('.login-popup-condition');
+    const loginTitle = document.getElementById('login-title');
+    const loginButton = document.getElementById('login-button');
+    const loginToggle = document.getElementById('login-toggle');
+    const forgotLink = document.getElementById('forgot-link');
+    const agreeCheckbox = document.getElementById('agree-checkbox');
+    const devLink = document.getElementById('forgot-dev-link');
+
+    if (passwordWrap) passwordWrap.style.display = 'flex';
+    if (passwordInput) {
+        passwordInput.style.display = 'block';
+        passwordInput.required = true;
+        passwordInput.value = '';
+    }
+    if (devLink) {
+        devLink.classList.remove('is-visible');
+        devLink.style.display = 'none';
+        devLink.innerHTML = '';
+    }
+
+    if (authMode === 'login') {
+        nameInput.style.display = 'none';
+        nameInput.value = '';
+        nameInput.required = false;
+        birthdayInput.style.display = 'none';
+        birthdayInput.value = '';
+        if (agreeWrap) {
+            agreeWrap.classList.remove('is-visible');
+            agreeWrap.style.display = 'none';
+        }
+        if (agreeCheckbox) {
+            agreeCheckbox.checked = false;
+            agreeCheckbox.required = false;
+        }
+        loginTitle.textContent = 'Đăng nhập';
+        loginButton.textContent = 'Đăng nhập';
+        setLoginSubtitle('Chào mừng bạn quay lại Sugar Petals');
+        loginToggle.innerHTML = 'Chưa có tài khoản? <span onclick="toggleLoginMode()">Đăng ký ngay</span>';
+        if (forgotLink) forgotLink.style.display = 'block';
+    } else {
+        nameInput.style.display = 'block';
+        nameInput.value = '';
+        nameInput.required = true;
+        birthdayInput.style.display = 'block';
+        birthdayInput.value = '';
+        if (agreeWrap) {
+            agreeWrap.classList.add('is-visible');
+            agreeWrap.style.display = 'flex';
+        }
+        if (agreeCheckbox) {
+            agreeCheckbox.checked = false;
+            agreeCheckbox.required = true;
+        }
+        loginTitle.textContent = 'Tạo tài khoản';
+        loginButton.textContent = 'Đăng ký';
+        setLoginSubtitle('Đăng ký để đặt bánh và theo dõi đơn hàng dễ dàng.');
+        loginToggle.innerHTML = 'Đã có tài khoản? <span onclick="toggleLoginMode()">Đăng nhập</span>';
+        if (forgotLink) forgotLink.style.display = 'none';
+    }
+}
+
+async function submitForgotPassword(email) {
+    const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ email })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.success === false) {
+        notify.error(data.message || 'Không gửi được yêu cầu');
+        return;
+    }
+
+    notify.success(data.message || 'Đã gửi hướng dẫn đặt lại mật khẩu');
+
+    const devLink = document.getElementById('forgot-dev-link');
+    if (data.resetLink && devLink) {
+        devLink.classList.add('is-visible');
+        devLink.style.display = 'block';
+        devLink.innerHTML = `Link đặt lại (dev): <a href="${data.resetLink}">Mở trang đặt lại mật khẩu</a>`;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    ensureAuthFormLayout();
+
+    const popup = document.getElementById('login-popup');
+    if (popup) {
+        popup.addEventListener('click', function (e) {
+            if (e.target === popup) closeLoginPopup();
+        });
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeLoginPopup();
+    });
+
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const nameInput = document.getElementById('name-input');
             const emailInput = document.getElementById('email-input');
             const passwordInput = document.getElementById('password-input');
             const agreeCheckbox = document.getElementById('agree-checkbox');
-            
-            // Validate checkbox
-            if (!agreeCheckbox.checked) {
-                alert('Vui lòng đồng ý với điều khoản dịch vụ');
+
+            if (authMode === 'forgot') {
+                if (!emailInput.value.trim()) {
+                    notify.warning('Vui lòng nhập email');
+                    return;
+                }
+                const btn = document.getElementById('login-button');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'Đang gửi...';
+                }
+                submitForgotPassword(emailInput.value.trim())
+                    .finally(() => {
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.textContent = 'Gửi link đặt lại';
+                        }
+                    });
                 return;
             }
-            
+
+            if (authMode === 'register' && !agreeCheckbox.checked) {
+                notify.warning('Vui lòng đồng ý với điều khoản dịch vụ');
+                return;
+            }
+
             const formData = new FormData();
             formData.append('email', emailInput.value);
             formData.append('password', passwordInput.value);
-            
-            const endpoint = isLoginMode ? '/login' : '/register';
-            
-            if (!isLoginMode) {
-                // Register mode - include name and birthday
+
+            const endpoint = authMode === 'login' ? '/login' : '/register';
+
+            if (authMode === 'register') {
                 if (!nameInput.value.trim()) {
-                    alert('Vui lòng nhập tên của bạn');
+                    notify.warning('Vui lòng nhập tên của bạn');
                     return;
                 }
                 formData.append('name', nameInput.value);
-                
-                // Add birthday if provided
+
                 const birthdayInput = document.getElementById('birthday-input');
                 if (birthdayInput && birthdayInput.value) {
                     formData.append('birthday', birthdayInput.value);
                 }
             }
-            
+
             fetch(endpoint, {
                 method: 'POST',
                 body: formData,
                 credentials: 'same-origin'
             })
-            .then(async response => {
-                if (response.ok) {
-                    if (isLoginMode) {
-                        closeLoginPopup();
-                        checkUserSession();
-                        loginForm.reset();
-                        resetLoginForm();
+                .then(async response => {
+                    if (response.ok) {
+                        if (authMode === 'login') {
+                            closeLoginPopup();
+                            checkUserSession();
+                            loginForm.reset();
+                            resetLoginForm();
+                        } else {
+                            notify.success('Đăng ký thành công! Vui lòng đăng nhập.');
+                            const email = emailInput.value;
+                            resetLoginForm();
+                            document.getElementById('email-input').value = email;
+                        }
                     } else {
-                        alert('Đăng ký thành công! Vui lòng đăng nhập.');
-                        isLoginMode = true;
-                        const email = emailInput.value;
-                        resetLoginForm();
-                        document.getElementById('email-input').value = email;
+                        let message = 'Đăng nhập/đăng ký thất bại';
+                        try {
+                            const data = await response.json();
+                            message = data.message || message;
+                        } catch (_) {
+                            const text = await response.text();
+                            if (text) message = text;
+                        }
+                        notify.error(message);
                     }
-                } else {
-                    let message = 'Đăng nhập/đăng ký thất bại';
-                    try {
-                        const data = await response.json();
-                        message = data.message || message;
-                    } catch (_) {
-                        const text = await response.text();
-                        if (text) message = text;
-                    }
-                    alert('Lỗi: ' + message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra. Vui lòng thử lại.');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    notify.error('Có lỗi xảy ra. Vui lòng thử lại.');
+                });
         });
     }
-    
-    // Check user session on page load
+
     checkUserSession();
-
-    // Nạp danh mục cho dropdown "Thực đơn"
     loadNavCategories();
-
-    // Khởi tạo menu hamburger cho mobile
     initMobileNav();
 });
 
-// ===== Menu hamburger cho mobile =====
 function initMobileNav() {
     const navbar = document.querySelector('.navbar');
     if (!navbar || navbar.querySelector('.nav-toggle')) return;
 
-    // Tạo nút hamburger
     const toggle = document.createElement('button');
     toggle.className = 'nav-toggle';
     toggle.setAttribute('type', 'button');
@@ -244,13 +537,11 @@ function initMobileNav() {
     toggle.innerHTML = '<span></span><span></span><span></span>';
     navbar.appendChild(toggle);
 
-    // Đóng/mở menu khi bấm nút
     toggle.addEventListener('click', function () {
         const isOpen = navbar.classList.toggle('nav-open');
         toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 
-    // Đóng menu khi bấm vào một liên kết điều hướng
     const menu = navbar.querySelector('.navbar-menu');
     if (menu) {
         menu.querySelectorAll('a').forEach(function (link) {
@@ -261,7 +552,6 @@ function initMobileNav() {
         });
     }
 
-    // Tự đóng menu khi phóng to lên desktop
     window.addEventListener('resize', function () {
         if (window.innerWidth > 768) {
             navbar.classList.remove('nav-open');
@@ -269,3 +559,10 @@ function initMobileNav() {
         }
     });
 }
+
+window.showLoginPopup = showLoginPopup;
+window.closeLoginPopup = closeLoginPopup;
+window.toggleLoginMode = toggleLoginMode;
+window.showForgotMode = showForgotMode;
+window.backToLoginMode = backToLoginMode;
+window.logout = logout;

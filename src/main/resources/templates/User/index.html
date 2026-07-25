@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,20 +15,24 @@
     <link rel="stylesheet" href="/user/css/login-popup.css" th:href="@{/user/css/login-popup.css}">
     <link rel="stylesheet" href="/user/css/app-download.css" th:href="@{/user/css/app-download.css}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 </head>
+
 <body>
     <!-- Login Popup -->
     <div id="login-popup" class="login-popup" style="display: none;">
         <form class="login-popup-container" id="login-form" method="post">
             <div class="login-popup-title">
                 <h2 id="login-title">Đăng nhập</h2>
-                <img src="/user/assets/cross_icon.png" th:src="@{/user/assets/cross_icon.png}" alt="" onclick="closeLoginPopup()">
+                <img src="/user/assets/cross_icon.png" th:src="@{/user/assets/cross_icon.png}" alt=""
+                    onclick="closeLoginPopup()">
             </div>
             <div class="login-popup-inputs">
                 <input type="text" id="name-input" name="name" placeholder="Nhập tên của bạn" style="display: none;">
                 <input type="email" id="email-input" name="email" placeholder="Nhập email của bạn" required>
                 <input type="password" id="password-input" name="password" placeholder="Nhập mật khẩu" required>
-                <input type="date" id="birthday-input" name="birthday" placeholder="Nhập ngày sinh (dd/mm/yyyy)" style="display: none;">
+                <input type="date" id="birthday-input" name="birthday" placeholder="Nhập ngày sinh (dd/mm/yyyy)"
+                    style="display: none;">
             </div>
             <button type="submit" id="login-button">Đăng nhập</button>
             <div class="login-popup-condition">
@@ -41,13 +46,14 @@
     <!-- Navbar -->
     <div class="navbar">
         <div class="navbar-left">
-            <a href="index.html"><img src="/user/assets/logo.png" th:src="@{/user/assets/logo.png}" alt="Logo" class="logo"></a>
+            <a href="index.html"><img src="/user/assets/logo.png" th:src="@{/user/assets/logo.png}" alt="Logo"
+                    class="logo"></a>
             <div class="site-info">
                 <h1 class="site-name">Sugar Petals</h1>
                 <p class="site-slogan">Delicate bites, blooming delights</p>
             </div>
         </div>
-        
+
         <ul class="navbar-menu">
             <a href="index.html" class="active">Trang chủ</a>
             <li class="nav-dropdown">
@@ -63,20 +69,28 @@
         <div class="navbar-right">
             <div class="navbar-search">
                 <input type="text" id="search-input" placeholder="Tìm kiếm món ăn..." onkeyup="handleSearch(event)">
-                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Tìm kiếm" onclick="performSearch()">
+                <img src="/user/assets/icon-search.png" th:src="@{/user/assets/icon-search.png}" alt="Tìm kiếm"
+                    onclick="performSearch()">
             </div>
-            
+
             <div class="navbar-search-icon">
-                <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}" alt="Basket"></a>
+                <a href="cart.html"><img src="/user/assets/icon-basket.jpg" th:src="@{/user/assets/icon-basket.jpg}"
+                        alt="Basket"></a>
                 <div class="dot" id="cart-dot" style="display: none;"></div>
             </div>
             <button id="signin-btn" onclick="showLoginPopup()">Đăng nhập</button>
             <div class="navbar-profile" id="navbar-profile" style="display: none;">
                 <img src="/user/assets/profile_icon.png" th:src="@{/user/assets/profile_icon.png}" alt="">
                 <ul class="nav-profile-dropdown">
-                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png" th:src="@{/user/assets/bag_icon.png}" alt=""><p>Đơn hàng</p></li>
+                    <li onclick="window.location.href='myorders.html'"><img src="/user/assets/bag_icon.png"
+                            th:src="@{/user/assets/bag_icon.png}" alt="">
+                        <p>Đơn hàng</p>
+                    </li>
                     <hr>
-                    <li onclick="logout()"><img src="/user/assets/logout_icon.png" th:src="@{/user/assets/logout_icon.png}" alt=""><p>Đăng xuất</p></li>
+                    <li onclick="logout()"><img src="/user/assets/logout_icon.png"
+                            th:src="@{/user/assets/logout_icon.png}" alt="">
+                        <p>Đăng xuất</p>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -89,24 +103,30 @@
                 <div class="header-contents">
                     <h2>Vị Ngọt Tinh Tế, Niềm Vui Nở Rộ</h2>
                     <p>
-                        Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm thực tinh tế.
-                        Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác quan của bạn.
+                        Tại Sugar Petals, chúng tôi biến những nguyên liệu đơn giản thành những tác phẩm nghệ thuật ẩm
+                        thực tinh tế.
+                        Mỗi sáng tạo kết hợp hoàn hảo giữa hương vị và vẻ đẹp, được chế tác để làm hài lòng các giác
+                        quan của bạn.
                         Hãy để từng miếng bánh mang lại chút ngọt ngào và khoảnh khắc vui vẻ nở rộ trong ngày của bạn.
                     </p>
                     <a href="menu.html">Xem Thực Đơn</a>
                 </div>
-                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header_img.jpg}" alt="">
+                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header_img.jpg}"
+                    alt="">
             </div>
-            <div  class="header">
+            <div class="header">
                 <div class="header-contents">
                     <h2 class="header-contents-text">Nghệ Thuật Ướp Trà, Hương Vị Đọng Lại</h2>
                     <p class="header-contents-decription"> Tại Sugar Petals, chúng tôi
-                        gói trọn tinh hoa của những vườn trà thượng hạng vào từng hộp trà tinh xảo. Mỗi hương vị là sự giao thoa tinh tế
-                        giữa lá trà thuần khiết và trái cây tươi mọng, được tuyển chọn để đánh thức mọi giác quan. Hãy để từng tách trà
+                        gói trọn tinh hoa của những vườn trà thượng hạng vào từng hộp trà tinh xảo. Mỗi hương vị là sự
+                        giao thoa tinh tế
+                        giữa lá trà thuần khiết và trái cây tươi mọng, được tuyển chọn để đánh thức mọi giác quan. Hãy
+                        để từng tách trà
                         mang lại chút thanh tao và khoảnh khắc lắng đọng trọn vẹn trong ngày của bạn.</p>
                     <a href="menu.html">Xem Thực Đơn</a>
                 </div>
-                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header3_img.jpg}" alt="">
+                <img class="header-img" src="/user/assets/icon-profile.png" th:src="@{/user/assets/header3_img.jpg}"
+                    alt="">
             </div>
 
             <!-- Navigation Buttons -->
@@ -121,24 +141,43 @@
 
         </div>
 
+        <div class="promo-section combo-flash-section" id="combo-section" style="display:none;">
+            <div class="combo-flash-header">
+                <div class="combo-flash-title-row">
+                    <span class="combo-flash-badge">FLASH SALE</span>
+                    <h1>Combo tiết kiệm</h1>
+                </div>
+                <div class="combo-flash-header-countdown" id="combo-section-countdown" hidden></div>
+            </div>
+            <p class="promo-section-text">Chọn combo để thêm nhanh các món kèm giá ưu đãi — ưu đãi có hạn theo thời
+                gian.</p>
+            <div class="promo-combo-list" id="combo-list"></div>
+        </div>
 
         <!-- Explore Menu -->
         <div class="explore-menu" id="explore-menu">
             <h1>Khám phá thực đơn của chúng tôi</h1>
             <p class="explore-menu-text">
                 Khám phá thực đơn đa dạng của chúng tôi với các loại bánh ngọt và đồ ăn vặt ngon miệng.
-                Từ bánh pastry cổ điển đến dessert hấp dẫn, hãy chọn món yêu thích của bạn và thưởng thức hương vị hoàn hảo ngay hôm nay!
+                Từ bánh pastry cổ điển đến dessert hấp dẫn, hãy chọn món yêu thích của bạn và thưởng thức hương vị hoàn
+                hảo ngay hôm nay!
             </p>
             <div class="explore-menu-list" id="menu-categories">
                 <!-- Categories will be populated by JavaScript -->
             </div>
             <!-- Feature 6: Hot/New Products Filter -->
             <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
-                <button onclick="loadHotProducts()" style="padding: 10px 20px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Sản Phẩm Mới (Hot)</button>
-                <button onclick="loadBestSellersProducts()" style="padding: 10px 20px; background: #ffd700; color: #333; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Bán Chạy Nhất</button>
+                <button onclick="loadHotProducts()"
+                    style="padding: 10px 20px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Sản
+                    Phẩm Mới (Hot)</button>
+                <button onclick="loadBestSellersProducts()"
+                    style="padding: 10px 20px; background: #ffd700; color: #333; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Bán
+                    Chạy Nhất</button>
             </div>
             <hr>
         </div>
+
+
 
         <!-- Food Display -->
         <div class="food-display" id="food-display">
@@ -185,9 +224,15 @@
                     We are dedicated to creating sweet and memorable moments for you and your loved ones.
                 </p>
                 <div class="footer-social-icons">
-                    <a href="https://www.vlu.edu.vn/" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/website_icon.png" th:src="@{/user/assets/website_icon.png}" alt="Website"></a>
-                    <a href="https://www.facebook.com/itvlu#" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/facebook_icon.png" th:src="@{/user/assets/facebook_icon.png}" alt="Facebook"></a>
-                    <a href="https://www.instagram.com/vanlanguniversity/" target="_blank" rel="noopener noreferrer"><img class="social-icon" src="/user/assets/instagram_icon.png" th:src="@{/user/assets/instagram_icon.png}" alt="Instagram"></a>
+                    <a href="https://www.vlu.edu.vn/" target="_blank" rel="noopener noreferrer"><img class="social-icon"
+                            src="/user/assets/website_icon.png" th:src="@{/user/assets/website_icon.png}"
+                            alt="Website"></a>
+                    <a href="https://www.facebook.com/itvlu#" target="_blank" rel="noopener noreferrer"><img
+                            class="social-icon" src="/user/assets/facebook_icon.png"
+                            th:src="@{/user/assets/facebook_icon.png}" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/vanlanguniversity/" target="_blank"
+                        rel="noopener noreferrer"><img class="social-icon" src="/user/assets/instagram_icon.png"
+                            th:src="@{/user/assets/instagram_icon.png}" alt="Instagram"></a>
                 </div>
             </div>
 
@@ -215,10 +260,13 @@
         <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="/user/js/notify.js" th:src="@{/user/js/notify.js}"></script>
     <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
     <script src="/user/js/header.js" th:src="@{/user/js/header.js}"></script>
     <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/main.js" th:src="@{/user/js/main.js}"></script>
     <script src="/user/js/cart.js" th:src="@{/user/js/cart.js}"></script>
 </body>
+
 </html>

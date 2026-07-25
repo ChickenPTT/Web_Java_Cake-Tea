@@ -11,14 +11,13 @@ function getCartItems() {
 function placeOrder(form) {
     const items = getCartItems();
     if (items.length === 0) {
-        alert('Giỏ hàng của bạn đang trống');
-        window.location.href = '/cart.html';
+        notify.warning('Giỏ hàng của bạn đang trống');
+        setTimeout(() => { window.location.href = '/cart.html'; }, 1200);
         return;
     }
 
     const formData = new FormData(form);
-    const deliveryFee = cartData.total > 0 ? 2 : 0;
-    const totalAmount = (cartData.total || 0) + deliveryFee;
+    const totalAmount = Number(cartData.total) || 0;
 
     const deliveryInfo = {
         firstName: formData.get('firstName'),
@@ -35,7 +34,10 @@ function placeOrder(form) {
     const orderData = {
         items: JSON.stringify({
             products: items,
-            delivery: deliveryInfo
+            delivery: deliveryInfo,
+            discountLabel: cartData.discountLabel || null,
+            discount: cartData.discount || 0,
+            promoCode: cartData.promoCode || null
         }),
         amount: totalAmount,
         paymentMethod: 'COD',
@@ -59,8 +61,8 @@ function placeOrder(form) {
             const data = await response.json().catch(() => ({}));
             if (!response.ok) {
                 if (response.status === 401) {
-                    alert('Vui lòng đăng nhập để đặt hàng');
-                    window.location.href = '/';
+                    notify.warning('Vui lòng đăng nhập để đặt hàng');
+                    setTimeout(() => { window.location.href = '/'; }, 1200);
                     return;
                 }
                 throw new Error(data.message || 'Đặt hàng thất bại');
@@ -71,15 +73,15 @@ function placeOrder(form) {
             if (!data) return;
             if (data.success) {
                 clearCart();
-                alert('Đặt hàng thành công! Mã đơn hàng: ' + data.orderId);
-                window.location.href = '/myorders.html';
+                notify.success('Đặt hàng thành công! Mã đơn hàng: ' + data.orderId);
+                setTimeout(() => { window.location.href = '/myorders.html'; }, 1500);
             } else {
-                alert('Lỗi đặt hàng: ' + (data.message || 'Vui lòng thử lại'));
+                notify.error('Lỗi đặt hàng: ' + (data.message || 'Vui lòng thử lại'));
             }
         })
         .catch((error) => {
             console.error('Error placing order:', error);
-            alert(error.message || 'Lỗi kết nối. Vui lòng thử lại');
+            notify.error(error.message || 'Lỗi kết nối. Vui lòng thử lại');
         })
         .finally(() => {
             if (submitBtn) {
@@ -94,8 +96,8 @@ function checkAccess() {
         .then((response) => response.json())
         .then((data) => {
             if (!data.authenticated) {
-                alert('Vui lòng đăng nhập để đặt hàng');
-                window.location.href = '/';
+                notify.warning('Vui lòng đăng nhập để đặt hàng');
+                setTimeout(() => { window.location.href = '/'; }, 1200);
                 return false;
             }
             // Prefill email nếu có

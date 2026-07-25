@@ -100,11 +100,14 @@ function renderCurrentPage() {
 
     foodContainer.innerHTML = items.map((item) => {
         const itemId = item.id || item._id;
+        const detailUrl = item.slug
+            ? `/product/${encodeURIComponent(item.slug)}`
+            : `/product.html?id=${itemId}`;
         // Click card -> mở trang chi tiết; nút thêm giỏ hàng chặn sự kiện lan ra ngoài
         const cartControl = `<img class="add" onclick="event.stopPropagation(); addToCart('${itemId}')" src="/user/assets/add_icon_green.png" alt="">`;
 
         return `
-            <div class="food-item${isSingleItem ? ' single' : ''}" onclick="window.location.href='product.html?id=${itemId}'" style="cursor:pointer;">
+            <div class="food-item${isSingleItem ? ' single' : ''}" onclick="window.location.href='${detailUrl}'" style="cursor:pointer;">
                 <div class="food-item-img-container">
                     <img class="food-item-img" src="${item.image}" alt="${item.name}">
                     ${cartControl}
@@ -313,7 +316,7 @@ function advancedSearch(searchTerm, categoryFilter = null) {
     if (results.length > 0) {
         scrollToExplore();
     } else {
-        alert('Không tìm thấy sản phẩm phù hợp');
+        notify.warning('Không tìm thấy sản phẩm phù hợp');
     }
 }
 // Scroll xuong menu food
@@ -357,7 +360,184 @@ function loadAllMenus() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllMenus();
     loadAllFood();
+    loadActivePromotions();
 });
+
+function formatPromoPrice(value) {
+    return `${Number(value || 0).toLocaleString('vi-VN')} đ`;
+}
+
+function escapePromoHtml(value) {
+    return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+let comboCountdownTimer = null;
+
+function loadActivePromotions() {
+    fetch('/api/combos/active', { credentials: 'same-origin' })
+        .then(r => r.ok ? r.json() : [])
+        .then(combos => renderCombos(Array.isArray(combos) ? combos : []))
+        .catch(err => console.error('Error loading promotions:', err));
+}
+
+function parsePromoEndDate(value) {
+    if (!value) return null;
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function formatCountdownParts(ms) {
+    if (ms <= 0) return { expired: true, days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const totalSec = Math.floor(ms / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+    return { expired: false, days, hours, minutes, seconds };
+}
+
+function pad2(n) {
+    return String(n).padStart(2, '0');
+}
+
+function buildCountdownHtml(endDateIso, comboId) {
+    const end = parsePromoEndDate(endDateIso);
+    if (!end) {
+        return `
+            <div class="combo-countdown combo-countdown--open">
+                <span class="combo-countdown-label">Đang diễn ra</span>
+                <span class="combo-sale-pulse">HOT</span>
+            </div>`;
+    }
+    const parts = formatCountdownParts(end.getTime() - Date.now());
+    if (parts.expired) {
+        return `
+            <div class="combo-countdown combo-countdown--ended">
+                <span class="combo-countdown-label">Đã hết hạn</span>
+            </div>`;
+    }
+    return `
+        <div class="combo-countdown" data-end="${escapePromoHtml(endDateIso)}" data-combo-id="${comboId}">
+            <span class="combo-countdown-label">Kết thúc sau</span>
+            <div class="combo-countdown-units">
+                ${parts.days > 0 ? `<div class="combo-cd-unit"><b data-cd="days">${pad2(parts.days)}</b><small>Ngày</small></div>` : ''}
+                <div class="combo-cd-unit"><b data-cd="hours">${pad2(parts.hours)}</b><small>Giờ</small></div>
+                <div class="combo-cd-unit"><b data-cd="minutes">${pad2(parts.minutes)}</b><small>Phút</small></div>
+                <div class="combo-cd-unit"><b data-cd="seconds">${pad2(parts.seconds)}</b><small>Giây</small></div>
+            </div>
+        </div>`;
+}
+
+function renderSectionFlashCountdown(combos) {
+    const host = document.getElementById('combo-section-countdown');
+    if (!host) return;
+
+    const ends = combos
+        .map(c => parsePromoEndDate(c.endDate))
+        .filter(Boolean)
+        .sort((a, b) => a.getTime() - b.getTime());
+
+    if (!ends.length) {
+        host.hidden = true;
+        host.innerHTML = '';
+        return;
+    }
+
+    const nearest = ends[0];
+    host.hidden = false;
+    host.innerHTML = `
+        <div class="combo-countdown combo-countdown--header" data-end="${nearest.toISOString()}" data-combo-id="section">
+            <span class="combo-countdown-label">Kết thúc sớm nhất</span>
+            <div class="combo-countdown-units">
+                <div class="combo-cd-unit"><b data-cd="days">00</b><small>Ngày</small></div>
+                <div class="combo-cd-unit"><b data-cd="hours">00</b><small>Giờ</small></div>
+                <div class="combo-cd-unit"><b data-cd="minutes">00</b><small>Phút</small></div>
+                <div class="combo-cd-unit"><b data-cd="seconds">00</b><small>Giây</small></div>
+            </div>
+        </div>`;
+}
+
+function startComboCountdowns() {
+    if (comboCountdownTimer) {
+        clearInterval(comboCountdownTimer);
+        comboCountdownTimer = null;
+    }
+    const nodes = document.querySelectorAll('.combo-countdown[data-end]');
+    if (!nodes.length) return;
+
+    const tick = () => {
+        nodes.forEach(node => {
+            const end = parsePromoEndDate(node.getAttribute('data-end'));
+            if (!end) return;
+            const parts = formatCountdownParts(end.getTime() - Date.now());
+            if (parts.expired) {
+                node.classList.add('combo-countdown--ended');
+                node.innerHTML = '<span class="combo-countdown-label">Đã hết hạn</span>';
+                return;
+            }
+            const set = (key, val) => {
+                const el = node.querySelector(`[data-cd="${key}"]`);
+                if (el) el.textContent = pad2(val);
+            };
+            set('days', parts.days);
+            set('hours', parts.hours);
+            set('minutes', parts.minutes);
+            set('seconds', parts.seconds);
+        });
+    };
+
+    tick();
+    comboCountdownTimer = setInterval(tick, 1000);
+}
+
+function renderCombos(combos) {
+    const section = document.getElementById('combo-section');
+    const list = document.getElementById('combo-list');
+    if (!section || !list) return;
+    if (!combos.length) {
+        section.style.display = 'none';
+        return;
+    }
+    section.style.display = 'block';
+    renderSectionFlashCountdown(combos);
+    list.innerHTML = combos.map(c => {
+        const items = (c.items || []).map(i => `${escapePromoHtml(i.foodName || 'SP')} x${i.quantity || 1}`).join(', ');
+        const name = escapePromoHtml(c.name);
+        const desc = escapePromoHtml(c.description || 'Combo ưu đãi đặc biệt');
+        return `
+            <div class="promo-card combo-flash-card">
+                <span class="combo-flash-ribbon">FLASH SALE</span>
+                <div class="combo-flash-price-row">
+                    <span class="promo-tag">${formatPromoPrice(c.comboPrice)}</span>
+                </div>
+                ${buildCountdownHtml(c.endDate, c.id)}
+                <h3>${name}</h3>
+                <p>${desc}</p>
+                <div class="promo-combo-items">${items || 'Combo sản phẩm'}</div>
+                <button type="button" onclick="addComboToCart(${c.id})">Thêm combo vào giỏ</button>
+            </div>
+        `;
+    }).join('');
+    startComboCountdowns();
+}
+
+function copyPromoCode(code) {
+    if (!code) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(() => {
+            if (typeof notify !== 'undefined') notify.success('Đã sao chép mã ' + code);
+        }).catch(() => {
+            if (typeof notify !== 'undefined') notify.info('Mã khuyến mãi: ' + code);
+        });
+    } else if (typeof notify !== 'undefined') {
+        notify.info('Mã khuyến mãi: ' + code);
+    }
+}
 
 // Make functions globally available
 window.setCategory = setCategory;
@@ -374,6 +554,7 @@ window.searchByCategory = searchByCategory;
 window.advancedSearch = advancedSearch;
 window.changePageSize = changePageSize;
 window.goToPage = goToPage;
+window.copyPromoCode = copyPromoCode;
 
 // Cart functions - loaded from cart.js
 // These functions are implemented in cart.js

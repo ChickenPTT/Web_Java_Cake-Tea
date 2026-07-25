@@ -2,6 +2,290 @@
     margin-top: 30px;
 }
 
+.promo-section {
+    margin-top: 40px;
+}
+
+.promo-section h1 {
+    font-size: 2vw;
+    font-weight: 600;
+    color: #c70e1c;
+}
+
+.promo-section-text {
+    max-width: 70%;
+    color: #666;
+    margin: 8px 0 20px;
+}
+
+.promo-campaign-list,
+.promo-combo-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.promo-card {
+    border: 1px solid #f0f0f0;
+    border-radius: 14px;
+    padding: 18px;
+    background: linear-gradient(160deg, #fff8f8 0%, #fff 60%);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.promo-card h3 {
+    margin: 0 0 8px;
+    color: #222;
+    font-size: 18px;
+}
+
+.promo-card p {
+    margin: 0 0 10px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.promo-card .promo-tag {
+    display: inline-block;
+    background: #c70e1c;
+    color: #fff;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.promo-card .promo-code {
+    font-size: 13px;
+    color: #c70e1c;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.promo-card button {
+    border: none;
+    background: #c70e1c;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.promo-card button:hover {
+    background: #a80c18;
+}
+
+.promo-combo-items {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+/* --- Combo flash sale + countdown --- */
+.combo-flash-section {
+    margin-top: 48px;
+    padding: 22px;
+    border-radius: 16px;
+    background:
+        linear-gradient(135deg, rgba(199, 14, 28, 0.08) 0%, rgba(255, 255, 255, 0.95) 45%),
+        #fff;
+    border: 1px solid #f5c2c7;
+    box-shadow: 0 10px 28px rgba(199, 14, 28, 0.08);
+}
+
+.combo-flash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+.combo-flash-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.combo-flash-title-row h1 {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.combo-flash-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #c70e1c;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 7px 12px;
+    border-radius: 6px;
+    animation: comboBadgePulse 1.4s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+.combo-flash-header-countdown .combo-countdown--header {
+    margin: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+}
+
+.combo-flash-header-countdown .combo-countdown-label {
+    white-space: nowrap;
+}
+
+.combo-flash-section > .promo-section-text {
+    margin-top: 4px;
+}
+
+.combo-flash-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #f0c4c8;
+    background: linear-gradient(165deg, #fff5f5 0%, #fff 55%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding-top: 28px;
+}
+
+.combo-flash-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(199, 14, 28, 0.14);
+}
+
+.combo-flash-ribbon {
+    position: absolute;
+    top: 12px;
+    left: -28px;
+    width: 110px;
+    text-align: center;
+    background: #c70e1c;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 5px 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 2px 6px rgba(199, 14, 28, 0.25);
+    z-index: 1;
+}
+
+.combo-flash-price-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.combo-flash-price-row .promo-tag {
+    margin-bottom: 0;
+}
+
+.combo-countdown {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #1c1412;
+    color: #fff;
+}
+
+.combo-countdown-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ffb4b8;
+}
+
+.combo-countdown-units {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.combo-cd-unit {
+    min-width: 46px;
+    text-align: center;
+    background: #c70e1c;
+    border-radius: 8px;
+    padding: 6px 4px 5px;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.combo-cd-unit b {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
+.combo-cd-unit small {
+    display: block;
+    font-size: 9px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.combo-countdown--open {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, #c70e1c, #8f0a14);
+}
+
+.combo-sale-pulse {
+    font-size: 12px;
+    font-weight: 800;
+    background: #fff;
+    color: #c70e1c;
+    padding: 4px 10px;
+    border-radius: 999px;
+    animation: comboBadgePulse 1.2s ease-in-out infinite;
+}
+
+.combo-countdown--ended {
+    background: #555;
+}
+
+.combo-countdown--ended .combo-countdown-label {
+    color: #ddd;
+}
+
+@keyframes comboBadgePulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.88; }
+}
+
+@media (max-width: 768px) {
+    .combo-flash-section {
+        padding: 16px;
+    }
+
+    .combo-flash-header {
+        align-items: flex-start;
+    }
+
+    .promo-section h1 {
+        font-size: 22px;
+    }
+
+    .promo-section-text {
+        max-width: 100%;
+    }
+}
+
 .food-display h1 {
     font-size: 2vw;
     font-weight: 600;

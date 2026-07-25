@@ -1,36 +1,54 @@
-// Trang chi tiết sản phẩm — lấy id từ query string ?id=, gọi API và render.
-
 let currentProduct = null;
 let selectedQty = 1;
 
-// Định dạng giá theo VND
 function formatPrice(value) {
     return `${Number(value || 0).toLocaleString('vi-VN')} VND`;
 }
 
-// Lấy id sản phẩm từ URL (?id=123)
-function getProductId() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('id');
+function productDetailUrl(item) {
+    if (item && item.slug) {
+        return `/product/${encodeURIComponent(item.slug)}`;
+    }
+    const id = item && (item.id || item._id);
+    return id ? `/product.html?id=${id}` : '/menu.html';
 }
 
-// Khởi tạo trang
-function initProductPage() {
-    const id = getProductId();
-    const container = document.getElementById('product-detail');
+function getProductKey() {
+    const pathMatch = window.location.pathname.match(/^\/product\/([^/]+)\/?$/);
+    if (pathMatch) {
+        return { type: 'slug', value: decodeURIComponent(pathMatch[1]) };
+    }
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    if (slug) return { type: 'slug', value: slug };
+    const id = params.get('id');
+    if (id) return { type: 'id', value: id };
+    return null;
+}
 
-    if (!id) {
+function initProductPage() {
+    const key = getProductKey();
+
+    if (!key) {
         showError('Không tìm thấy sản phẩm.');
         return;
     }
 
-    fetch(`/api/food/${encodeURIComponent(id)}`, { credentials: 'same-origin' })
+    const url = key.type === 'slug'
+        ? `/api/food/slug/${encodeURIComponent(key.value)}`
+        : `/api/food/${encodeURIComponent(key.value)}`;
+
+    fetch(url, { credentials: 'same-origin' })
         .then(response => {
             if (!response.ok) throw new Error('not found');
             return response.json();
         })
         .then(product => {
             currentProduct = product;
+            const canonical = productDetailUrl(product);
+            if (product.slug && window.location.pathname + window.location.search !== canonical) {
+                window.history.replaceState({}, '', canonical);
+            }
             renderProduct(product);
             loadRelatedProducts(product);
         })
@@ -46,14 +64,13 @@ function showError(message) {
         container.innerHTML = `
             <div class="product-error">
                 <p>${message}</p>
-                <p><a href="index.html">← Quay lại trang chủ</a></p>
+                <p><a href="/">← Quay lại trang chủ</a></p>
             </div>`;
     }
     const related = document.getElementById('related-section');
     if (related) related.style.display = 'none';
 }
 
-// Render phần chi tiết sản phẩm
 function renderProduct(product) {
     document.title = `${product.name} - Sugar Petals`;
 
@@ -61,7 +78,6 @@ function renderProduct(product) {
     const category = product.category || 'Món ngọt';
     const description = product.description || 'Sản phẩm được chế biến thủ công từ nguyên liệu chọn lọc tại Sugar Petals.';
 
-    // Gallery: sản phẩm chỉ có 1 ảnh -> tạo vài thumbnail từ chính ảnh đó
     const thumbs = [image, image, image];
 
     const container = document.getElementById('product-detail');
@@ -114,15 +130,12 @@ function renderProduct(product) {
         </div>
     `;
 
-    // Cập nhật breadcrumb
     const crumb = document.getElementById('breadcrumb-current');
     if (crumb) crumb.textContent = product.name;
 
-    // Reset số lượng
     selectedQty = 1;
 }
 
-// Chọn ảnh thumbnail
 function selectThumb(el, src) {
     const mainImg = document.getElementById('gallery-main-img');
     if (mainImg) mainImg.src = src;
@@ -130,19 +143,16 @@ function selectThumb(el, src) {
     el.classList.add('active');
 }
 
-// Thay đổi số lượng
 function changeQty(delta) {
     selectedQty = Math.max(1, selectedQty + delta);
     const qtyValue = document.getElementById('qty-value');
     if (qtyValue) qtyValue.textContent = selectedQty;
 }
 
-// Thêm vào giỏ hàng với số lượng đã chọn
 function addProductToCart() {
     if (!currentProduct) return;
     const id = currentProduct.id;
 
-    // mThêm 1 lần để tạo ite, sau đó cập nhật đúng số lượng mong muốn
     fetch(`/api/cart/add/${id}`, { method: 'POST', credentials: 'same-origin' })
         .then(response => response.json())
         .then(() => {
@@ -158,15 +168,14 @@ function addProductToCart() {
             if (data && typeof updateCartDotFromData === 'function') {
                 updateCartDotFromData(data);
             }
-            alert(`Đã thêm ${selectedQty} "${currentProduct.name}" vào giỏ hàng!`);
+            notify.success(`Đã thêm ${selectedQty} "${currentProduct.name}" vào giỏ hàng!`);
         })
         .catch(error => {
             console.error('Error adding to cart:', error);
-            alert('Không thể thêm vào giỏ hàng. Vui lòng thử lại.');
+            notify.error('Không thể thêm vào giỏ hàng. Vui lòng thử lại.');
         });
 }
 
-// Cập nhật chấm đỏt rên icon giỏ hàng từ dữ liệu trả về
 function updateCartDotFromData(data) {
     const cartDot = document.getElementById('cart-dot');
     if (cartDot) {
@@ -175,7 +184,6 @@ function updateCartDotFromData(data) {
     }
 }
 
-// Tải sản phẩm liên quan (cùng danh mục), loại bỏ chính sản phẩm hiện tại
 function loadRelatedProducts(product) {
     const category = product.category;
     const listEl = document.getElementById('related-products-list');
@@ -190,7 +198,6 @@ function loadRelatedProducts(product) {
         .then(items => {
             let related = (items || []).filter(item => item.id !== product.id);
 
-            // Nếu cùng danh mục không đủ, bổ sung từ toàn bộ sản phẩm
             if (related.length < 4 && category) {
                 fetch('/api/food', { credentials: 'same-origin' })
                     .then(r => r.json())
@@ -211,7 +218,6 @@ function loadRelatedProducts(product) {
         });
 }
 
-// Render danh sách sản phẩm liên quan (dùng lại style .food-item của trang chủ)
 function renderRelated(items) {
     const listEl = document.getElementById('related-products-list');
     const section = document.getElementById('related-section');
@@ -225,7 +231,7 @@ function renderRelated(items) {
     listEl.innerHTML = items.map(item => {
         const image = item.image || '/user/assets/food_1.jpg';
         return `
-            <div class="food-item" onclick="window.location.href='product.html?id=${item.id}'" style="cursor:pointer;">
+            <div class="food-item" onclick="window.location.href='${productDetailUrl(item)}'" style="cursor:pointer;">
                 <div class="food-item-img-container">
                     <img class="food-item-img" src="${image}" alt="${item.name}">
                     <img class="add" onclick="event.stopPropagation(); addToCart('${item.id}')" src="/user/assets/add_icon_green.png" alt="Thêm">

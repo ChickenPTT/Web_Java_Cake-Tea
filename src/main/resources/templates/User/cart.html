@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/user/css/footer.css" th:href="@{/user/css/footer.css}">
     <link rel="stylesheet" href="/user/css/cart.css" th:href="@{/user/css/cart.css}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -52,55 +53,85 @@
         </div>
     </div>
 
-    <div class="app">
-        <div class="cart">
-            <div class="cart-items">
-                <div class="cart-items-title">
-                    <p>Hình ảnh</p>
-                    <p>Tên sản phẩm</p>
-                    <p>Giá</p>
-                    <p>Số lượng</p>
-                    <p>Tổng</p>
-                    <p>Xóa</p>
-                </div>
-                <br>
-                <hr>
-                <div id="cart-items-container">
-                    <!-- Cart items will be populated by JavaScript -->
-                </div>
+    <div class="app cart-page">
+        <header class="cart-page-header">
+            <nav class="cart-breadcrumb" aria-label="Breadcrumb">
+                <a href="/index.html">Trang chủ</a>
+                <span aria-hidden="true">/</span>
+                <span>Giỏ hàng</span>
+            </nav>
+            <div class="cart-page-heading">
+                <h1>Giỏ hàng</h1>
+                <p class="cart-page-count" id="cart-item-count">0 sản phẩm</p>
             </div>
+        </header>
 
-            <div class="cart-bottom">
-                <div class="cart-total">
-                    <h2>Tổng giỏ hàng</h2>
-                    <div>
-                        <div class="cart-total-details">
-                            <p>Tạm tính</p>
-                            <p id="subtotal">$0</p>
-                        </div>
-                        <hr>
-                        <div class="cart-total-details">
-                            <p>Phí giao hàng</p>
-                            <p id="delivery-fee">$0</p>
-                        </div>
-                        <hr>
-                        <div class="cart-total-details">
-                            <b>Tổng cộng</b>
-                            <b id="total">$0</b>
-                        </div>
-                    </div>
-                    <button onclick="window.location.href='order.html'">TIẾN HÀNH THANH TOÁN</button>
+        <div class="cart" id="cart-layout">
+            <section class="cart-main" aria-label="Sản phẩm trong giỏ">
+                <div class="cart-list-head">
+                    <span class="cart-col-product">Sản phẩm</span>
+                    <span class="cart-col-price">Đơn giá</span>
+                    <span class="cart-col-qty">Số lượng</span>
+                    <span class="cart-col-total">Thành tiền</span>
+                    <span class="cart-col-action" aria-hidden="true"></span>
                 </div>
-                <div class="cart-promocode">
-                    <div>
-                        <p>Nếu bạn có mã khuyến mãi, hãy nhập vào đây</p>
-                        <div class="cart-promocode-input">
-                            <input type="text" placeholder="Mã khuyến mãi">
-                            <button>Áp dụng</button>
-                        </div>
+                <div id="cart-items-container" class="cart-items-list">
+                    <!-- Cart items rendered by cart.js -->
+                </div>
+                <div class="cart-list-footer">
+                    <a href="/menu.html" class="cart-continue-link">← Tiếp tục mua sắm</a>
+                    <button type="button" class="cart-clear-btn" id="cart-clear-btn" hidden>Xóa toàn bộ</button>
+                </div>
+            </section>
+
+            <aside class="cart-summary" aria-label="Tóm tắt đơn hàng">
+                <h2>Tổng giỏ hàng</h2>
+
+                <div class="cart-combo-banner" id="cart-combo-banner" hidden>
+                    <strong id="cart-combo-banner-title">Combo đang áp dụng</strong>
+                    <p id="cart-combo-banner-text"></p>
+                </div>
+
+                <div class="cart-promo">
+                    <label for="promo-code-input">Nếu bạn có mã khuyến mãi, hãy nhập vào đây</label>
+                    <div class="cart-promo-suggestions" id="cart-promo-suggestions" hidden></div>
+                    <div class="cart-promocode-input">
+                        <input type="text" id="promo-code-input" placeholder="vd: BIRTHDAY10" autocomplete="off">
+                        <button type="button" id="promo-apply-btn">Áp dụng</button>
                     </div>
                 </div>
-            </div>
+
+                <div class="cart-summary-rows">
+                    <div class="cart-total-details">
+                        <span>Tạm tính</span>
+                        <span id="subtotal">0 đ</span>
+                    </div>
+                    <div class="cart-total-details" id="discount-row" hidden>
+                        <span id="discount-label">Giảm giá</span>
+                        <span id="discount" class="cart-discount-value">0 đ</span>
+                    </div>
+                    <div class="cart-total-details">
+                        <span>Phí giao hàng</span>
+                        <span id="delivery-fee">0 đ</span>
+                    </div>
+                    <div class="cart-total-details cart-grand-total">
+                        <span>Tổng cộng</span>
+                        <strong id="total">0 đ</strong>
+                    </div>
+                </div>
+
+                <button type="button" class="cart-checkout-btn" id="cart-checkout-btn" onclick="window.location.href='/order.html'">
+                    Tiến hành thanh toán
+                </button>
+                <p class="cart-summary-note">Miễn phí đổi trả trong 24 giờ nếu sản phẩm lỗi kỹ thuật khi giao.</p>
+            </aside>
+        </div>
+
+        <div class="cart-empty" id="cart-empty" hidden>
+            <div class="cart-empty-visual" aria-hidden="true"></div>
+            <h2>Giỏ hàng đang trống</h2>
+            <p>Hãy chọn vài món bánh hoặc trà yêu thích để bắt đầu đơn hàng.</p>
+            <a href="/menu.html" class="cart-empty-cta">Xem thực đơn</a>
         </div>
     </div>
 
@@ -149,6 +180,8 @@
         <p class="footer-copyright">© 2026 Sugar Petals Bakery. All rights reserved.</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="/user/js/notify.js" th:src="@{/user/js/notify.js}"></script>
     <script src="/user/js/data.js" th:src="@{/user/js/data.js}"></script>
     <script src="/user/js/navbar.js" th:src="@{/user/js/navbar.js}"></script>
     <script src="/user/js/cart.js" th:src="@{/user/js/cart.js}"></script>

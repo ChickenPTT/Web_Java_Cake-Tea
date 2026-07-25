@@ -20,7 +20,8 @@ public class CustomerCareService {
     }
 
     public List<User> getBirthdayCustomersToday() {
-        return userRepository.findByBirthday(LocalDate.now());
+        LocalDate today = LocalDate.now();
+        return userRepository.findByBirthdayMonthAndDay(today.getMonthValue(), today.getDayOfMonth());
     }
 
     public List<User> getAllCustomers() {
@@ -40,7 +41,7 @@ public class CustomerCareService {
     public void sendScheduledBirthdayEmails() {
         List<User> birthdayUsers = getBirthdayCustomersToday();
         for (User user : birthdayUsers) {
-            if (Boolean.TRUE.equals(user.getEmailMarketing())) {
+            if (!Boolean.FALSE.equals(user.getEmailMarketing())) {
                 try {
                     emailService.sendBirthdayEmail(user.getEmail(), user.getName());
                 } catch (Exception e) {

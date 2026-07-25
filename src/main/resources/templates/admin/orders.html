@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Đơn hàng - Sugar Petals Admin</title>
     <th:block th:replace="~{admin/layout/css :: css}"></th:block>
+    <link rel="stylesheet" th:href="@{/admin/css/orders.css}">
 </head>
 <body>
 <div class="container-scroller">
@@ -22,9 +23,31 @@
                         </ol>
                     </nav>
                 </div>
-                <section class="content">
-                    <div class="card rounded shadow">
-                        <div class="card-body" id="order-list-container"></div>
+
+                <section class="content admin-orders">
+                    <div class="order-stats" id="order-stats"></div>
+
+                    <div class="card rounded shadow order-panel">
+                        <div class="card-body">
+                            <div class="order-toolbar">
+                                <div class="order-filters" id="order-filters">
+                                    <button type="button" class="order-filter active" data-status="all">Tất cả</button>
+                                    <button type="button" class="order-filter" data-status="Pending">Chờ xử lý</button>
+                                    <button type="button" class="order-filter" data-status="Processing">Đang xử lý</button>
+                                    <button type="button" class="order-filter" data-status="Preparing">Chuẩn bị</button>
+                                    <button type="button" class="order-filter" data-status="Out for Delivery">Đang giao</button>
+                                    <button type="button" class="order-filter" data-status="Delivered">Đã giao</button>
+                                    <button type="button" class="order-filter" data-status="Cancelled">Đã hủy</button>
+                                </div>
+                                <div class="order-search">
+                                    <i class="mdi mdi-magnify"></i>
+                                    <input type="search" id="order-search" placeholder="Tìm mã đơn, tên, email...">
+                                </div>
+                            </div>
+                            <div id="order-list-container" class="order-list-container">
+                                <p class="text-center text-muted py-5 mb-0">Đang tải đơn hàng...</p>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>

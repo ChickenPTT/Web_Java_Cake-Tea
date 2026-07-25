@@ -100,8 +100,8 @@ async function loadOrders() {
     try {
         const res = await fetch('/api/orders/user/current', { credentials: 'same-origin' });
         if (res.status === 401) {
-            alert('Vui lòng đăng nhập để xem đơn hàng');
-            window.location.href = '/';
+            notify.warning('Vui lòng đăng nhập để xem đơn hàng');
+            setTimeout(() => { window.location.href = '/'; }, 1200);
             return;
         }
         if (!res.ok) {
@@ -126,8 +126,8 @@ async function checkAccess() {
         const res = await fetch('/api/current-user', { credentials: 'same-origin' });
         const data = await res.json();
         if (!data.authenticated) {
-            alert('Vui lòng đăng nhập để xem đơn hàng');
-            window.location.href = '/';
+            notify.warning('Vui lòng đăng nhập để xem đơn hàng');
+            setTimeout(() => { window.location.href = '/'; }, 1200);
             return false;
         }
         return true;

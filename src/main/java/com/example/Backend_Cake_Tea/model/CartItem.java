@@ -5,6 +5,7 @@ public class CartItem {
     private String Items;
     private String title;
     private String image;
+    private String category;
     private Double price;
     private int quantity;
     private int total;
@@ -33,6 +34,16 @@ public class CartItem {
         this.productId = productId;
         this.title = title;
         this.image = image;
+        this.price = price;
+        this.quantity = quantity;
+        this.total = (int) (price * quantity);
+    }
+
+    public CartItem(Long productId, String title, String image, String category, Double price, int quantity) {
+        this.productId = productId;
+        this.title = title;
+        this.image = image;
+        this.category = category;
         this.price = price;
         this.quantity = quantity;
         this.total = (int) (price * quantity);
@@ -68,6 +79,14 @@ public class CartItem {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Double getPrice() {

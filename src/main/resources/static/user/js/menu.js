@@ -59,8 +59,11 @@ function renderMenuProducts() {
 
     grid.innerHTML = items.map((item) => {
         const itemId = item.id || item._id;
+        const detailUrl = item.slug
+            ? `/product/${encodeURIComponent(item.slug)}`
+            : `/product.html?id=${itemId}`;
         return `
-            <div class="food-item" onclick="window.location.href='product.html?id=${itemId}'" style="cursor:pointer;">
+            <div class="food-item" onclick="window.location.href='${detailUrl}'" style="cursor:pointer;">
                 <div class="food-item-img-container">
                     <img class="food-item-img" src="${item.image}" alt="${item.name}">
                     <img class="add" onclick="event.stopPropagation(); addToCart('${itemId}')" src="/user/assets/add_icon_green.png" alt="">
