@@ -102,7 +102,7 @@ function renderProduct(product) {
                 <img src="/user/assets/rating_starts.jpg" alt="Đánh giá">
                 <span>(Được yêu thích)</span>
             </div>
-            <p class="product-info-price">${formatPrice(product.price)}</p>
+            <p class="product-info-price food-item-short">${formatPrice(product.price)}</p>
             <p class="product-info-desc">${description}</p>
 
             <div class="product-actions">
