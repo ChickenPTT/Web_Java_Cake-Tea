@@ -73,7 +73,7 @@ function renderMenuProducts() {
                         <p>${item.name}</p>
                         <img src="/user/assets/rating_starts.jpg" alt="">
                     </div>
-                    <p class="food-item-desc">${item.description || ''}</p>
+                    <p class="food-item-desc food-item-short">${item.description || ''}</p>
                     <p class="food-item-price">${formatPriceVnd(item.price)}</p>
                 </div>
             </div>`;

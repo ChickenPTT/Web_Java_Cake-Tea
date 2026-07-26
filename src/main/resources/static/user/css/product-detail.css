@@ -132,6 +132,12 @@
     width: 90px;
 }
 
+product-item-short{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
 .product-info-price {
     color: #c70e1c;
     font-size: 34px;
