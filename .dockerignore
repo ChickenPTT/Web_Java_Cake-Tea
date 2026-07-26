@@ -1,0 +1,11 @@
+target/
+uploads/
+.git/
+.idea/
+.mvn/wrapper/maven-wrapper.jar
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+HELP.md

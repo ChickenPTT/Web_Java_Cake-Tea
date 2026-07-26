@@ -1,0 +1,41 @@
+# Render Blueprint - tự động tạo PostgreSQL (free) + Web Service (Docker)
+# Dùng: trên Render bấm "New +" -> "Blueprint" -> chọn repo này.
+databases:
+  - name: teaandcake-db
+    plan: free
+    databaseName: teaandcake
+    user: teaandcake
+
+services:
+  - type: web
+    name: web-java-cake-tea
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      # Username & password DB được nối tự động từ database ở trên
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: teaandcake-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: teaandcake-db
+          property: password
+      # URL phải ở dạng jdbc: -> dán thủ công (xem DEPLOY_RENDER.md).
+      # Lấy "Internal Database URL" của DB, đổi tiền tố postgresql:// thành jdbc:postgresql://
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      # SMTP Gmail (dùng App Password, KHÔNG dùng mật khẩu Gmail thường)
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      # URL công khai của app (dùng trong email đặt lại mật khẩu)
+      - key: APP_BASE_URL
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
