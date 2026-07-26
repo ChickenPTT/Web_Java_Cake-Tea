@@ -39,7 +39,12 @@
     color: #676767;
     font-size: 12px;
 }
-
+.food-item-short{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
 .food-item-price {
     color: #c70e1c;
     font-size: 22px;
